@@ -20,9 +20,9 @@
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
 <meta property="article:modified_time" content="2022-07-16T11:52:14.987Z">
 <meta property="article:author" content="Fighter">
-<meta property="article:tag" content="线段树">
-<meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="题解">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="线段树">
 <meta property="article:tag" content="GSS">
 <meta name="twitter:card" content="summary">
   
@@ -53,6 +53,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -90,7 +92,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -266,9 +268,189 @@
 <li>线段树每个节点增加一个$tag$，表示这段区间是否为1，一个节点的tag在push_up时由两个子节点进行与运算得到，只有两个子节点均为1时，父亲节点才为1.</li>
 </ol>
 <hr>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="区间最大值实现"><a href="#区间最大值实现" class="headerlink" title="区间最大值实现"></a>区间最大值实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> reset(x) memset(x, 0, sizeof(x))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lc(x) (x&lt;&lt;1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> rc(x) (x&lt;&lt;1|1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mid (l+r&gt;&gt;1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, m, t;</span><br><span class="line">ll a[MAX], sum[MAX*<span class="number">4</span>], ma[MAX*<span class="number">4</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">push_up</span><span class="params">(<span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    sum[p] = sum[<span class="built_in">lc</span>(p)]+sum[<span class="built_in">rc</span>(p)];</span><br><span class="line">    ma[p] = <span class="built_in">max</span>(ma[<span class="built_in">lc</span>(p)], ma[<span class="built_in">rc</span>(p)]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">build</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l == r) &#123;</span><br><span class="line">        sum[p] = ma[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">build</span>(<span class="built_in">lc</span>(p), l, mid);</span><br><span class="line">    <span class="built_in">build</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r);</span><br><span class="line">    <span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ul, <span class="type">int</span> ur)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l&gt;=ul &amp;&amp; r&lt;=ur &amp;&amp; ma[p] &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(l == r) &#123;</span><br><span class="line">        sum[p] = ma[p] = (ll)<span class="built_in">sqrt</span>(sum[p]);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mid &gt;= ul) &#123;</span><br><span class="line">        <span class="built_in">update</span>(<span class="built_in">lc</span>(p), l, mid, ul, ur);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mid &lt; ur) &#123;</span><br><span class="line">        <span class="built_in">update</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r, ul, ur);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">query</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ul, <span class="type">int</span> ur)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l&gt;=ul &amp;&amp; r&lt;=ur) &#123;</span><br><span class="line">        <span class="keyword">return</span> sum[p];</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(mid &gt;= ul) &#123;</span><br><span class="line">        res += <span class="built_in">query</span>(<span class="built_in">lc</span>(p), l, mid, ul, ur);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mid &lt; ur) &#123;</span><br><span class="line">        res += <span class="built_in">query</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r, ul, ur);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">reset</span>(ma);</span><br><span class="line">    <span class="built_in">reset</span>(a);</span><br><span class="line">    <span class="built_in">reset</span>(sum);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(t&gt;<span class="number">1</span>) <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Case #%d:\n&quot;</span>, t);</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>, <span class="number">1</span>, n);</span><br><span class="line">    cin &gt;&gt; m;</span><br><span class="line">    <span class="type">int</span> t, x, y;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;t, &amp;x, &amp;y);</span><br><span class="line">        <span class="keyword">if</span>(x &gt; y)</span><br><span class="line">            <span class="built_in">swap</span>(x, y);</span><br><span class="line">        <span class="keyword">if</span>(t == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, <span class="built_in">query</span>(<span class="number">1</span>, <span class="number">1</span>, n, x, y));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">update</span>(<span class="number">1</span>, <span class="number">1</span>, n, x, y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(cin &gt;&gt; n)&#123;</span><br><span class="line">        t++;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="区间最大值实现"><a href="#区间最大值实现" class="headerlink" title="区间最大值实现"></a>区间最大值实现</h3><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define reset(x) memset(x, 0, sizeof(x))
+#define lc(x) (x&lt;&lt;1)
+#define rc(x) (x&lt;&lt;1|1)
+#define mid (l+r&gt;&gt;1)
+#define ll long long
+#define MAX 100005
+using namespace std;
+
+int n, m, t;
+ll a[MAX], sum[MAX*4], ma[MAX*4];
+
+void push_up(int p) &#123;
+    sum[p] = sum[lc(p)]+sum[rc(p)];
+    ma[p] = max(ma[lc(p)], ma[rc(p)]);
+&#125;
+
+void build(int p, int l, int r) &#123;
+    if(l == r) &#123;
+        sum[p] = ma[p] = a[l];
+        return;
+    &#125;
+    build(lc(p), l, mid);
+    build(rc(p), mid+1, r);
+    push_up(p);
+&#125;
+
+void update(int p, int l, int r, int ul, int ur) &#123;
+    if(l&gt;=ul &amp;&amp; r&lt;=ur &amp;&amp; ma[p] &lt;= 1) &#123;
+        return;
+    &#125;
+    if(l == r) &#123;
+        sum[p] = ma[p] = (ll)sqrt(sum[p]);
+        return;
+    &#125;
+    if(mid &gt;= ul) &#123;
+        update(lc(p), l, mid, ul, ur);
+    &#125;
+    if(mid &lt; ur) &#123;
+        update(rc(p), mid+1, r, ul, ur);
+    &#125;
+    push_up(p);
+&#125;
+
+ll query(int p, int l, int r, int ul, int ur) &#123;
+    if(l&gt;=ul &amp;&amp; r&lt;=ur) &#123;
+        return sum[p];
+    &#125;
+    ll res = 0;
+    if(mid &gt;= ul) &#123;
+        res += query(lc(p), l, mid, ul, ur);
+    &#125;
+    if(mid &lt; ur) &#123;
+        res += query(rc(p), mid+1, r, ul, ur);
+    &#125;
+    return res;
+&#125;
+
+void solve() &#123;
+    reset(ma);
+    reset(a);
+    reset(sum);
+    for(int i = 1; i &lt;= n; i++) &#123;
+        scanf(&quot;%lld&quot;, &amp;a[i]);
+    &#125;
+    if(t&gt;1) puts(&quot;&quot;);
+    printf(&quot;Case #%d:\n&quot;, t);
+    build(1, 1, n);
+    cin &gt;&gt; m;
+    int t, x, y;
+    for(int i = 1; i &lt;= m; i++) &#123;
+        scanf(&quot;%d%d%d&quot;, &amp;t, &amp;x, &amp;y);
+        if(x &gt; y)
+            swap(x, y);
+        if(t == 1) &#123;
+            printf(&quot;%lld\n&quot;, query(1, 1, n, x, y));
+        &#125; else &#123;
+            update(1, 1, n, x, y);
+        &#125;
+    &#125;
+&#125;
+
+int main() &#123;
+    while(cin &gt;&gt; n)&#123;
+        t++;
+        solve();
+    &#125;
+
+    return 0;
+&#125;
+</code></pre>
 <hr>
-<h3 id="tag实现"><a href="#tag实现" class="headerlink" title="tag实现"></a>tag实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lc(x) (x&lt;&lt;1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> rc(x) (x&lt;&lt;1|1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mid ((l+r)&gt;&gt;1)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;n)</span></span>&#123;</span><br><span class="line">	n = <span class="number">0</span>;</span><br><span class="line">	<span class="type">char</span> c = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(c) &amp;&amp; c != <span class="string">&#x27;-&#x27;</span>) c = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="type">int</span> f = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(c == <span class="string">&#x27;-&#x27;</span>) f = <span class="number">-1</span>, c = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(c)) n = (n&lt;&lt;<span class="number">3</span>)+(n&lt;&lt;<span class="number">1</span>)+c-<span class="string">&#x27;0&#x27;</span>, c = <span class="built_in">getchar</span>();</span><br><span class="line">	n *= f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">write</span><span class="params">(T n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n &lt; <span class="number">0</span>) <span class="built_in">putchar</span>(<span class="string">&#x27;-&#x27;</span>), n = -n;</span><br><span class="line">	<span class="keyword">if</span>(n&gt;<span class="number">9</span>) <span class="built_in">write</span>(n/<span class="number">10</span>);</span><br><span class="line">	<span class="built_in">putchar</span>(n%<span class="number">10</span>+<span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, m;</span><br><span class="line">ll a[MAX], s[MAX*<span class="number">4</span>], tag[MAX*<span class="number">4</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">push_up</span><span class="params">(<span class="type">int</span> p)</span></span>&#123;</span><br><span class="line">	s[p] = s[<span class="built_in">lc</span>(p)]+s[<span class="built_in">rc</span>(p)];</span><br><span class="line">	tag[p] = (tag[<span class="built_in">lc</span>(p)] &amp; tag[<span class="built_in">rc</span>(p)]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">build</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l == r)&#123;</span><br><span class="line">		s[p] = a[l];</span><br><span class="line">		<span class="keyword">if</span>(a[l] &lt;= <span class="number">1</span>) tag[p] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">build</span>(<span class="built_in">lc</span>(p), l, mid);</span><br><span class="line">	<span class="built_in">build</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r);</span><br><span class="line">	<span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ul, <span class="type">int</span> ur)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(tag[p]) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span>(l == r)&#123;</span><br><span class="line">		s[p] = (<span class="type">int</span>)<span class="built_in">sqrt</span>(s[p]);</span><br><span class="line">		<span class="keyword">if</span>(s[p] &lt;= <span class="number">1</span>) tag[p] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(mid &gt;= ul) <span class="built_in">update</span>(<span class="built_in">lc</span>(p), l, mid, ul, ur);</span><br><span class="line">	<span class="keyword">if</span>(mid &lt; ur) <span class="built_in">update</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r, ul, ur);</span><br><span class="line">	<span class="built_in">push_up</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">query</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ul, <span class="type">int</span> ur)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l &gt;= ul &amp;&amp; r &lt;= ur)&#123;</span><br><span class="line">		<span class="keyword">return</span> s[p];</span><br><span class="line">	&#125;</span><br><span class="line">	ll res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(mid &gt;= ul) res += <span class="built_in">query</span>(<span class="built_in">lc</span>(p), l, mid, ul, ur);</span><br><span class="line">	<span class="keyword">if</span>(mid &lt; ur) res += <span class="built_in">query</span>(<span class="built_in">rc</span>(p), mid+<span class="number">1</span>, r, ul, ur);</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">read</span>(n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="built_in">read</span>(a[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">build</span>(<span class="number">1</span>, <span class="number">1</span>, n);</span><br><span class="line">	<span class="built_in">read</span>(m);</span><br><span class="line">	<span class="type">int</span> t, l, r;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)&#123;</span><br><span class="line">		<span class="built_in">read</span>(t), <span class="built_in">read</span>(l), <span class="built_in">read</span>(r);</span><br><span class="line">		<span class="keyword">if</span>(l&gt;r) <span class="built_in">swap</span>(l, r);</span><br><span class="line">		<span class="keyword">if</span>(t == <span class="number">1</span>)&#123;</span><br><span class="line">			<span class="built_in">write</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">1</span>,n, l, r));</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">update</span>(<span class="number">1</span>,<span class="number">1</span>,n, l, r);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="tag实现"><a href="#tag实现" class="headerlink" title="tag实现"></a>tag实现</h3><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define MAX 100005
+#define ll long long
+#define lc(x) (x&lt;&lt;1)
+#define rc(x) (x&lt;&lt;1|1)
+#define mid ((l+r)&gt;&gt;1)
+using namespace std;
+
+template &lt;typename T&gt;
+inline void read(T &amp;n)&#123;
+    n = 0;
+    char c = getchar();
+    while(!isdigit(c) &amp;&amp; c != &#39;-&#39;) c = getchar();
+    int f = 1;
+    if(c == &#39;-&#39;) f = -1, c = getchar();
+    while(isdigit(c)) n = (n&lt;&lt;3)+(n&lt;&lt;1)+c-&#39;0&#39;, c = getchar();
+    n *= f;
+&#125;
+
+template &lt;typename T&gt;
+void write(T n)&#123;
+    if(n &lt; 0) putchar(&#39;-&#39;), n = -n;
+    if(n&gt;9) write(n/10);
+    putchar(n%10+&#39;0&#39;);
+&#125;
+
+int n, m;
+ll a[MAX], s[MAX*4], tag[MAX*4];
+
+inline void push_up(int p)&#123;
+    s[p] = s[lc(p)]+s[rc(p)];
+    tag[p] = (tag[lc(p)] &amp; tag[rc(p)]);
+&#125;
+
+void build(int p, int l, int r)&#123;
+    if(l == r)&#123;
+        s[p] = a[l];
+        if(a[l] &lt;= 1) tag[p] = 1;
+        return;
+    &#125;
+    build(lc(p), l, mid);
+    build(rc(p), mid+1, r);
+    push_up(p);
+&#125;
+
+void update(int p, int l, int r, int ul, int ur)&#123;
+    if(tag[p]) return;
+    if(l == r)&#123;
+        s[p] = (int)sqrt(s[p]);
+        if(s[p] &lt;= 1) tag[p] = 1;
+        return;
+    &#125;
+    if(mid &gt;= ul) update(lc(p), l, mid, ul, ur);
+    if(mid &lt; ur) update(rc(p), mid+1, r, ul, ur);
+    push_up(p);
+&#125;
+
+ll query(int p, int l, int r, int ul, int ur)&#123;
+    if(l &gt;= ul &amp;&amp; r &lt;= ur)&#123;
+        return s[p];
+    &#125;
+    ll res = 0;
+    if(mid &gt;= ul) res += query(lc(p), l, mid, ul, ur);
+    if(mid &lt; ur) res += query(rc(p), mid+1, r, ul, ur);
+    return res;
+&#125;
+
+int main()
+&#123;
+    read(n);
+    for(int i = 1; i &lt;= n; i++)&#123;
+        read(a[i]);
+    &#125;
+    build(1, 1, n);
+    read(m);
+    int t, l, r;
+    for(int i = 1; i &lt;= m; i++)&#123;
+        read(t), read(l), read(r);
+        if(l&gt;r) swap(l, r);
+        if(t == 1)&#123;
+            write(query(1,1,n, l, r));
+            puts(&quot;&quot;);
+        &#125;
+        else&#123;
+            update(1,1,n, l, r);
+        &#125;
+    &#125;
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -305,7 +487,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">线段树</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -313,7 +495,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">线段树</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -388,11 +570,11 @@
 
 <nav id="article-nav">
   
-    <a href="/2022/07/16/GCD%20SUM%E5%A5%97%E8%B7%AF%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/07/16/GSS3%EF%BC%9A%E5%B8%A6%E5%8D%95%E7%82%B9%E4%BF%AE%E6%94%B9%E7%9A%84%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          【题解】震惊！！！GCD SUM套路竟狂水七倍经验！！！
+          【挖坑】【GSS系列】GSS3:带单点修改的区间最大子段和
         
       </div>
     </a>
@@ -479,6 +661,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -547,7 +730,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -574,39 +757,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -618,75 +785,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -698,39 +801,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -742,35 +857,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

@@ -20,8 +20,8 @@
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
 <meta property="article:modified_time" content="2022-07-16T11:33:13.004Z">
 <meta property="article:author" content="Fighter">
-<meta property="article:tag" content="模板">
 <meta property="article:tag" content="数论">
+<meta property="article:tag" content="模板">
 <meta property="article:tag" content="(扩展)卢卡斯">
 <meta name="twitter:card" content="summary">
   
@@ -52,6 +52,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -89,7 +91,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -280,27 +282,153 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
 <p>由于$3^6$次这一项比较特殊，因为存在这一项，所以才可能不存在逆元，所以求阶乘的时候我们不对其进行计算，而在求组合数的时候单独处理。也就是说，我们求的阶乘，实际上是去掉了所有因子$p$后的阶乘。</p>
 <p>这一部分的代码：</p>
 <p>为了方便，我们会把$p^a$当做参数传入到$fac$函数中，即代码中的$k$。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">fac</span><span class="params">(ll n, ll p, ll k)</span> </span>&#123;      <span class="comment">//n! % k (k=p^a)</span></span><br><span class="line">    <span class="keyword">if</span>(!n) <span class="keyword">return</span> <span class="number">1</span>;		<span class="comment">//0! = 1</span></span><br><span class="line">    ll ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= k; i++) &#123;		<span class="comment">//处理循环节内的数字</span></span><br><span class="line">        <span class="keyword">if</span>(i%p) ans = ans*i % k;</span><br><span class="line">    &#125;</span><br><span class="line">    ans = <span class="built_in">qpow</span>(ans, n/k, k);		<span class="comment">//所有循环节的乘积</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n%k; i++) &#123;		<span class="comment">//剩下单独的项</span></span><br><span class="line">        <span class="keyword">if</span>(i%p) ans = ans*i % k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans*<span class="built_in">fac</span>(n/p, p, k)%k;		<span class="comment">//递归求解</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">ll fac(ll n, ll p, ll k) &#123;      //n! % k (k=p^a)
+    if(!n) return 1;        //0! = 1
+    ll ans = 1;
+    for(int i = 2; i &lt;= k; i++) &#123;        //处理循环节内的数字
+        if(i%p) ans = ans*i % k;
+    &#125;
+    ans = qpow(ans, n/k, k);        //所有循环节的乘积
+    for(int i = 2; i &lt;= n%k; i++) &#123;        //剩下单独的项
+        if(i%p) ans = ans*i % k;
+    &#125;
+    return ans*fac(n/p, p, k)%k;        //递归求解
+&#125;
+</code></pre>
 <hr>
 <p>再回到求解组合数的过程。</p>
 <p>上面说到，要在求组合数时单独处理形如$p^x$的项，那么具体的操作就是：我们用一个$cnt$变量记录最后的式子中有多少个因子$p$，那么$cnt$就等于$n$的阶乘中含有因子$p$的数量减去$m$和$n-m$的阶乘中含有的$p$的数量。</p>
 <p>求法就是不断枚举范围内有多少个$p^x$的倍数（小学基本功）。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//记得开long long，n很大，直接把int炸飞</span></span><br><span class="line"><span class="keyword">for</span>(ll i = p; i &lt;= n; i *= p) cnt += n/i;</span><br><span class="line"><span class="keyword">for</span>(ll i = p; i &lt;= m; i *= p) cnt -= m/i;</span><br><span class="line"><span class="keyword">for</span>(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">//记得开long long，n很大，直接把int炸飞
+for(ll i = p; i &lt;= n; i *= p) cnt += n/i;
+for(ll i = p; i &lt;= m; i *= p) cnt -= m/i;
+for(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;;
+</code></pre>
 <p>然后答案就是$n!<em>inv(m!)</em>inv((n-m)!)*p^{cnt}$。</p>
 <p>这一段的代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">C</span><span class="params">(ll n, ll m, ll p, ll k)</span></span>&#123;	<span class="comment">//k = p^a</span></span><br><span class="line">   	<span class="keyword">if</span>(n &lt; m) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	ll a = <span class="built_in">fac</span>(n,p,k), b = <span class="built_in">fac</span>(m,p,k), c = <span class="built_in">fac</span>(n-m,p,k);</span><br><span class="line">	ll cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= n; i *= p) cnt += n/i;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= m; i *= p) cnt -= m/i;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;</span><br><span class="line">	<span class="keyword">return</span> a*<span class="built_in">inv</span>(b, k)%k * <span class="built_in">inv</span>(c, k)%k * <span class="built_in">qpow</span>(p, cnt, k)%k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">ll C(ll n, ll m, ll p, ll k)&#123;    //k = p^a
+       if(n &lt; m) return 0;
+    ll a = fac(n,p,k), b = fac(m,p,k), c = fac(n-m,p,k);
+    ll cnt = 0;
+    for(ll i = p; i &lt;= n; i *= p) cnt += n/i;
+    for(ll i = p; i &lt;= m; i *= p) cnt -= m/i;
+    for(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;
+    return a*inv(b, k)%k * inv(c, k)%k * qpow(p, cnt, k)%k;
+&#125;
+</code></pre>
 <hr>
 <p>接下来就到了正式的$exLucas$部分。</p>
 <p>首先我们把给定的模数$p$进行质因数分解。</p>
 <p>然后对于每个$p_i^{a_i}$，都求一遍组合数$C_n^m \mod p_i^{a_i}$，然后同时用$crt$合并。</p>
 <p>先放$crt$代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">crt</span><span class="params">(ll n, ll mod)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n*(p/mod)%p*<span class="built_in">inv</span>(p/mod, mod)%p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">ll crt(ll n, ll mod)&#123;
+    return n*(p/mod)%p*inv(p/mod, mod)%p;
+&#125;
+</code></pre>
 <p>$p$是给定的模数，就相当于$crt$中所有模数的乘积，$mod$是当前的质因数分解出来的模数，就相当于单个方程的模数。</p>
 <p>整段$exLucas$代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">exlucas</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ll t = p, ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i = <span class="number">2</span>; i*i &lt;= t; i++)&#123;	<span class="comment">//质因数分解</span></span><br><span class="line">		<span class="keyword">if</span>(t%i) <span class="keyword">continue</span>;</span><br><span class="line">		ll tmp = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(t%i == <span class="number">0</span>)&#123;		<span class="comment">//求出pi^ai</span></span><br><span class="line">			tmp *= i;</span><br><span class="line">			t /= i;</span><br><span class="line">		&#125;</span><br><span class="line">		ans = (ans+<span class="built_in">crt</span>(<span class="built_in">C</span>(n, m, i, tmp), tmp))%p;	<span class="comment">//crt合并</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(t &gt; <span class="number">1</span>) ans = (ans+<span class="built_in">crt</span>(<span class="built_in">C</span>(n, m, t, t), t))%p;	<span class="comment">//如果剩下的t是大质数，再进行一次计算</span></span><br><span class="line">	<span class="keyword">return</span> ans%p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">ll exlucas()&#123;
+    ll t = p, ans = 0;
+    for(ll i = 2; i*i &lt;= t; i++)&#123;    //质因数分解
+        if(t%i) continue;
+        ll tmp = 1;
+        while(t%i == 0)&#123;        //求出pi^ai
+            tmp *= i;
+            t /= i;
+        &#125;
+        ans = (ans+crt(C(n, m, i, tmp), tmp))%p;    //crt合并
+    &#125;
+    if(t &gt; 1) ans = (ans+crt(C(n, m, t, t), t))%p;    //如果剩下的t是大质数，再进行一次计算
+    return ans%p;
+&#125;
+</code></pre>
 <hr>
 <h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4720">洛谷P4720 【模板】扩展卢卡斯</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ll n, m, p;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!b)&#123;</span><br><span class="line">		x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;</span><br><span class="line">	ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">	ll t = x;</span><br><span class="line">	x = y;</span><br><span class="line">	y = t-a/b*y;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">qpow</span><span class="params">(ll a, ll n, ll mod)</span></span>&#123;</span><br><span class="line">	ll res = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(n)&#123;</span><br><span class="line">		<span class="keyword">if</span>(n&amp;<span class="number">1</span>) res = (res*a) % mod;</span><br><span class="line">		a = (a*a) % mod;</span><br><span class="line">		n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">inv</span><span class="params">(ll a, ll p)</span></span>&#123;</span><br><span class="line">	ll x, y;</span><br><span class="line">	<span class="built_in">exgcd</span>(a, p, x, y);</span><br><span class="line">	<span class="keyword">if</span>(x+p &gt; p) <span class="keyword">return</span> x;</span><br><span class="line">	<span class="keyword">return</span> x+p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">crt</span><span class="params">(ll n, ll mod)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n*(p/mod)%p*<span class="built_in">inv</span>(p/mod, mod)%p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">fac</span><span class="params">(ll n, ll p, ll k)</span></span>&#123;		<span class="comment">//k = p^x</span></span><br><span class="line">   	<span class="keyword">if</span>(!n) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">   	ll ans = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= k; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(i%p) ans = ans*i % k;</span><br><span class="line">	&#125;</span><br><span class="line">	ans = <span class="built_in">qpow</span>(ans, n/k, k);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n%k; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(i%p) ans = ans*i % k;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans*<span class="built_in">fac</span>(n/p, p, k)%k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">C</span><span class="params">(ll n, ll m, ll p, ll k)</span></span>&#123;	<span class="comment">//k = p^x</span></span><br><span class="line">   	<span class="keyword">if</span>(n &lt; m) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	ll a = <span class="built_in">fac</span>(n,p,k), b = <span class="built_in">fac</span>(m,p,k), c = <span class="built_in">fac</span>(n-m,p,k);</span><br><span class="line">	ll cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= n; i *= p) cnt += n/i;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= m; i *= p) cnt -= m/i;</span><br><span class="line">	<span class="keyword">for</span>(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;</span><br><span class="line">	<span class="keyword">return</span> a*<span class="built_in">inv</span>(b, k)%k * <span class="built_in">inv</span>(c, k)%k * <span class="built_in">qpow</span>(p, cnt, k)%k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exlucas</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ll t = p, ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i = <span class="number">2</span>; i*i &lt;= t; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(t%i) <span class="keyword">continue</span>;</span><br><span class="line">		ll tmp = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(t%i == <span class="number">0</span>)&#123;</span><br><span class="line">			tmp *= i;</span><br><span class="line">			t /= i;</span><br><span class="line">		&#125;</span><br><span class="line">		ans = (ans+<span class="built_in">crt</span>(<span class="built_in">C</span>(n, m, i, tmp), tmp))%p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(t &gt; <span class="number">1</span>) ans = (ans+<span class="built_in">crt</span>(<span class="built_in">C</span>(n, m, t, t), t))%p;</span><br><span class="line">	<span class="keyword">return</span> ans%p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;</span><br><span class="line">	cout &lt;&lt; <span class="built_in">exlucas</span>() &lt;&lt; endl;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define ll long long
+using namespace std;
+
+ll n, m, p;
+
+ll exgcd(ll a, ll b, ll &amp;x, ll &amp;y)&#123;
+    if(!b)&#123;
+        x = 1, y = 0;
+        return a;
+    &#125;
+    ll res = exgcd(b, a%b, x, y);
+    ll t = x;
+    x = y;
+    y = t-a/b*y;
+    return res;
+&#125;
+
+ll qpow(ll a, ll n, ll mod)&#123;
+    ll res = 1;
+    while(n)&#123;
+        if(n&amp;1) res = (res*a) % mod;
+        a = (a*a) % mod;
+        n &gt;&gt;= 1;
+    &#125;
+    return res;
+&#125;
+
+ll inv(ll a, ll p)&#123;
+    ll x, y;
+    exgcd(a, p, x, y);
+    if(x+p &gt; p) return x;
+    return x+p;
+&#125;
+
+ll crt(ll n, ll mod)&#123;
+    return n*(p/mod)%p*inv(p/mod, mod)%p;
+&#125;
+
+ll fac(ll n, ll p, ll k)&#123;        //k = p^x
+       if(!n) return 1;
+       ll ans = 1;
+    for(int i = 2; i &lt;= k; i++)&#123;
+        if(i%p) ans = ans*i % k;
+    &#125;
+    ans = qpow(ans, n/k, k);
+    for(int i = 2; i &lt;= n%k; i++)&#123;
+        if(i%p) ans = ans*i % k;
+    &#125;
+    return ans*fac(n/p, p, k)%k;
+&#125;
+
+ll C(ll n, ll m, ll p, ll k)&#123;    //k = p^x
+       if(n &lt; m) return 0;
+    ll a = fac(n,p,k), b = fac(m,p,k), c = fac(n-m,p,k);
+    ll cnt = 0;
+    for(ll i = p; i &lt;= n; i *= p) cnt += n/i;
+    for(ll i = p; i &lt;= m; i *= p) cnt -= m/i;
+    for(ll i = p; i &lt;= n-m; i *= p) cnt -= (n-m)/i;
+    return a*inv(b, k)%k * inv(c, k)%k * qpow(p, cnt, k)%k;
+&#125;
+
+ll exlucas()&#123;
+    ll t = p, ans = 0;
+    for(ll i = 2; i*i &lt;= t; i++)&#123;
+        if(t%i) continue;
+        ll tmp = 1;
+        while(t%i == 0)&#123;
+            tmp *= i;
+            t /= i;
+        &#125;
+        ans = (ans+crt(C(n, m, i, tmp), tmp))%p;
+    &#125;
+    if(t &gt; 1) ans = (ans+crt(C(n, m, t, t), t))%p;
+    return ans%p;
+&#125;
+
+int main()
+&#123;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;
+    cout &lt;&lt; exlucas() &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -337,11 +465,11 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -507,6 +635,7 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -575,7 +704,7 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -602,39 +731,23 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -646,75 +759,11 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -726,39 +775,51 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -770,35 +831,103 @@ n! &= 1*2*3*4*5*6*7*8*9*10*11*12*13*14*15*16*17*18*19 \\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

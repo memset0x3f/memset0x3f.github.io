@@ -54,6 +54,8 @@
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
 
+  <link rel="stylesheet" href="/prism.css">
+
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
@@ -90,7 +92,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -254,14 +256,66 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>我们发现虽然题目中给的区间范围很大，但是实际上所包含的“幸运数”并不多，于是我们可以考虑枚举相邻的$k$个幸运数，并累计恰好包含这$k$个数的区间总数。最后用符合条件的区间数除以总区间数，就是要求的概率。</p>
 <p>思路就是那么简单，但细节却比较复杂。首先假设我们枚举的$k$个数的左右端点编号为$i,j$，用$num[i]$表示第$i$个幸运数，那么有以下一些注意点:</p>
 <p>首先符合条件的区间左端点所在区间为$[num[i-1]+1,num[i]] \cap [pl, pr]$，同理右端点范围为$[num[j], num[j+1]-1] \cap [vl, vr]$，同时也需要把$pl,pr$和$vl,vr$交换统计答案。用代码表示就是</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ans += <span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], pl, pr)*<span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, vl, vr);</span><br><span class="line">ans += <span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, pl, pr)*<span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], vl, vr);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">        ans += calc(num[i-1]+1, num[i], pl, pr)*calc(num[j], num[j+1]-1, vl, vr);
+        ans += calc(num[j], num[j+1]-1, pl, pr)*calc(num[i-1]+1, num[i], vl, vr);
+</code></pre>
 <p>其中$calc(l, r, x, y)$用于计算区间$[l,r]$和$[x,y]$的交集。</p>
 <p><del>于是你兴奋地写完了代码，却发现WA声一片</del></p>
 <p>接着我们发现会有重复的情况：比如<code>6 8 6 8 1</code>这组数据，由于我们把$pl,pr$和$vl,vr$交换位置后又算了一遍，那么就相当于把$[7,7]$这个区间算了两遍，产生了重复。</p>
 <p>那么我们怎么避免重复呢？不难发现，这种情况仅仅会在$k=1$时出现，并且区间中仅有的一个数就是一个幸运数。那么我们就在原来的代码下面加一句特判即可。（别忘了这个区间必须符合要求）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ans += <span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], pl, pr)*<span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, vl, vr);</span><br><span class="line">ans += <span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, pl, pr)*<span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], vl, vr);</span><br><span class="line"><span class="keyword">if</span>(k == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">calc</span>(pl,pr,num[i],num[i]) &amp;&amp; <span class="built_in">calc</span>(vl,vr,num[i],num[i]))	<span class="comment">//必须符合条件，否则根本不会计算</span></span><br><span class="line">        ans--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">    ans += calc(num[i-1]+1, num[i], pl, pr)*calc(num[j], num[j+1]-1, vl, vr);
+    ans += calc(num[j], num[j+1]-1, pl, pr)*calc(num[i-1]+1, num[i], vl, vr);
+    if(k == 1) &#123;
+        if(calc(pl,pr,num[i],num[i]) &amp;&amp; calc(vl,vr,num[i],num[i]))    //必须符合条件，否则根本不会计算
+            ans--;
+    &#125;
+</code></pre>
 <p>于是你就可以非常愉快地过掉这道好<del>冷门毒瘤</del>题。</p>
-<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">vector&lt;ll&gt; num;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">ll pl, pr, vl, vr, k;</span><br><span class="line">ll ans = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(ll x)</span> </span>&#123;		<span class="comment">//无脑预处理</span></span><br><span class="line">	<span class="keyword">if</span>(x &gt;= <span class="number">1e9</span>) <span class="keyword">return</span>;</span><br><span class="line">	num.<span class="built_in">push_back</span>(x);</span><br><span class="line">	<span class="built_in">dfs</span>(x*<span class="number">10</span>+<span class="number">4</span>);</span><br><span class="line">	<span class="built_in">dfs</span>(x*<span class="number">10</span>+<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">calc</span><span class="params">(ll l, ll r, ll x, ll y)</span> </span>&#123;		<span class="comment">//计算区间重复长度</span></span><br><span class="line">	<span class="keyword">if</span>(r &lt; x || l &gt; y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(l&gt;r || x&gt;y) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(l &gt;= x &amp;&amp; l &lt;= y) <span class="keyword">return</span> <span class="built_in">min</span>(r, y)-l+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(r &gt;= x &amp;&amp; r &lt;= y) <span class="keyword">return</span> r-<span class="built_in">max</span>(l, x)+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(l &lt; x &amp;&amp; r &gt; y) <span class="keyword">return</span> y-x+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">0</span>);</span><br><span class="line">	n = num.<span class="built_in">size</span>();</span><br><span class="line">	num.<span class="built_in">push_back</span>(<span class="number">1e16</span>);</span><br><span class="line">	<span class="built_in">sort</span>(num.<span class="built_in">begin</span>(), num.<span class="built_in">end</span>());</span><br><span class="line">	cin &gt;&gt; pl &gt;&gt; pr &gt;&gt; vl &gt;&gt; vr &gt;&gt; k;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i+k<span class="number">-1</span> &lt;= n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(num[i] &gt; vr &amp;&amp; num[i]&gt;pr) <span class="keyword">break</span>;		<span class="comment">//（应该）可写可不写的特判break</span></span><br><span class="line">		<span class="type">int</span> j = i+k<span class="number">-1</span>;</span><br><span class="line">		ans += <span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], pl, pr)*<span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, vl, vr);</span><br><span class="line">		ans += <span class="built_in">calc</span>(num[j], num[j+<span class="number">1</span>]<span class="number">-1</span>, pl, pr)*<span class="built_in">calc</span>(num[i<span class="number">-1</span>]+<span class="number">1</span>, num[i], vl, vr);</span><br><span class="line">		<span class="keyword">if</span>(k == <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">calc</span>(pl, pr, num[i], num[i]) &amp;&amp; <span class="built_in">calc</span>(vl, vr, num[i], num[i]))</span><br><span class="line">				ans--;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%.12lf&quot;</span>, ans*<span class="number">1.0</span>/(vr-vl+<span class="number">1</span>)/(pr-pl+<span class="number">1</span>), <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define ll long long
+using namespace std;
+
+vector&lt;ll&gt; num;
+int n;
+ll pl, pr, vl, vr, k;
+ll ans = 0;
+
+void dfs(ll x) &#123;        //无脑预处理
+    if(x &gt;= 1e9) return;
+    num.push_back(x);
+    dfs(x*10+4);
+    dfs(x*10+7);
+&#125;
+
+inline ll calc(ll l, ll r, ll x, ll y) &#123;        //计算区间重复长度
+    if(r &lt; x || l &gt; y) return 0;
+    if(l&gt;r || x&gt;y) return 0;
+    if(l &gt;= x &amp;&amp; l &lt;= y) return min(r, y)-l+1;
+    if(r &gt;= x &amp;&amp; r &lt;= y) return r-max(l, x)+1;
+    if(l &lt; x &amp;&amp; r &gt; y) return y-x+1;
+&#125;
+
+int main() &#123;
+    dfs(0);
+    n = num.size();
+    num.push_back(1e16);
+    sort(num.begin(), num.end());
+    cin &gt;&gt; pl &gt;&gt; pr &gt;&gt; vl &gt;&gt; vr &gt;&gt; k;
+    for(int i = 1; i+k-1 &lt;= n; i++) &#123;
+        if(num[i] &gt; vr &amp;&amp; num[i]&gt;pr) break;        //（应该）可写可不写的特判break
+        int j = i+k-1;
+        ans += calc(num[i-1]+1, num[i], pl, pr)*calc(num[j], num[j+1]-1, vl, vr);
+        ans += calc(num[j], num[j+1]-1, pl, pr)*calc(num[i-1]+1, num[i], vl, vr);
+        if(k == 1) &#123;
+            if(calc(pl, pr, num[i], num[i]) &amp;&amp; calc(vl, vr, num[i], num[i]))
+                ans--;
+        &#125;
+    &#125;
+    printf(&quot;%.12lf&quot;, ans*1.0/(vr-vl+1)/(pr-pl+1), 1.0);
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -472,6 +526,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -540,7 +595,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -567,39 +622,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -611,75 +650,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -691,39 +666,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -735,35 +722,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

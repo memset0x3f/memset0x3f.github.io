@@ -21,8 +21,8 @@
 <meta property="article:modified_time" content="2022-07-16T11:33:42.297Z">
 <meta property="article:author" content="Fighter">
 <meta property="article:tag" content="模板">
-<meta property="article:tag" content="背包">
 <meta property="article:tag" content="DP">
+<meta property="article:tag" content="背包">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Fighter&#39;s Blog" type="application/atom+xml">
@@ -52,6 +52,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -89,7 +91,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -253,7 +255,20 @@
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-暴力出奇迹"><a href="#1-暴力出奇迹" class="headerlink" title="1. 暴力出奇迹"></a>1. 暴力<del>出奇迹</del></h3><p>​    很显然，我们可以把多个同一种物品拆成不同的物品，相当于把多重背包强行转化为01背包，此时物品数量由$n$变为了$\sum\limits_{i=1}^nc[i]$， 那么复杂度变为了$O(m*\sum\limits_{i=1}^n c[i])$，显然这个算法十分愚蠢<del>傻逼</del>。</p>
 <p>​    虽然比较愚蠢，但实际上后面的优化都是在这个基本的思想上进行优化。</p>
 <h3 id="2-二进制拆分优化"><a href="#2-二进制拆分优化" class="headerlink" title="2.二进制拆分优化"></a>2.二进制拆分优化</h3><p>​    暴力的方法愚蠢在哪里呢？因为把一种物品全部拆开后数量太多了，而且可以发现要组成取一种物品的所有情况并不需要全部拆开，比如我想取两个同种物品，但我却会遍历每种取法，尽管这些取法是完全相同的。所以我们就想到，有没有一种方法可以用更少的物品数表示出所有情况呢？很显然，我们以二进制的形式拆分一个种类，比如说一种物品有11个，于是我们可以拆分为1,2,4，剩下5单独一组，这样就可以表示出所有情况。而这样就把每种物品拆分的数量优化到了$log_2c[i]$，于是整个算法的时间复杂度就优化到了$m*\sum\limits_{i=1}^nlog_2c[i]$。</p>
-<h4 id="核心代码（拆分）"><a href="#核心代码（拆分）" class="headerlink" title="核心代码（拆分）"></a>核心代码（拆分）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= y[i]; j &lt;&lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        w[cnt] = j*x[i];</span><br><span class="line">        v[cnt] = j*z[i];</span><br><span class="line">        y[i] -= j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(y[i] &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        w[cnt] = y[i]*x[i];</span><br><span class="line">        v[cnt] = y[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="核心代码（拆分）"><a href="#核心代码（拆分）" class="headerlink" title="核心代码（拆分）"></a>核心代码（拆分）</h4><pre><code class="lang-cpp">for(int i = 1; i &lt;= n; i++)&#123;
+    for(int j = 1; j &lt;= y[i]; j &lt;&lt;= 1)&#123;
+        cnt++;
+        w[cnt] = j*x[i];
+        v[cnt] = j*z[i];
+        y[i] -= j;
+    &#125;
+    if(y[i] &gt; 0)&#123;
+        cnt++;
+        w[cnt] = y[i]*x[i];
+        v[cnt] = y[i];
+    &#125;
+&#125;
+</code></pre>
 <p>其中$x$和$z$数组分别是读入的原始$w$和$v$数组，而$y$数组则是原始$c$数组。</p>
 <h3 id="3-单调队列优化"><a href="#3-单调队列优化" class="headerlink" title="3. 单调队列优化"></a>3. 单调队列优化</h3><p>​    <del>也不知道哪个神人想出来了这么一个神奇的算法。</del></p>
 <p>​    这里给出一个与暴力解法等价的转移方程，只不过我们用第$i$种物品来表示当前总体积$m$。于是：</p>
@@ -262,14 +277,70 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
 <p>​    接下来就来考虑优化，从上面这个方程中可以发现，不管一种物品取几个，原式中的$mod$是不会改变的，于是我们可以把每种物品按余数分类，而状态之间的转移仍然只会在<strong>同一类</strong>中进行，而此时每一类中的状态满足单调性且均为<strong>连续</strong>的，每一个状态的转移相当于在它之前找一个连续区间中的最值，于是可以用单调队列进行优化。</p>
 <p>​    设单调队列为$q$，头指针为$l$，尾指针为$r$，那么队首出队的条件为$j-q[l]&gt;c[i]$，即控制每种物品最多选$c[i]$个，在插入队列时判断$f[i-1][q[l]<em>w[i]+mod]+(j-q[l])</em>v[i]$和$f[i-1][j*w[i]+mod]$的关系，维护单调递增或递减即可。</p>
 <p>Tip:在实际运行过程中，由于常数过大，单调队列优化的效果很可能不如二进制优化</p>
-<h4 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> mod = <span class="number">0</span>; mod &lt; w[i]; mod++)&#123;</span><br><span class="line">		l = <span class="number">1</span>, r = <span class="number">0</span>;</span><br><span class="line">		q[l] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j*w[i]+mod &lt;= m; j++)&#123;</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;</span><br><span class="line">				l++;</span><br><span class="line">			&#125;</span><br><span class="line">			f[i][j*w[i]+mod] = <span class="built_in">min</span>(f[i<span class="number">-1</span>][q[l]*w[i]+mod]+(j-q[l])*v[i], f[i<span class="number">-1</span>][j*w[i]+mod]);</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r &amp;&amp; f[i<span class="number">-1</span>][q[l]*w[i]+mod]+(j-q[l])*v[i] &gt;= f[i<span class="number">-1</span>][j*w[i]+mod])&#123;</span><br><span class="line">				r--;</span><br><span class="line">			&#125;</span><br><span class="line">			q[++r] = j;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h4><pre><code class="lang-cpp">    for(int i = 1; i &lt;= n; i++)&#123;
+        for(int mod = 0; mod &lt; w[i]; mod++)&#123;
+            l = 1, r = 0;
+            q[l] = 0;
+            for(int j = 0; j*w[i]+mod &lt;= m; j++)&#123;
+                while(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;
+                    l++;
+                &#125;
+                f[i][j*w[i]+mod] = min(f[i-1][q[l]*w[i]+mod]+(j-q[l])*v[i], f[i-1][j*w[i]+mod]);
+                while(l &lt;= r &amp;&amp; f[i-1][q[l]*w[i]+mod]+(j-q[l])*v[i] &gt;= f[i-1][j*w[i]+mod])&#123;
+                    r--;
+                &#125;
+                q[++r] = j;
+            &#125;
+        &#125;
+    &#125;
+</code></pre>
 <p>同时，还可以使用滚动数组，用i&amp;1和i&amp;1^1代替i和i-1，达到空间上的优化。</p>
 <p>当然，如果觉得二维的$f$数组看着不顺眼，可以强行转化为一维，但好像要另开空间存储上一次状态的数据（我并不确定是否有更优的方案），对空间几乎没有优化。</p>
 <hr>
 <h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="洛谷P3423-Banknotes"><a href="#洛谷P3423-Banknotes" class="headerlink" title="洛谷P3423 Banknotes"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3423">洛谷P3423 Banknotes</a></h3><p>物品价值恒为1，且要求价值最小值的多重背包，还要输出方案。</p>
 <p>这道题loj上还有一个<a target="_blank" rel="noopener" href="https://loj.ac/problem/10179">弱化版</a>，不需要输出方案。</p>
 <p>对于输出方案，我们可以用单调队列优化，并记录$last[i][j]$表示状态$f[i][j]$是由$f[i-1][last[i][j]]$转移而来，然后递归输出方案。当然二进制优化也可以，只是方案更难得到。</p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, m;</span><br><span class="line"><span class="type">int</span> w[<span class="number">205</span>], c[<span class="number">205</span>], f[<span class="number">2</span>][<span class="number">20005</span>];</span><br><span class="line"><span class="type">int</span> q[<span class="number">20005</span>], l, r;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;w[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	cin &gt;&gt; m;</span><br><span class="line">	<span class="built_in">memset</span>(f, <span class="number">0x3f</span>, <span class="built_in">sizeof</span>(f));</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> mod = <span class="number">0</span>; mod &lt; w[i]; mod++)&#123;</span><br><span class="line">			l = <span class="number">1</span>, r = <span class="number">0</span>;</span><br><span class="line">			q[l] = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j*w[i]+mod &lt;= m; j++)&#123;</span><br><span class="line">				<span class="keyword">while</span>(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;</span><br><span class="line">					l++;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="type">int</span> now = i&amp;<span class="number">1</span>, last = now^<span class="number">1</span>;</span><br><span class="line">				f[now][j*w[i]+mod] = <span class="built_in">min</span>(f[last][q[l]*w[i]+mod]+j-q[l], f[last][j*w[i]+mod]);</span><br><span class="line">				<span class="keyword">while</span>(l &lt;= r &amp;&amp; f[last][q[l]*w[i]+mod]+j-q[l] &gt;= f[last][j*w[i]+mod])&#123;</span><br><span class="line">					r--;</span><br><span class="line">				&#125;</span><br><span class="line">				q[++r] = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; f[n&amp;<span class="number">1</span>][m] &lt;&lt; endl;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m;
+int w[205], c[205], f[2][20005];
+int q[20005], l, r;
+
+int main()
+&#123;
+    cin &gt;&gt; n;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        scanf(&quot;%d&quot;, &amp;w[i]);
+    &#125;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        scanf(&quot;%d&quot;, &amp;c[i]);
+    &#125;
+    cin &gt;&gt; m;
+    memset(f, 0x3f, sizeof(f));
+    f[0][0] = 0;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        for(int mod = 0; mod &lt; w[i]; mod++)&#123;
+            l = 1, r = 0;
+            q[l] = 0;
+            for(int j = 0; j*w[i]+mod &lt;= m; j++)&#123;
+                while(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;
+                    l++;
+                &#125;
+                int now = i&amp;1, last = now^1;
+                f[now][j*w[i]+mod] = min(f[last][q[l]*w[i]+mod]+j-q[l], f[last][j*w[i]+mod]);
+                while(l &lt;= r &amp;&amp; f[last][q[l]*w[i]+mod]+j-q[l] &gt;= f[last][j*w[i]+mod])&#123;
+                    r--;
+                &#125;
+                q[++r] = j;
+            &#125;
+        &#125;
+    &#125;
+    cout &lt;&lt; f[n&amp;1][m] &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -310,11 +381,11 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">背包</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DP</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">背包</a>
         		</li>
       		
 		</ul>
@@ -476,6 +547,7 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -544,7 +616,7 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -571,39 +643,23 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,75 +671,11 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -695,39 +687,51 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -739,35 +743,103 @@ f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

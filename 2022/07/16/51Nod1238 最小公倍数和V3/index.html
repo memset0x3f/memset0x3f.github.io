@@ -20,9 +20,9 @@
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
 <meta property="article:modified_time" content="2022-07-16T12:07:27.038Z">
 <meta property="article:author" content="Fighter">
-<meta property="article:tag" content="模板">
 <meta property="article:tag" content="题解">
 <meta property="article:tag" content="数论">
+<meta property="article:tag" content="模板">
 <meta property="article:tag" content="杜教筛">
 <meta property="article:tag" content="数论卷积">
 <meta name="twitter:card" content="summary">
@@ -54,6 +54,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -91,7 +93,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -306,7 +308,74 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
 <li>当$p$为质数且$i$为p的倍数时，由积性函数的性质可知，$g(i)=g(p_1^{a_1})\cdot g(p_2^{a_2})\cdots$，那么$g(i\cdot p)$中，$p$的指数至少是2，又因为当指数$a&gt;1$时$g(p^a)=g(p^{a-1})+p^a\cdot \mu(p^a)=g(p^{a-1})$，则$g(p^{a})=g(p)$，所以此时$g(i\cdot p)=g(i)$。</li>
 </ol>
 <p>考虑完这三种情况后，我们就可以线性筛出$S$了。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 5000005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> P 1000000007</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> ll inv2 = (P+<span class="number">1</span>)/<span class="number">2</span>, inv6 = <span class="number">166666668</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> cnt;</span><br><span class="line">ll p[MAX], vis[MAX], f[MAX];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    f[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!vis[i])&#123;</span><br><span class="line">            p[++cnt] = i;</span><br><span class="line">            f[i] = <span class="number">1</span>-i+P;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;</span><br><span class="line">            vis[p[j]*i] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(i%p[j] == <span class="number">0</span>)&#123;</span><br><span class="line">                f[i*p[j]] = f[i];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            f[i*p[j]] = f[i]*(<span class="number">1</span>-p[j]+P)%P;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        f[i] = (f[i]*i%P+f[i<span class="number">-1</span>])%P;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">sum</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">    n %= P;</span><br><span class="line">    <span class="keyword">return</span> n*(n+<span class="number">1</span>)%P*(<span class="number">2</span>*n%P+<span class="number">1</span>)%P*inv6%P;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">g</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">    n %= P;</span><br><span class="line">    <span class="keyword">return</span> n*(n+<span class="number">1</span>)%P*n%P*(n+<span class="number">1</span>)%P*inv2%P*inv2%P;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">map&lt;ll, ll&gt; s;</span><br><span class="line"><span class="function">ll <span class="title">S</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &lt; MAX) <span class="keyword">return</span> f[n];</span><br><span class="line">    <span class="keyword">if</span>(s.<span class="built_in">count</span>(n)) <span class="keyword">return</span> s[n];</span><br><span class="line">    ll ans = (n+<span class="number">1</span>)%P*(n%P)%P*inv2%P;</span><br><span class="line">    <span class="keyword">for</span>(ll l = <span class="number">2</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = n/(n/l);</span><br><span class="line">        (ans -= (<span class="built_in">sum</span>(r)-<span class="built_in">sum</span>(l<span class="number">-1</span>)+P)%P*<span class="built_in">S</span>(n/l)%P) %= P;</span><br><span class="line">        <span class="keyword">if</span>(ans &lt; <span class="number">0</span>) ans += P;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s[n] = ans%P;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>(MAX<span class="number">-1</span>);</span><br><span class="line">    ll n, ans = <span class="number">0</span>;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(ll l = <span class="number">1</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = n/(n/l);</span><br><span class="line">        ll t = n/l, sum = (<span class="built_in">S</span>(r)-<span class="built_in">S</span>(l<span class="number">-1</span>)+P)%P;</span><br><span class="line">        ans = (ans+<span class="built_in">g</span>(t)%P*sum%P)%P;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define ll long long
+#define MAX 5000005
+#define P 1000000007
+using namespace std;
+
+const ll inv2 = (P+1)/2, inv6 = 166666668;
+
+int cnt;
+ll p[MAX], vis[MAX], f[MAX];
+void init(int n)&#123;
+    f[1] = 1;
+    for(int i = 2; i &lt;= n; i++)&#123;
+        if(!vis[i])&#123;
+            p[++cnt] = i;
+            f[i] = 1-i+P;
+        &#125;
+        for(int j = 1; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;
+            vis[p[j]*i] = 1;
+            if(i%p[j] == 0)&#123;
+                f[i*p[j]] = f[i];
+                break;
+            &#125;
+            f[i*p[j]] = f[i]*(1-p[j]+P)%P;
+        &#125;
+    &#125;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        f[i] = (f[i]*i%P+f[i-1])%P;
+    &#125;
+&#125;
+
+ll sum(ll n)&#123;
+    n %= P;
+    return n*(n+1)%P*(2*n%P+1)%P*inv6%P;
+&#125;
+ll g(ll n)&#123;
+    n %= P;
+    return n*(n+1)%P*n%P*(n+1)%P*inv2%P*inv2%P;
+&#125;
+
+map&lt;ll, ll&gt; s;
+ll S(ll n)&#123;
+    if(n &lt; MAX) return f[n];
+    if(s.count(n)) return s[n];
+    ll ans = (n+1)%P*(n%P)%P*inv2%P;
+    for(ll l = 2, r; l &lt;= n; l = r+1)&#123;
+        r = n/(n/l);
+        (ans -= (sum(r)-sum(l-1)+P)%P*S(n/l)%P) %= P;
+        if(ans &lt; 0) ans += P;
+    &#125;
+    return s[n] = ans%P;
+&#125;
+
+int main()
+&#123;
+    init(MAX-1);
+    ll n, ans = 0;
+    cin &gt;&gt; n;
+    for(ll l = 1, r; l &lt;= n; l = r+1)&#123;
+        r = n/(n/l);
+        ll t = n/l, sum = (S(r)-S(l-1)+P)%P;
+        ans = (ans+g(t)%P*sum%P)%P;
+    &#125;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -343,15 +412,15 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -440,8 +509,8 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
     </a>
   
   
-    <a href="/2022/07/16/CF1029D%20Concatenated%20Multiples/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【题解】CF1029D Concatenated Multiples</div>
+    <a href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【算法】BSGS算法的推导与实现</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -521,6 +590,7 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -589,7 +659,7 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -616,39 +686,23 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -660,75 +714,11 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -740,39 +730,51 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -784,35 +786,103 @@ C(1)S(n)&=\sum_{i=1}^n(F*C)(n)-\sum_{i=2}^nC(i)S(\frac{n}{i})\\\\
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

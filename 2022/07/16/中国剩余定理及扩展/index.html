@@ -20,8 +20,8 @@
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
 <meta property="article:modified_time" content="2022-07-16T11:20:50.059Z">
 <meta property="article:author" content="Fighter">
-<meta property="article:tag" content="模板">
 <meta property="article:tag" content="数论">
+<meta property="article:tag" content="模板">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Fighter&#39;s Blog" type="application/atom+xml">
@@ -51,6 +51,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -88,7 +90,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -262,13 +264,117 @@ x \equiv {a_n} \pmod {b_n}
 <p>​    观察$x$的构造过程，发现只有$t_i$是未知量，于是我们可以单独对于每一个方程，利用扩展欧几里得算法，求出每一个$b_i$对应的$t_i$，同时$ans$累加上${a_i} \cdot {t_i} \cdot {m_i}$。</p>
 <h2 id="例题-amp-代码"><a href="#例题-amp-代码" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P1495-曹冲养猪"><a href="#洛谷P1495-曹冲养猪" class="headerlink" title="洛谷P1495 曹冲养猪"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P1495">洛谷P1495 曹冲养猪</a></h3><p>中国剩余定理板子题，不过代码中的数组名称与上文的描述有些区别。</p>
 <h3 id="洛谷P3868-TJOI2009-猜数字"><a href="#洛谷P3868-TJOI2009-猜数字" class="headerlink" title="洛谷P3868 [TJOI2009]猜数字"></a>洛谷P3868 [TJOI2009]猜数字</h3><p>还是模板题。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//曹冲养猪</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXN 15</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">ll mod[MAXN], b[MAXN], ans;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">0</span>)&#123;</span><br><span class="line">        x = <span class="number">1</span>;</span><br><span class="line">        y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;		<span class="comment">//中国剩余定理 </span></span><br><span class="line">    ll m = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        m *= mod[i];</span><br><span class="line">    &#125;</span><br><span class="line">    ll x, y, mi;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        mi = m/mod[i];</span><br><span class="line">        <span class="built_in">exgcd</span>(mi, mod[i], x, y);</span><br><span class="line">        ans += (mi*x*b[i]);</span><br><span class="line">        ans %= m;</span><br><span class="line">    &#125;</span><br><span class="line">    ans = (ans+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;mod[i], &amp;b[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">//曹冲养猪
+#include &lt;bits/stdc++.h&gt;
+#define ll long long
+#define MAXN 15
+using namespace std;
+
+int n;
+ll mod[MAXN], b[MAXN], ans;
+
+ll exgcd(ll a, ll b, ll &amp;x, ll &amp;y)&#123;
+    if(b == 0)&#123;
+        x = 1;
+        y = 0;
+        return a;
+    &#125;
+    ll res = exgcd(b, a%b, x, y);
+    ll t = x;
+    x = y;
+    y = t-a/b*y;
+    return res;
+&#125;
+
+void solve()&#123;        //中国剩余定理 
+    ll m = 1;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        m *= mod[i];
+    &#125;
+    ll x, y, mi;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        mi = m/mod[i];
+        exgcd(mi, mod[i], x, y);
+        ans += (mi*x*b[i]);
+        ans %= m;
+    &#125;
+    ans = (ans+m)%m;
+&#125;
+
+int main()
+&#123;
+    cin &gt;&gt; n;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        scanf(&quot;%d%d&quot;, &amp;mod[i], &amp;b[i]);
+    &#125;
+    solve();
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
 <hr>
 <h1 id="扩展中国剩余定理"><a href="#扩展中国剩余定理" class="headerlink" title="扩展中国剩余定理"></a>扩展中国剩余定理</h1><h2 id="用途-1"><a href="#用途-1" class="headerlink" title="用途"></a>用途</h2><p>​    为什么需要这样一个扩展的定理呢？很明显，中国剩余定理的描述中有一个至关重要的限制条件：<strong>模数两两互质</strong>。    然而实际上，即使模数不互质，也能对方程组进行求解。这就是扩展中国剩余定理。但实际上，除了解决的问题基本相同，扩展中国剩余定理在证明和实现上都不仅仅是“扩展”，所以XX通索性称其为扩展欧几里得解线性同余方程。</p>
 <h2 id="求解方法-1"><a href="#求解方法-1" class="headerlink" title="求解方法"></a>求解方法</h2><p>​    首先，我们改变一些定义，设当前正在处理第$i$个方程，则令$M$表示前$i-1$个模数的最小公倍数。令$x$为前$i-1$个方程的特解，$x’$为所求的前$i$组方程的特解。于是对于第$i$个方程，问题转化为求一个$t$，使得${x+M<em>t} \equiv {a_i} \pmod {b_i}$，而$x’={x+M</em>t}$。</p>
 <p>​    该方程等价于$M*t \equiv {a_i-x} \pmod {b_i}$，显然只有$t$是未知量于是我们就可以利用扩欧求出$t$。一直重复$n$遍，最终就可以得到方程组的解。</p>
 <h2 id="例题-amp-代码-1"><a href="#例题-amp-代码-1" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P4777-【模板】扩展中国剩余定理（EXCRT）"><a href="#洛谷P4777-【模板】扩展中国剩余定理（EXCRT）" class="headerlink" title="洛谷P4777 【模板】扩展中国剩余定理（EXCRT）"></a>洛谷P4777 【模板】扩展中国剩余定理（EXCRT）</h3><p>真·模板题。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ll n, m, ans;</span><br><span class="line">ll a[MAX], b[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!b)&#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y, y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">mul</span><span class="params">(ll a, ll b, ll mod)</span></span>&#123;</span><br><span class="line">    ll res = <span class="number">0</span>, base = a;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            res = (res+base)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">        base = (base+base)%mod;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">excrt</span><span class="params">()</span></span>&#123;</span><br><span class="line">    m = b[<span class="number">1</span>], ans = a[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        ll p = ((a[i]-ans)%b[i]+b[i])%b[i];</span><br><span class="line">        ll x, y;			<span class="comment">//mx=p (mod b[i])</span></span><br><span class="line">        ll gcd = <span class="built_in">exgcd</span>(m, b[i], x, y);</span><br><span class="line">        <span class="keyword">if</span>(p % gcd) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        x = <span class="built_in">mul</span>(x, p/gcd, b[i]/gcd);</span><br><span class="line">        ans += x*m;</span><br><span class="line">        m *= b[i]/gcd;</span><br><span class="line">        ans = (ans%m+m)%m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ans%m+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>, &amp;b[i], &amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, <span class="built_in">excrt</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define ll long long
+#define MAX 100005
+using namespace std;
+
+ll n, m, ans;
+ll a[MAX], b[MAX];
+
+ll exgcd(ll a, ll b, ll &amp;x, ll &amp;y)&#123;
+    if(!b)&#123;
+        x = 1, y = 0;
+        return a;
+    &#125;
+    ll res = exgcd(b, a%b, x, y);
+    ll t = x;
+    x = y, y = t-a/b*y;
+    return res;
+&#125;
+
+ll mul(ll a, ll b, ll mod)&#123;
+    ll res = 0, base = a;
+    while(b)&#123;
+        if(b&amp;1)&#123;
+            res = (res+base)%mod;
+        &#125;
+        base = (base+base)%mod;
+        b &gt;&gt;= 1;
+    &#125;
+    return res;
+&#125;
+
+ll excrt()&#123;
+    m = b[1], ans = a[1];
+    for(int i = 2; i &lt;= n; i++)&#123;
+        ll p = ((a[i]-ans)%b[i]+b[i])%b[i];
+        ll x, y;            //mx=p (mod b[i])
+        ll gcd = exgcd(m, b[i], x, y);
+        if(p % gcd) return -1;
+        x = mul(x, p/gcd, b[i]/gcd);
+        ans += x*m;
+        m *= b[i]/gcd;
+        ans = (ans%m+m)%m;
+    &#125;
+    return (ans%m+m)%m;
+&#125;
+
+int main()
+&#123;
+    cin &gt;&gt; n;
+    for(int i = 1; i &lt;= n; i++)&#123;
+        scanf(&quot;%lld%lld&quot;, &amp;b[i], &amp;a[i]);
+    &#125;
+    printf(&quot;%lld\n&quot;, excrt());
+
+    return 0;
+&#125;
+</code></pre>
 <h1 id="完结撒花"><a href="#完结撒花" class="headerlink" title="完结撒花"></a>完结撒花</h1><h2 id="GL-amp-amp-HF"><a href="#GL-amp-amp-HF" class="headerlink" title="GL &amp;&amp; HF!!!"></a>GL &amp;&amp; HF!!!</h2>
     
 
@@ -305,11 +411,11 @@ x \equiv {a_n} \pmod {b_n}
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
         		</li>
       		
 		</ul>
@@ -380,15 +486,20 @@ x \equiv {a_n} \pmod {b_n}
 
 <nav id="article-nav">
   
-    <a href="/2022/07/16/P4178_Tree/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/07/16/SP5973%20Selecting%20Teams/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          【题解】P4178 Tree
+          【题解】SPOJ5973 Selecting Teams(3.30模拟赛T1)
         
       </div>
     </a>
   
+  
+    <a href="/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【算法】震惊！！！史上最详细的卡特兰数浅谈！！！</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
@@ -466,6 +577,7 @@ x \equiv {a_n} \pmod {b_n}
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -534,7 +646,7 @@ x \equiv {a_n} \pmod {b_n}
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -561,39 +673,23 @@ x \equiv {a_n} \pmod {b_n}
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,75 +701,11 @@ x \equiv {a_n} \pmod {b_n}
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -685,39 +717,51 @@ x \equiv {a_n} \pmod {b_n}
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -729,35 +773,103 @@ x \equiv {a_n} \pmod {b_n}
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

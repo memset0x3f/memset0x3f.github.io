@@ -20,9 +20,9 @@
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
 <meta property="article:modified_time" content="2022-07-16T11:28:11.802Z">
 <meta property="article:author" content="Fighter">
-<meta property="article:tag" content="模板">
 <meta property="article:tag" content="题解">
 <meta property="article:tag" content="数论">
+<meta property="article:tag" content="模板">
 <meta property="article:tag" content="莫比乌斯反演">
 <meta name="twitter:card" content="summary">
   
@@ -53,6 +53,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -90,7 +92,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -259,7 +261,19 @@
 0 & (k>1)
 \end{cases}</script><span id="more"></span>
 <p>然后我们会发现它是一个积性函数，可以用线性筛$O(n)$求出$1-n$的莫比乌斯函数。代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(!mark[i])&#123;</span><br><span class="line">        p[++cnt] = i;</span><br><span class="line">        mu[i] = <span class="number">-1</span>;		<span class="comment">//质数显然k=1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;</span><br><span class="line">        mark[p[j]*i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i%p[j] == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        mu[i*p[j]] = -mu[i];	<span class="comment">//由于欧拉筛中，每个数只会被最小的质因子筛到一次，相当于这个数多了一个因子p[j]，就相当于-mu[i](可以通过分类讨论理解)。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">mu[1] = 1;
+for(int i = 2; i &lt;= n; i++)&#123;
+    if(!mark[i])&#123;
+        p[++cnt] = i;
+        mu[i] = -1;        //质数显然k=1
+    &#125;
+    for(int j = 1; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;
+        mark[p[j]*i] = 1;
+        if(i%p[j] == 0) break;
+        mu[i*p[j]] = -mu[i];    //由于欧拉筛中，每个数只会被最小的质因子筛到一次，相当于这个数多了一个因子p[j]，就相当于-mu[i](可以通过分类讨论理解)。
+    &#125;
+&#125;
+</code></pre>
 <p>同时，莫比乌斯函数还满足：</p>
 <script type="math/tex; mode=display">
 \sum_{i=1}^{n}\mu(i)=[n=1]</script><p>这也是一个美妙的性质（可惜我不会证）。</p>
@@ -286,7 +300,35 @@ f(x) = \sum_{x|d}g(d)\times \mu(\frac{d}{x})。</script><p>我们为啥这么麻
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4450">P4450 双亲数</a> ，<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3455">P3455 ZAP-Queries</a> （都是板子题）。</p>
 <p>小小的拓展（加个简单容斥）：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2522">P2522 Problem b</a> 。</p>
 <p>代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!mark[i])&#123;</span><br><span class="line">            p[++cnt] = i;</span><br><span class="line">            mu[i] = <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;</span><br><span class="line">            mark[i*p[j]] = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(i%p[j] == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">            mu[i*p[j]] = -mu[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        mu[i] += mu[i<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">solve</span><span class="params">(ll n, ll m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; m) <span class="built_in">swap</span>(n, m);</span><br><span class="line">    ll ans = <span class="number">0</span>;</span><br><span class="line">    n /= k, m /= k;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = <span class="built_in">min</span>(n/(n/l), m/(m/l));</span><br><span class="line">        ans += (mu[r]-mu[l<span class="number">-1</span>])*(n/l)*(m/l);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void init(int n)&#123;
+    mu[1] = 1;
+    for(int i = 2; i &lt;= n; i++)&#123;
+        if(!mark[i])&#123;
+            p[++cnt] = i;
+            mu[i] = -1;
+        &#125;
+        for(int j = 1; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;
+            mark[i*p[j]] = true;
+            if(i%p[j] == 0) break;
+            mu[i*p[j]] = -mu[i];
+        &#125;
+    &#125;
+    for(int i = 2; i &lt;= n; i++)&#123;
+        mu[i] += mu[i-1];
+    &#125;
+&#125;
+
+ll solve(ll n, ll m)&#123;
+    if(n &gt; m) swap(n, m);
+    ll ans = 0;
+    n /= k, m /= k;
+    for(int l = 1, r; l &lt;= n; l = r+1)&#123;
+        r = min(n/(n/l), m/(m/l));
+        ans += (mu[r]-mu[l-1])*(n/l)*(m/l);
+    &#125;
+    return ans;
+&#125;
+</code></pre>
 <hr>
 <h3 id="2-求-i-j-为质数的个数"><a href="#2-求-i-j-为质数的个数" class="headerlink" title="2.求(i,j)为质数的个数"></a>2.求(i,j)为质数的个数</h3><p>给定$n,m$，求$f(x)=\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}[(i,j) \in prime]$。</p>
 <p>题面与上面几乎一致，但是推式子难度更大，且需要结合上面的结论。</p>
@@ -308,7 +350,15 @@ f(x)&=\sum_{T=2}^{n}\sum_{p|T}\lfloor \frac{n}{T} \rfloor \times \lfloor \frac{m
 <p>我们预处理时枚举$p$，对于$p$的倍数$T$，都加上$\mu(\frac{T}{p})$。复杂度是枚举质数再套枚举倍数，反正比原来小就对了。</p>
 <p>然后对处理出来的答案做前缀和，再套除法分块即可。</p>
 <p>预处理代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= cnt; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j*p[i] &lt;= n; j++)&#123;</span><br><span class="line">        s[j*p[i]] += mu[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    s[i] += s[i<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">for(int i = 1; i &lt;= cnt; i++)&#123;
+    for(int j = 1; j*p[i] &lt;= n; j++)&#123;
+        s[j*p[i]] += mu[j];
+    &#125;
+&#125;
+for(int i = 1; i &lt;= n; i++)&#123;
+    s[i] += s[i-1];
+&#125;
+</code></pre>
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2257">P2257 YY的GCD</a> </p>
 <hr>
 <h3 id="3-求约数个数和"><a href="#3-求约数个数和" class="headerlink" title="3.求约数个数和"></a>3.求约数个数和</h3><p>设$d(x)$表示$x$的约数和。给定$n,m$，求$\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}d(ij)$。</p>
@@ -339,9 +389,20 @@ ans = f(1)=\sum_{d=1}^{n}\mu(d)\times \sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\s
 <script type="math/tex; mode=display">
 ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor \frac{n}{id} \rfloor)\times (\sum_{j=1}^{\lfloor \frac{m}{d} \rfloor} \lfloor \frac{m}{jd} \rfloor)</script><p>我们可以先用一次除法分块预处理$s(x)=\sum\limits_{i=1}^{x} \lfloor\frac{x}{i} \rfloor$，然后对$\frac{n}{d}$再进行除法分块，同时对$\mu$求前缀和就可以$O(\sqrt n)$求出答案。</p>
 <p>预处理$s$，前缀和：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) mu[i] += mu[i<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= i; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = i/(i/l);</span><br><span class="line">        s[i] += (ll)(r-l+<span class="number">1</span>)*(i/l);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">for(int i = 1; i &lt;= n; i++) mu[i] += mu[i-1];
+for(int i = 1; i &lt;= n; i++)&#123;
+    for(int l = 1, r; l &lt;= i; l = r+1)&#123;
+        r = i/(i/l);
+        s[i] += (ll)(r-l+1)*(i/l);
+    &#125;
+&#125;
+</code></pre>
 <p>除法分块回答询问：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">    r = <span class="built_in">min</span>(n/(n/l), m/(m/l));</span><br><span class="line">    ans += (mu[r]-mu[l<span class="number">-1</span>])*s[n/l]*s[m/l];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">for(int l = 1, r; l &lt;= n; l = r+1)&#123;
+    r = min(n/(n/l), m/(m/l));
+    ans += (mu[r]-mu[l-1])*s[n/l]*s[m/l];
+&#125;
+</code></pre>
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3327">P3327 约数个数和</a> </p>
 <hr>
 <font size=5>到这里，我遇到过的一些套路就已经讲完了，本文也暂时完结。但以后可能会有更多的套路，有可能再更新。</font><font size=2>~~(先挖坑再说，填不填全看心情)~~ </font>
@@ -380,15 +441,15 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -554,6 +615,7 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -622,7 +684,7 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -649,39 +711,23 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -693,75 +739,11 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -773,39 +755,51 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -817,35 +811,103 @@ ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

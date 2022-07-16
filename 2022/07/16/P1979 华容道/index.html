@@ -53,6 +53,8 @@
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
 
+  <link rel="stylesheet" href="/prism.css">
+
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
@@ -89,7 +91,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -271,7 +273,172 @@
 <li>对于输入的特判：如果起点与终点重合，输出0；如果起点和终点至少有一个被固定，输出-1。最后如果最短路无法到达终点状态，输出-1。</li>
 </ol>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><del>这可能是我写过除了树剖以外码量数一数二的题了</del></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 5500</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> clear(x) (memset(x, 0, sizeof(x)))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mx[] = &#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>&#125;, my[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">1</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> cnt, head[MAX*<span class="number">10</span>], Next[MAX*<span class="number">100</span>], vet[MAX*<span class="number">100</span>], cost[MAX*<span class="number">100</span>];</span><br><span class="line"><span class="type">int</span> n, m, a[<span class="number">55</span>][<span class="number">55</span>];</span><br><span class="line"><span class="type">int</span> sx, sy, tx, ty, ex, ey;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">chk</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;     <span class="comment">//检查是否能到达(x,y)</span></span><br><span class="line">    <span class="keyword">if</span>(x&lt;=<span class="number">0</span> || x&gt;n || y&lt;=<span class="number">0</span> || y&gt;m) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> a[x][y];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> t)</span> </span>&#123;       <span class="comment">//获取状态编号</span></span><br><span class="line">    <span class="keyword">return</span> ((x<span class="number">-1</span>)*m+y<span class="number">-1</span>)*<span class="number">4</span>+t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">    <span class="type">int</span> x, y, step;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> mark[<span class="number">55</span>][<span class="number">55</span>];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bfs</span><span class="params">(<span class="type">int</span> sx, <span class="type">int</span> sy, <span class="type">int</span> tx, <span class="type">int</span> ty, <span class="type">int</span> dx, <span class="type">int</span> dy)</span> </span>&#123;   <span class="comment">//从(sx,sy)-&gt;(tx,ty)且不经过(dx,dy)</span></span><br><span class="line">    queue&lt;node&gt; q;</span><br><span class="line">    <span class="built_in">clear</span>(mark);</span><br><span class="line">    mark[sx][sy] = <span class="literal">true</span>;</span><br><span class="line">    q.<span class="built_in">push</span>((node) &#123;</span><br><span class="line">            sx, sy, <span class="number">0</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">while</span> (!q.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        node t = q.<span class="built_in">front</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(t.x == tx &amp;&amp; t.y == ty) &#123;</span><br><span class="line">            <span class="keyword">return</span> t.step;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) &#123;</span><br><span class="line">            <span class="type">int</span> u = t.x+mx[i], v = t.y+my[i];</span><br><span class="line">            <span class="keyword">if</span>(!<span class="built_in">chk</span>(u, v) || (u==dx &amp;&amp; v==dy) || mark[u][v]) <span class="keyword">continue</span>;</span><br><span class="line">            mark[u][v] = <span class="literal">true</span>;</span><br><span class="line">            q.<span class="built_in">push</span>((node) &#123;</span><br><span class="line">                    u, v, t.step+<span class="number">1</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> INF;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> ok[<span class="number">55</span>][<span class="number">55</span>][<span class="number">5</span>];       <span class="comment">//(i,j)四周是否可能存在空格</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> w)</span> </span>&#123;</span><br><span class="line">    cnt++;</span><br><span class="line">    Next[cnt] = head[x];</span><br><span class="line">    head[x] = cnt;</span><br><span class="line">    vet[cnt] = y;</span><br><span class="line">    cost[cnt] = w;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!a[i][j]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; <span class="number">4</span>; ++k) &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">chk</span>(i+mx[k], j+my[k])) &#123;</span><br><span class="line">                    ok[i][j][k] = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//空格绕棋子四周转</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; <span class="number">4</span>; ++k) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> l = k+<span class="number">1</span>; l &lt; <span class="number">4</span>; ++l) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(!ok[i][j][k] || !ok[i][j][l]) <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="type">int</span> x = <span class="built_in">get</span>(i, j, k), y = <span class="built_in">get</span>(i, j, l);</span><br><span class="line">                    <span class="type">int</span> w = <span class="built_in">bfs</span>(i+mx[k], j+my[k], i+mx[l], j+my[l], i, j);</span><br><span class="line">                    <span class="keyword">if</span>(w == INF) <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="built_in">add</span>(x, y, w), <span class="built_in">add</span>(y, x, w);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//空格和指定棋子互换</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;      <span class="comment">//左右互换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; m; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(ok[i][j][<span class="number">3</span>] &amp;&amp; ok[i][j+<span class="number">1</span>][<span class="number">2</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> x = <span class="built_in">get</span>(i,j,<span class="number">3</span>), y = <span class="built_in">get</span>(i,j+<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">                <span class="built_in">add</span>(x, y, <span class="number">1</span>), <span class="built_in">add</span>(y, x, <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;       <span class="comment">//上下互换</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(ok[i][j][<span class="number">1</span>] &amp;&amp; ok[i+<span class="number">1</span>][j][<span class="number">0</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> x = <span class="built_in">get</span>(i,j,<span class="number">1</span>), y = <span class="built_in">get</span>(i+<span class="number">1</span>,j,<span class="number">0</span>);</span><br><span class="line">                <span class="built_in">add</span>(x, y, <span class="number">1</span>), <span class="built_in">add</span>(y, x, <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> dis[MAX*<span class="number">100</span>], vis[MAX*<span class="number">100</span>];</span><br><span class="line">queue&lt;<span class="type">int</span>&gt; q;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">spfa</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dis, <span class="number">0x3f</span>, <span class="built_in">sizeof</span>(dis));</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="built_in">sizeof</span>(vis));</span><br><span class="line">    <span class="comment">//先让空格走到指定位置四周</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) &#123;</span><br><span class="line">        <span class="type">int</span> u = sx+mx[i], v = sy+my[i];</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">chk</span>(u, v)) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> w = <span class="built_in">bfs</span>(ex, ey, u, v, sx, sy);</span><br><span class="line">        <span class="keyword">if</span>(w == INF) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> id = <span class="built_in">get</span>(sx, sy, i);</span><br><span class="line">        dis[id] = w;</span><br><span class="line">        q.<span class="built_in">push</span>(id);</span><br><span class="line">        vis[id] = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//spfa</span></span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        <span class="type">int</span> t = q.<span class="built_in">front</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        vis[t] = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = head[t]; i; i = Next[i]) &#123;</span><br><span class="line">            <span class="type">int</span> v = vet[i];</span><br><span class="line">            <span class="keyword">if</span>(dis[v] &gt; dis[t]+cost[i]) &#123;</span><br><span class="line">                dis[v] = dis[t]+cost[i];</span><br><span class="line">                <span class="keyword">if</span>(!vis[v]) &#123;</span><br><span class="line">                    vis[v] = <span class="literal">true</span>;</span><br><span class="line">                    q.<span class="built_in">push</span>(v);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> ans = INF;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) &#123;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans, dis[<span class="built_in">get</span>(tx, ty, i)]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans == INF) <span class="built_in">puts</span>(<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="keyword">while</span> (q--) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d%d%d%d&quot;</span>, &amp;ex, &amp;ey, &amp;sx, &amp;sy, &amp;tx, &amp;ty);</span><br><span class="line">        <span class="keyword">if</span>(sx == tx &amp;&amp; sy == ty) <span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!a[tx][ty] || !a[sx][sy]) <span class="built_in">puts</span>(<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">spfa</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define MAX 5500
+#define clear(x) (memset(x, 0, sizeof(x)))
+#define INF 0x3f3f3f3f
+using namespace std;
+
+const int mx[] = &#123;-1,1,0,0&#125;, my[] = &#123;0,0,-1,1&#125;;
+
+int cnt, head[MAX*10], Next[MAX*100], vet[MAX*100], cost[MAX*100];
+int n, m, a[55][55];
+int sx, sy, tx, ty, ex, ey;
+
+inline bool chk(int x, int y) &#123;     //检查是否能到达(x,y)
+    if(x&lt;=0 || x&gt;n || y&lt;=0 || y&gt;m) return false;
+    return a[x][y];
+&#125;
+
+inline int get(int x, int y, int t) &#123;       //获取状态编号
+    return ((x-1)*m+y-1)*4+t;
+&#125;
+
+struct node &#123;
+    int x, y, step;
+&#125;;
+
+bool mark[55][55];
+int bfs(int sx, int sy, int tx, int ty, int dx, int dy) &#123;   //从(sx,sy)-&gt;(tx,ty)且不经过(dx,dy)
+    queue&lt;node&gt; q;
+    clear(mark);
+    mark[sx][sy] = true;
+    q.push((node) &#123;
+            sx, sy, 0
+    &#125;);
+    while (!q.empty()) &#123;
+        node t = q.front();
+        q.pop();
+        if(t.x == tx &amp;&amp; t.y == ty) &#123;
+            return t.step;
+        &#125;
+        for (int i = 0; i &lt; 4; ++i) &#123;
+            int u = t.x+mx[i], v = t.y+my[i];
+            if(!chk(u, v) || (u==dx &amp;&amp; v==dy) || mark[u][v]) continue;
+            mark[u][v] = true;
+            q.push((node) &#123;
+                    u, v, t.step+1
+            &#125;);
+        &#125;
+    &#125;
+    return INF;
+&#125;
+
+bool ok[55][55][5];       //(i,j)四周是否可能存在空格
+
+void add(int x, int y, int w) &#123;
+    cnt++;
+    Next[cnt] = head[x];
+    head[x] = cnt;
+    vet[cnt] = y;
+    cost[cnt] = w;
+&#125;
+
+void init() &#123;
+    for (int i = 1; i &lt;= n; ++i) &#123;
+        for (int j = 1; j &lt;= m; ++j) &#123;
+            if(!a[i][j]) continue;
+            for (int k = 0; k &lt; 4; ++k) &#123;
+                if(chk(i+mx[k], j+my[k])) &#123;
+                    ok[i][j][k] = true;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    //空格绕棋子四周转
+    for (int i = 1; i &lt;= n; ++i) &#123;
+        for (int j = 1; j &lt;= m; ++j) &#123;
+            for (int k = 0; k &lt; 4; ++k) &#123;
+                for (int l = k+1; l &lt; 4; ++l) &#123;
+                    if(!ok[i][j][k] || !ok[i][j][l]) continue;
+                    int x = get(i, j, k), y = get(i, j, l);
+                    int w = bfs(i+mx[k], j+my[k], i+mx[l], j+my[l], i, j);
+                    if(w == INF) continue;
+                    add(x, y, w), add(y, x, w);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    //空格和指定棋子互换
+    for (int i = 1; i &lt;= n; ++i) &#123;      //左右互换
+        for (int j = 1; j &lt; m; ++j) &#123;
+            if(ok[i][j][3] &amp;&amp; ok[i][j+1][2]) &#123;
+                int x = get(i,j,3), y = get(i,j+1,2);
+                add(x, y, 1), add(y, x, 1);
+            &#125;
+        &#125;
+    &#125;
+    for (int i = 1; i &lt; n; ++i) &#123;       //上下互换
+        for (int j = 1; j &lt;= m; ++j) &#123;
+            if(ok[i][j][1] &amp;&amp; ok[i+1][j][0]) &#123;
+                int x = get(i,j,1), y = get(i+1,j,0);
+                add(x, y, 1), add(y, x, 1);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+int dis[MAX*100], vis[MAX*100];
+queue&lt;int&gt; q;
+void spfa() &#123;
+    memset(dis, 0x3f, sizeof(dis));
+    memset(vis, 0, sizeof(vis));
+    //先让空格走到指定位置四周
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        int u = sx+mx[i], v = sy+my[i];
+        if(!chk(u, v)) continue;
+        int w = bfs(ex, ey, u, v, sx, sy);
+        if(w == INF) continue;
+        int id = get(sx, sy, i);
+        dis[id] = w;
+        q.push(id);
+        vis[id] = true;
+    &#125;
+    //spfa
+    while(!q.empty()) &#123;
+        int t = q.front();
+        q.pop();
+        vis[t] = false;
+        for (int i = head[t]; i; i = Next[i]) &#123;
+            int v = vet[i];
+            if(dis[v] &gt; dis[t]+cost[i]) &#123;
+                dis[v] = dis[t]+cost[i];
+                if(!vis[v]) &#123;
+                    vis[v] = true;
+                    q.push(v);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    int ans = INF;
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        ans = min(ans, dis[get(tx, ty, i)]);
+    &#125;
+    if(ans == INF) puts(&quot;-1&quot;);
+    else printf(&quot;%d\n&quot;, ans);
+&#125;
+
+int main() &#123;
+    int q;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
+    for (int i = 1; i &lt;= n; ++i) &#123;
+        for (int j = 1; j &lt;= m; ++j) &#123;
+            scanf(&quot;%d&quot;, &amp;a[i][j]);
+        &#125;
+    &#125;
+    init();
+    while (q--) &#123;
+        scanf(&quot;%d%d%d%d%d%d&quot;, &amp;ex, &amp;ey, &amp;sx, &amp;sy, &amp;tx, &amp;ty);
+        if(sx == tx &amp;&amp; sy == ty) puts(&quot;0&quot;);
+        else if(!a[tx][ty] || !a[sx][sy]) puts(&quot;-1&quot;);
+        else &#123;
+            spfa();
+        &#125;
+    &#125;
+
+    return 0;
+&#125;
+</code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这道题的难点在于他别出心裁<del>SB</del>的把状态抽出来建图，这种做法十分的罕见。</p>
 <font size=2>文章内有彩蛋哦</font>
     
@@ -479,6 +646,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -547,7 +715,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -574,39 +742,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -618,75 +770,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -698,39 +786,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -742,35 +842,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

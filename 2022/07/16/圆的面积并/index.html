@@ -53,6 +53,8 @@
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
 
+  <link rel="stylesheet" href="/prism.css">
+
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
@@ -89,7 +91,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -254,7 +256,125 @@
 <p>还是来看这道题。我们可以把平面上的一堆相交的圆看成一个整体函数，我们要求的就是每一段函数的面积和。很明显可以化成积分的形式，于是用自适应辛普森积分乱搞。</p>
 <p>那么我们怎么求一个$x$所对应的$f(x)$值呢？很明显我们在$x$确定的时候要求的就是直线$y=x$被圆覆盖的总长度。那么我们可以枚举所有的圆，只要与直线$y=x$有交点的圆，把两个交点之间的部分看成一条线段，然后贪心求线段覆盖长度即可。</p>
 <p>一些小细节：自适应辛普森算法中多加几个参数，可以减少重复的计算。同时可以在开始求面积之前把被一个大圆覆盖的小圆先删除。然后对于每一堆通过交点联通的圆，求出最左端和最右端，然后进行自适应辛普森积分即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 2005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> eps 1e-7</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 1e16</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">seg</span>&#123;</span><br><span class="line">    <span class="type">double</span> l, r;</span><br><span class="line">    <span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt;(seg a, seg b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a.l == b.l) <span class="keyword">return</span> a.r &lt; b.r;</span><br><span class="line">        <span class="keyword">return</span> a.l &lt; b.l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">vec</span>&#123;</span><br><span class="line">    ll x, y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">dis</span><span class="params">(vec a, vec b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>(<span class="number">1.0</span>*(a.x-b.x)*(a.x-b.x) + <span class="number">1.0</span>*(a.y-b.y)*(a.y-b.y));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cir</span>&#123;</span><br><span class="line">    vec o;</span><br><span class="line">    ll r;</span><br><span class="line">    <span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt;(cir a, cir b)&#123;</span><br><span class="line">        <span class="keyword">return</span> a.r &lt; b.r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;a[MAX];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">vector&lt;seg&gt; v;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> st, ed;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">f</span><span class="params">(<span class="type">double</span> x)</span></span>&#123;		<span class="comment">//求f(x)</span></span><br><span class="line">    v.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = st; i &lt;= ed; ++i) &#123;		<span class="comment">//处理出交点的纵坐标，保存为线段</span></span><br><span class="line">        <span class="keyword">if</span>(x &gt; a[i].o.x+a[i].r || x &lt; a[i].o.x-a[i].r) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">double</span> l = x-a[i].o.x;</span><br><span class="line">        l = <span class="built_in">sqrt</span>(a[i].r*a[i].r - l*l);</span><br><span class="line">        v.<span class="built_in">push_back</span>((seg)&#123;a[i].o.y-l, a[i].o.y+l&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(v.<span class="built_in">empty</span>()) <span class="keyword">return</span> <span class="number">0.0</span>;</span><br><span class="line">    <span class="built_in">sort</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>());		<span class="comment">//以下贪心线段覆盖</span></span><br><span class="line">    <span class="type">double</span> ans = <span class="number">0</span>, last = v[<span class="number">0</span>].l;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; v.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span>(v[i].r &gt; last)&#123;</span><br><span class="line">            ans += v[i].r-<span class="built_in">max</span>(last, v[i].l);</span><br><span class="line">            last = v[i].r;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">calc</span><span class="params">(<span class="type">double</span> l, <span class="type">double</span> r, <span class="type">double</span> sl, <span class="type">double</span> sr)</span></span>&#123;	<span class="comment">//直接计算一段区间的面积</span></span><br><span class="line">    <span class="type">double</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> (r-l)*(sl + <span class="number">4.0</span>*<span class="built_in">f</span>(mid) + sr)/<span class="number">6.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">simpson</span><span class="params">(<span class="type">double</span> l, <span class="type">double</span> r, <span class="type">double</span> S, <span class="type">double</span> sl, <span class="type">double</span> sr)</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> mid = (l+r)/<span class="number">2</span>, s = <span class="built_in">f</span>(mid);</span><br><span class="line">    <span class="type">double</span> t1 = <span class="built_in">calc</span>(l, mid, sl, s), t2 = <span class="built_in">calc</span>(mid, r, s, sr);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">fabs</span>(t1+t2-S) &lt; eps) <span class="keyword">return</span> S;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">simpson</span>(l, mid, t1, sl, s)+<span class="built_in">simpson</span>(mid, r, t2, s, sr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;		<span class="comment">//预处理，删除被包含的圆</span></span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, j; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j = i+<span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i].r-a[j].r + <span class="built_in">dis</span>(a[i].o, a[j].o) &lt; eps)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(j &gt; n) a[++cnt] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    n = cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(cir a, cir b)</span></span>&#123;			<span class="comment">//按圆的最左端排序,用于判断连续相交</span></span><br><span class="line">    <span class="keyword">return</span> a.o.x-a.r &lt; b.o.x-b.r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;		<span class="comment">//寻找每段联通的圆，进行计算</span></span><br><span class="line">    <span class="type">double</span> l, r;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">1</span>, j;</span><br><span class="line">    <span class="keyword">while</span>(i &lt;= n) &#123;</span><br><span class="line">        l = a[i].o.x-a[i].r, r = a[i].o.x+a[i].r;</span><br><span class="line">        <span class="keyword">for</span> (j = i+<span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(a[j].o.x-a[j].r &gt; r) <span class="keyword">break</span>;</span><br><span class="line">            r = <span class="built_in">max</span>(r, (<span class="type">double</span>)a[j].o.x+a[j].r);</span><br><span class="line">        &#125;</span><br><span class="line">        st = i, ed = j<span class="number">-1</span>, i = j;</span><br><span class="line">        <span class="type">double</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">        ans += <span class="built_in">simpson</span>(l, r, <span class="built_in">f</span>(mid), <span class="built_in">f</span>(l), <span class="built_in">f</span>(r));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">double</span> l = INF, r = -INF;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld%lld&quot;</span>, &amp;a[i].o.x, &amp;a[i].o.y, &amp;a[i].r);</span><br><span class="line">        l = <span class="built_in">min</span>(l, (<span class="type">double</span>)a[i].o.x-a[i].r);</span><br><span class="line">        r = <span class="built_in">max</span>(r, (<span class="type">double</span>)a[i].o.x+a[i].r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(a+<span class="number">1</span>, a+n+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="built_in">sort</span>(a+<span class="number">1</span>, a+n+<span class="number">1</span>, cmp);</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%.3lf\n&quot;</span>, ans);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define MAX 2005
+#define ll long long
+#define eps 1e-7
+#define INF 1e16
+using namespace std;
+
+struct seg&#123;
+    double l, r;
+    friend bool operator &lt;(seg a, seg b)&#123;
+        if(a.l == b.l) return a.r &lt; b.r;
+        return a.l &lt; b.l;
+    &#125;
+&#125;;
+
+struct vec&#123;
+    ll x, y;
+&#125;;
+
+double dis(vec a, vec b)&#123;
+    return sqrt(1.0*(a.x-b.x)*(a.x-b.x) + 1.0*(a.y-b.y)*(a.y-b.y));
+&#125;
+
+struct cir&#123;
+    vec o;
+    ll r;
+    friend bool operator &lt;(cir a, cir b)&#123;
+        return a.r &lt; b.r;
+    &#125;
+&#125;a[MAX];
+
+int n;
+vector&lt;seg&gt; v;
+
+int st, ed;
+double f(double x)&#123;        //求f(x)
+    v.clear();
+    for (int i = st; i &lt;= ed; ++i) &#123;        //处理出交点的纵坐标，保存为线段
+        if(x &gt; a[i].o.x+a[i].r || x &lt; a[i].o.x-a[i].r) continue;
+        double l = x-a[i].o.x;
+        l = sqrt(a[i].r*a[i].r - l*l);
+        v.push_back((seg)&#123;a[i].o.y-l, a[i].o.y+l&#125;);
+    &#125;
+    if(v.empty()) return 0.0;
+    sort(v.begin(), v.end());        //以下贪心线段覆盖
+    double ans = 0, last = v[0].l;
+    for (int i = 0; i &lt; v.size(); ++i) &#123;
+        if(v[i].r &gt; last)&#123;
+            ans += v[i].r-max(last, v[i].l);
+            last = v[i].r;
+        &#125;
+    &#125;
+    return ans;
+&#125;
+
+double calc(double l, double r, double sl, double sr)&#123;    //直接计算一段区间的面积
+    double mid = (l+r)/2;
+    return (r-l)*(sl + 4.0*f(mid) + sr)/6.0;
+&#125;
+
+double simpson(double l, double r, double S, double sl, double sr)&#123;
+    double mid = (l+r)/2, s = f(mid);
+    double t1 = calc(l, mid, sl, s), t2 = calc(mid, r, s, sr);
+    if(fabs(t1+t2-S) &lt; eps) return S;
+    return simpson(l, mid, t1, sl, s)+simpson(mid, r, t2, s, sr);
+&#125;
+
+void init()&#123;        //预处理，删除被包含的圆
+    int cnt = 0;
+    for (int i = 1, j; i &lt;= n; ++i) &#123;
+        for (j = i+1; j &lt;= n; ++j) &#123;
+            if(a[i].r-a[j].r + dis(a[i].o, a[j].o) &lt; eps)&#123;
+                break;
+            &#125;
+        &#125;
+        if(j &gt; n) a[++cnt] = a[i];
+    &#125;
+    n = cnt;
+&#125;
+
+bool cmp(cir a, cir b)&#123;            //按圆的最左端排序,用于判断连续相交
+    return a.o.x-a.r &lt; b.o.x-b.r;
+&#125;
+
+double ans;
+
+void solve()&#123;        //寻找每段联通的圆，进行计算
+    double l, r;
+    int i = 1, j;
+    while(i &lt;= n) &#123;
+        l = a[i].o.x-a[i].r, r = a[i].o.x+a[i].r;
+        for (j = i+1; j &lt;= n; ++j) &#123;
+            if(a[j].o.x-a[j].r &gt; r) break;
+            r = max(r, (double)a[j].o.x+a[j].r);
+        &#125;
+        st = i, ed = j-1, i = j;
+        double mid = (l+r)/2;
+        ans += simpson(l, r, f(mid), f(l), f(r));
+    &#125;
+&#125;
+
+int main()
+&#123;
+    cin &gt;&gt; n;
+    double l = INF, r = -INF;
+    for (int i = 1; i &lt;= n; ++i) &#123;
+        scanf(&quot;%lld%lld%lld&quot;, &amp;a[i].o.x, &amp;a[i].o.y, &amp;a[i].r);
+        l = min(l, (double)a[i].o.x-a[i].r);
+        r = max(r, (double)a[i].o.x+a[i].r);
+    &#125;
+    sort(a+1, a+n+1);
+    init();
+    sort(a+1, a+n+1, cmp);
+    solve();
+    printf(&quot;%.3lf\n&quot;, ans);
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -461,6 +581,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -529,7 +650,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -556,39 +677,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -600,75 +705,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -680,39 +721,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -724,35 +777,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

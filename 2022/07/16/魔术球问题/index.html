@@ -21,9 +21,9 @@
 <meta property="article:modified_time" content="2022-07-16T11:44:21.732Z">
 <meta property="article:author" content="Fighter">
 <meta property="article:tag" content="题解">
+<meta property="article:tag" content="图论">
 <meta property="article:tag" content="网络流">
 <meta property="article:tag" content="最大流">
-<meta property="article:tag" content="图论">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Fighter&#39;s Blog" type="application/atom+xml">
@@ -53,6 +53,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -90,7 +92,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -254,7 +256,135 @@
 <p>我们考虑建图，把每个点拆开，若两个数和为平方数，那么就从编号小的向编号大的连权值为1的有向边。那么就把这个问题转换成了匹配问题。</p>
 <p>然后我们考虑对于一个新的球，如果能找到原来在的一个球能够匹配，那么可以直接匹配，否则就需要新开一根柱子。所以我们从小到大枚举放的球数，每次加入一个球，直到柱子个数超过给定的上限，那么上一次就是能放的最多球数。</p>
 <p>对于方案，我们为了方便，在新增一根柱子的时候记录这个需要新柱子的球的编号，其余路径就按网络流跑二分图匹配的路径记录搞一搞即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXN 20005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXM 100005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">write</span><span class="params">(T n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;<span class="number">0</span>) <span class="built_in">putchar</span>(<span class="string">&#x27;-&#x27;</span>), n = -n;</span><br><span class="line">    <span class="keyword">if</span>(n&gt;<span class="number">9</span>) <span class="built_in">write</span>(n/<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">putchar</span>(n%<span class="number">10</span>+<span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num, cnt = <span class="number">1</span>, s, t;</span><br><span class="line"><span class="type">int</span> head[MAXN], Next[MAXM], vet[MAXM], cost[MAXM];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> w)</span> </span>&#123;</span><br><span class="line">    cnt++;</span><br><span class="line">    Next[cnt] = head[x];</span><br><span class="line">    head[x] = cnt;</span><br><span class="line">    vet[cnt] = y;</span><br><span class="line">    cost[cnt] = w;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> vis[MAXN], dep[MAXN], cur[MAXN], to[MAXN], hd[MAXN];</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">bfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= t; i++) &#123;</span><br><span class="line">        vis[i] = <span class="number">0</span>, dep[i] = INF;</span><br><span class="line">        cur[i] = head[i];</span><br><span class="line">    &#125;</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt; q;</span><br><span class="line">    q.<span class="built_in">push</span>(s);</span><br><span class="line">    vis[s] = <span class="number">1</span>;</span><br><span class="line">    dep[s] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        <span class="type">int</span> x = q.<span class="built_in">front</span>();</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        vis[x] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = head[x]; i; i = Next[i]) &#123;</span><br><span class="line">            <span class="type">int</span> v = vet[i];</span><br><span class="line">            <span class="keyword">if</span>(cost[i] &amp;&amp; dep[v] &gt; dep[x]+<span class="number">1</span>) &#123;</span><br><span class="line">                dep[v] = dep[x]+<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(!vis[v]) &#123;</span><br><span class="line">                    vis[v] = <span class="literal">true</span>;</span><br><span class="line">                    q.<span class="built_in">push</span>(v);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dep[t] != INF;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> ans, tot;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> flow)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x == t) &#123;</span><br><span class="line">        ans += flow;</span><br><span class="line">        <span class="keyword">return</span> flow;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> used = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> &amp;i = cur[x]; i; i = Next[i]) &#123;</span><br><span class="line">        <span class="type">int</span> v = vet[i];</span><br><span class="line">        <span class="keyword">if</span>(cost[i] &amp;&amp; dep[v] == dep[x]+<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="type">int</span> m = <span class="built_in">dfs</span>(v, <span class="built_in">min</span>(flow-used, cost[i]));</span><br><span class="line">            <span class="keyword">if</span>(m) &#123;</span><br><span class="line">                cost[i] -= m;</span><br><span class="line">                cost[i^<span class="number">1</span>] += m;</span><br><span class="line">                used += m;</span><br><span class="line">                to[x] = v;</span><br><span class="line">                <span class="keyword">if</span>(used == flow) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> used;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">chk</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="type">int</span>)<span class="built_in">sqrt</span>(x*<span class="number">1.0</span>)*(<span class="type">int</span>)<span class="built_in">sqrt</span>(x*<span class="number">1.0</span>) == x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    s = <span class="number">0</span>, t = <span class="number">10001</span>;</span><br><span class="line">    ans = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">add</span>(s, n*<span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">add</span>(n*<span class="number">2</span>, s, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">add</span>(n*<span class="number">2</span>+<span class="number">1</span>, t, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">add</span>(t, n*<span class="number">2</span>+<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">chk</span>(i+n)) &#123;</span><br><span class="line">            <span class="built_in">add</span>(i*<span class="number">2</span>, n*<span class="number">2</span>+<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">            <span class="built_in">add</span>(n*<span class="number">2</span>+<span class="number">1</span>, i*<span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">bfs</span>()) &#123;</span><br><span class="line">        <span class="built_in">dfs</span>(s, INF);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!ans) tot++, hd[tot] = n*<span class="number">2</span>;		<span class="comment">//新增柱子的时候记录编号</span></span><br><span class="line">    <span class="keyword">return</span> tot &lt;= num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin &gt;&gt; num;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">solve</span>(i)) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i--;</span><br><span class="line">    <span class="built_in">write</span>(i);</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    <span class="type">int</span> now;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= num; j++) &#123;</span><br><span class="line">        now = hd[j];</span><br><span class="line">        <span class="built_in">write</span>(now/<span class="number">2</span>);</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">        now = to[now];</span><br><span class="line">        to[now] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(now &amp;&amp; now != t) &#123;</span><br><span class="line">            now = now/<span class="number">2</span>*<span class="number">2</span>;</span><br><span class="line">            <span class="built_in">write</span>(now/<span class="number">2</span>), <span class="built_in">putchar</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            <span class="type">int</span> t = to[now];</span><br><span class="line">            to[now] = <span class="number">0</span>;</span><br><span class="line">            now = t;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
+#define MAXN 20005
+#define MAXM 100005
+#define INF 0x3f3f3f3f
+using namespace std;
+
+template &lt;typename T&gt;
+void write(T n) &#123;
+    if(n&lt;0) putchar(&#39;-&#39;), n = -n;
+    if(n&gt;9) write(n/10);
+    putchar(n%10+&#39;0&#39;);
+&#125;
+
+int num, cnt = 1, s, t;
+int head[MAXN], Next[MAXM], vet[MAXM], cost[MAXM];
+void add(int x, int y, int w) &#123;
+    cnt++;
+    Next[cnt] = head[x];
+    head[x] = cnt;
+    vet[cnt] = y;
+    cost[cnt] = w;
+&#125;
+
+int vis[MAXN], dep[MAXN], cur[MAXN], to[MAXN], hd[MAXN];
+bool bfs() &#123;
+    for(int i = 0; i &lt;= t; i++) &#123;
+        vis[i] = 0, dep[i] = INF;
+        cur[i] = head[i];
+    &#125;
+    queue&lt;int&gt; q;
+    q.push(s);
+    vis[s] = 1;
+    dep[s] = 1;
+    while(!q.empty()) &#123;
+        int x = q.front();
+        q.pop();
+        vis[x] = 0;
+        for(int i = head[x]; i; i = Next[i]) &#123;
+            int v = vet[i];
+            if(cost[i] &amp;&amp; dep[v] &gt; dep[x]+1) &#123;
+                dep[v] = dep[x]+1;
+                if(!vis[v]) &#123;
+                    vis[v] = true;
+                    q.push(v);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return dep[t] != INF;
+&#125;
+
+int ans, tot;
+int dfs(int x, int flow) &#123;
+    if(x == t) &#123;
+        ans += flow;
+        return flow;
+    &#125;
+    int used = 0;
+    for(int &amp;i = cur[x]; i; i = Next[i]) &#123;
+        int v = vet[i];
+        if(cost[i] &amp;&amp; dep[v] == dep[x]+1) &#123;
+            int m = dfs(v, min(flow-used, cost[i]));
+            if(m) &#123;
+                cost[i] -= m;
+                cost[i^1] += m;
+                used += m;
+                to[x] = v;
+                if(used == flow) break;
+            &#125;
+        &#125;
+    &#125;
+    return used;
+&#125;
+
+bool chk(int x) &#123;
+    return (int)sqrt(x*1.0)*(int)sqrt(x*1.0) == x;
+&#125;
+
+bool solve(int n) &#123;
+    s = 0, t = 10001;
+    ans = 0;
+    add(s, n*2, 1);
+    add(n*2, s, 0);
+    add(n*2+1, t, 1);
+    add(t, n*2+1, 0);
+    for(int i = 1; i &lt; n; i++) &#123;
+        if(chk(i+n)) &#123;
+            add(i*2, n*2+1, 1);
+            add(n*2+1, i*2, 0);
+        &#125;
+    &#125;
+    while(bfs()) &#123;
+        dfs(s, INF);
+    &#125;
+    if(!ans) tot++, hd[tot] = n*2;        //新增柱子的时候记录编号
+    return tot &lt;= num;
+&#125;
+
+int main() &#123;
+    cin &gt;&gt; num;
+    int i;
+    for(i = 1; ; i++) &#123;
+        if(!solve(i)) &#123;
+            break;
+        &#125;
+    &#125;
+    i--;
+    write(i);
+    putchar(&#39;\n&#39;);
+    int now;
+    for(int j = 1; j &lt;= num; j++) &#123;
+        now = hd[j];
+        write(now/2);
+        putchar(&#39; &#39;);
+        now = to[now];
+        to[now] = 0;
+        while(now &amp;&amp; now != t) &#123;
+            now = now/2*2;
+            write(now/2), putchar(&#39; &#39;);
+            int t = to[now];
+            to[now] = 0;
+            now = t;
+        &#125;
+        putchar(&#39;\n&#39;);
+    &#125;
+
+    return 0;
+&#125;
+</code></pre>
 
     
 
@@ -295,15 +425,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图论</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">网络流</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">最大流</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图论</a>
         		</li>
       		
 		</ul>
@@ -384,11 +514,6 @@
     </a>
   
   
-    <a href="/2022/07/16/CF538F%20A%20Heap%20of%20Heaps/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【算法】CF538F A Heap of Heaps</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
 </nav>
 
 
@@ -465,6 +590,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -533,7 +659,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -560,39 +686,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -604,75 +714,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -684,39 +730,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -728,35 +786,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

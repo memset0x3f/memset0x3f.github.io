@@ -57,6 +57,8 @@
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
 
+  <link rel="stylesheet" href="/prism.css">
+
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
@@ -93,7 +95,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -265,12 +267,59 @@
 <p>块状链表的思想是把链表强行套在数组上——链表中的每一个节点对应原数组中的一段。不说估计你也知道，每个节点对应的数组长度是$\sqrt{n}$级别的（应用分块思想）。于是我们在查询的时候，可以先定位元素所在块的编号，接着在块内查找元素，做到$O(\sqrt{n})$查询。同理，在插入（或删除）的时候，可以把插入的序列先分块，然后把这些块接在指定的位置后面（或把指定的块删除），复杂度也可以保持在$O(\sqrt{n})$。所以对于操作数与元素数量同阶时，复杂度为$O(n\sqrt{n})$。<del>不得不说一句，Splay NB！！！</del></p>
 <h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>以<a target="_blank" rel="noopener" href="https://www.luogu.org/recordnew/show/18853913">洛谷P4008 文本编辑器</a>为例</p>
 <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><h4 id="内存池："><a href="#内存池：" class="headerlink" title="内存池："></a>内存池：</h4><p>动态回收和分配节点（其实跟块状链表并没有什么关系）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> pool[MAXN], tot; <span class="comment">//池中存放可以使用的节点</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">new_node</span><span class="params">()</span> </span>&#123;        <span class="comment">//分配节点</span></span><br><span class="line">    <span class="keyword">return</span> pool[tot--];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;       <span class="comment">//回收节点</span></span><br><span class="line">    pool[++tot] = x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;           <span class="comment">//初始状态所有节点都可以使用</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; MAXN; ++i) &#123;</span><br><span class="line">        pool[++tot] = MAXN-i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="链表节点："><a href="#链表节点：" class="headerlink" title="链表节点："></a>链表节点：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">    <span class="type">int</span> sz, nxt;		<span class="comment">//节点对应的数组长度,链表中下一个节点</span></span><br><span class="line">    <span class="type">char</span> s[MAXB*<span class="number">4</span>];		<span class="comment">//节点对应的数组实际值(本题要求为字符)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="查询位置"><a href="#查询位置" class="headerlink" title="查询位置"></a>查询位置</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回原数组中下标为p的元素所在的块的编号，并将传入的引用(原数组下标)改为块内的下标。</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pos</span><span class="params">(<span class="type">int</span> &amp;p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(x != <span class="number">-1</span> &amp;&amp; a[x].sz &lt; p) &#123;	<span class="comment">//为方便下面的split操作，定义下标在[1,sz]内,但实际数组下标从0开始。</span></span><br><span class="line">        p -= a[x].sz, x = a[x].nxt;		<span class="comment">//一次跳整个节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="暴力插入。"><a href="#暴力插入。" class="headerlink" title="暴力插入。"></a>暴力插入。</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在编号为x的节点后插入一个编号为y,长度为len,对应数组为s的节点</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> len, <span class="type">char</span> *s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(y != <span class="number">-1</span>) &#123;		<span class="comment">//特判x指向-1(即链表的末尾)</span></span><br><span class="line">        a[y].sz = len;		<span class="comment">//对编号为y的节点赋值</span></span><br><span class="line">        a[y].nxt = a[x].nxt;</span><br><span class="line">        <span class="built_in">memcpy</span>(a[y].s, s, len);		<span class="comment">//memcpy的第三个参数是复制的字节数,所以这里的len本来应该乘上相应元素类型的size,但本题由于sizeof(char)=1，所以可以不乘。</span></span><br><span class="line">    &#125;</span><br><span class="line">    a[x].nxt = y;		<span class="comment">//x指向y</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="节点合并"><a href="#节点合并" class="headerlink" title="节点合并"></a>节点合并</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把编号为x和y的两个节点合并</span></span><br><span class="line"><span class="comment">//我们选择把y暴力接在x的后面,然后把y删除</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memcpy</span>(a[x].s+a[x].sz, a[y].s, a[y].sz);	<span class="comment">//把y对应的数组接到x后面</span></span><br><span class="line">    a[x].sz += a[y].sz, a[x].nxt = a[y].nxt;	<span class="comment">//用y的信息更新x</span></span><br><span class="line">    <span class="built_in">del</span>(y);		<span class="comment">//删除y</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="节点分裂​"><a href="#节点分裂​" class="headerlink" title="节点分裂​"></a>节点分裂​</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把第x个节点从pos位置分裂成两个节点(即前pos个和后sz-pos个分离)</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">split</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> pos)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x == <span class="number">-1</span> || pos == a[x].sz) <span class="keyword">return</span>;		<span class="comment">//如果节点为空或者根本不需要分裂(分裂位置在块的末尾)</span></span><br><span class="line">    <span class="type">int</span> t = <span class="built_in">new_node</span>();		<span class="comment">//分裂后多出一个节点</span></span><br><span class="line">    <span class="built_in">add</span>(x, t, a[x].sz-pos, a[x].s+pos);		<span class="comment">//把分离出来的后半部分接在原节点的后面</span></span><br><span class="line">    a[x].sz = pos;		<span class="comment">//把sz赋值为pos,相当于只保留了前半部分的元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">int pool[MAXN], tot; //池中存放可以使用的节点
+int new_node() &#123;        //分配节点
+    return pool[tot--];
+&#125;
+void del(int x) &#123;       //回收节点
+    pool[++tot] = x;
+&#125;
+void init() &#123;           //初始状态所有节点都可以使用
+    for(int i = 1; i &lt; MAXN; ++i) &#123;
+        pool[++tot] = MAXN-i;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="链表节点："><a href="#链表节点：" class="headerlink" title="链表节点："></a>链表节点：</h4><pre><code class="lang-cpp">struct node &#123;
+    int sz, nxt;        //节点对应的数组长度,链表中下一个节点
+    char s[MAXB*4];        //节点对应的数组实际值(本题要求为字符)
+&#125;
+</code></pre>
+<h4 id="查询位置"><a href="#查询位置" class="headerlink" title="查询位置"></a>查询位置</h4><pre><code class="lang-cpp">//返回原数组中下标为p的元素所在的块的编号，并将传入的引用(原数组下标)改为块内的下标。
+int pos(int &amp;p) &#123;
+    int x = 0;
+    while(x != -1 &amp;&amp; a[x].sz &lt; p) &#123;    //为方便下面的split操作，定义下标在[1,sz]内,但实际数组下标从0开始。
+        p -= a[x].sz, x = a[x].nxt;        //一次跳整个节点
+    &#125;
+    return x;
+&#125;
+</code></pre>
+<h4 id="暴力插入。"><a href="#暴力插入。" class="headerlink" title="暴力插入。"></a>暴力插入。</h4><pre><code class="lang-cpp">//在编号为x的节点后插入一个编号为y,长度为len,对应数组为s的节点
+void add(int x, int y, int len, char *s) &#123;
+    if(y != -1) &#123;        //特判x指向-1(即链表的末尾)
+        a[y].sz = len;        //对编号为y的节点赋值
+        a[y].nxt = a[x].nxt;
+        memcpy(a[y].s, s, len);        //memcpy的第三个参数是复制的字节数,所以这里的len本来应该乘上相应元素类型的size,但本题由于sizeof(char)=1，所以可以不乘。
+    &#125;
+    a[x].nxt = y;        //x指向y
+&#125;
+</code></pre>
+<h4 id="节点合并"><a href="#节点合并" class="headerlink" title="节点合并"></a>节点合并</h4><pre><code class="lang-cpp">//把编号为x和y的两个节点合并
+//我们选择把y暴力接在x的后面,然后把y删除
+void merge(int x, int y) &#123;
+    memcpy(a[x].s+a[x].sz, a[y].s, a[y].sz);    //把y对应的数组接到x后面
+    a[x].sz += a[y].sz, a[x].nxt = a[y].nxt;    //用y的信息更新x
+    del(y);        //删除y
+&#125;
+</code></pre>
+<h4 id="节点分裂​"><a href="#节点分裂​" class="headerlink" title="节点分裂​"></a>节点分裂​</h4><pre><code class="lang-cpp">//把第x个节点从pos位置分裂成两个节点(即前pos个和后sz-pos个分离)
+void split(int x, int pos) &#123;
+    if(x == -1 || pos == a[x].sz) return;        //如果节点为空或者根本不需要分裂(分裂位置在块的末尾)
+    int t = new_node();        //分裂后多出一个节点
+    add(x, t, a[x].sz-pos, a[x].s+pos);        //把分离出来的后半部分接在原节点的后面
+    a[x].sz = pos;        //把sz赋值为pos,相当于只保留了前半部分的元素
+&#125;
+</code></pre>
 <h3 id="正式开肝"><a href="#正式开肝" class="headerlink" title="正式开肝"></a>正式开肝</h3><p>我们做了这么多准备工作，是不是开始有点感到<del>恶心</del>累了？别着急，正式的操作代码更长。这也是块状链表的特点，虽然易于理解，但码量<del>巨</del>较大，并且总会被出其不意的细节坑到（比如我被忘记特判的$-1$坑了一个晚上+半个早上）。</p>
 <h4 id="插入："><a href="#插入：" class="headerlink" title="插入："></a>插入：</h4><p>这里要区分正式的插入与上文准备工作中的暴力插入：暴力插入是不考虑每个节点的大小和插入后链表的平衡性的。</p>
 <p>这意味着如果我们使用暴力插入，会出现以下情况：</p>
@@ -283,15 +332,72 @@
 <p>我们在插入的时候并不一定能将插入串完整地分成若干个块，可能会留下如图中$T$这样的长度很小的块，于是可能出现在多次操作后链表中出现了很多小块，使时间复杂度退化到一次操作$O(n)$。</p>
 <p>那么这时候就要用到之前准备的合并操作了，因为我们插入使中间的块长度一定是$\sqrt{n}$，所以我们只考虑插入串的左右端点，即插入时的两个“接口”。如果接口两端的块长度和小于$\sqrt{n}$，就直接合并。</p>
 <p>还有一个细节问题，我们不一定是在完整地块后面插入，也有可能是在块内的某个元素后面插入，那么我们就需要通过$pos$和$split$操作的配合，把插入位置强行变成一个完整块的末尾，再进行插入即可。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> len, <span class="type">char</span> *s)</span> </span>&#123;		<span class="comment">//在位置x后插入长度为len的序列</span></span><br><span class="line">    <span class="type">int</span> now = <span class="built_in">pos</span>(x), nxt = now, tot = <span class="number">0</span>, t;		<span class="comment">//查询元素位置</span></span><br><span class="line">    <span class="built_in">split</span>(now, x);		<span class="comment">//分裂插入位置所在节点</span></span><br><span class="line">    <span class="keyword">while</span>(tot+MAXB &lt;= len) &#123;  <span class="comment">//运用准备操作中的add将插入串分块插入,最后会剩下单独长度为len-tot的一个串</span></span><br><span class="line">        t = <span class="built_in">new_node</span>();</span><br><span class="line">        <span class="built_in">add</span>(nxt, t, MAXB, s+tot);		<span class="comment">//MAXB是钦定的块长</span></span><br><span class="line">        nxt = t;</span><br><span class="line">        tot += MAXB;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(tot &lt; len) &#123;		<span class="comment">//插入最后单独的串</span></span><br><span class="line">        t = <span class="built_in">new_node</span>();</span><br><span class="line">        <span class="built_in">add</span>(nxt, t, len-tot, s+tot);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//暴力合并接口两端,注意对-1的特判</span></span><br><span class="line">    <span class="keyword">if</span>(t != <span class="number">-1</span> &amp;&amp; a[nxt].sz+a[t].sz &lt; MAXB) &#123;</span><br><span class="line">        <span class="built_in">merge</span>(nxt, t);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(a[now].nxt != <span class="number">-1</span> &amp;&amp; a[now].sz+a[a[now].nxt].sz &lt; MAXB) &#123;</span><br><span class="line">        <span class="built_in">merge</span>(now, a[now].nxt);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void insert(int x, int len, char *s) &#123;        //在位置x后插入长度为len的序列
+    int now = pos(x), nxt = now, tot = 0, t;        //查询元素位置
+    split(now, x);        //分裂插入位置所在节点
+    while(tot+MAXB &lt;= len) &#123;  //运用准备操作中的add将插入串分块插入,最后会剩下单独长度为len-tot的一个串
+        t = new_node();
+        add(nxt, t, MAXB, s+tot);        //MAXB是钦定的块长
+        nxt = t;
+        tot += MAXB;
+    &#125;
+    if(tot &lt; len) &#123;        //插入最后单独的串
+        t = new_node();
+        add(nxt, t, len-tot, s+tot);
+    &#125;
+    //暴力合并接口两端,注意对-1的特判
+    if(t != -1 &amp;&amp; a[nxt].sz+a[t].sz &lt; MAXB) &#123;
+        merge(nxt, t);
+    &#125;
+    if(a[now].nxt != -1 &amp;&amp; a[now].sz+a[a[now].nxt].sz &lt; MAXB) &#123;
+        merge(now, a[now].nxt);
+    &#125;
+&#125;
+</code></pre>
 <hr>
 <h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><p>有了插入操作的基础后，删除操作就比较简单了。</p>
 <p>例如我们要删除区间$[p,q]$之间的序列，那么我们就可以像下图这样操作：</p>
 <p><img src="https://s2.ax1x.com/2019/05/09/EgI2xP.png" alt="EgI2xP.png"></p>
 <p>我们先把两端的节点分裂，使得删除的区间由完整的块构成，然后直接删除，并同时维护两个端点的信息即可。例如上图最后形成了两个小块，那么我们把它们合并即可。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> len)</span> </span>&#123;		<span class="comment">//从x开始删掉长度为len的串</span></span><br><span class="line">    <span class="type">int</span> now = <span class="built_in">pos</span>(x);		<span class="comment">//定位,然后在左端点进行分割</span></span><br><span class="line">    <span class="built_in">split</span>(now, x);</span><br><span class="line">    <span class="type">int</span> nxt = a[now].nxt;</span><br><span class="line">    <span class="keyword">while</span>(nxt != <span class="number">-1</span> &amp;&amp; len &gt;= a[nxt].sz) &#123;		<span class="comment">//能删整块就删</span></span><br><span class="line">        len -= a[nxt].sz;</span><br><span class="line">        nxt = a[nxt].nxt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(nxt != <span class="number">-1</span>) &#123;		<span class="comment">//还是要特判节点为空</span></span><br><span class="line">        <span class="built_in">split</span>(nxt, len);		<span class="comment">//在右端点分割</span></span><br><span class="line">        nxt = a[nxt].nxt;		<span class="comment">//定位到删除后的右边部分</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = a[now].nxt; i != nxt; i = a[now].nxt) &#123;		<span class="comment">//维护左端点的nxt并且回收节点</span></span><br><span class="line">        a[now].nxt = a[i].nxt;</span><br><span class="line">        <span class="built_in">del</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(nxt != <span class="number">-1</span> &amp;&amp; a[now].sz+a[nxt].sz &lt; MAXB) &#123;	<span class="comment">//暴力合并左右端点(能合并就合并)</span></span><br><span class="line">        <span class="built_in">merge</span>(now, nxt);</span><br><span class="line">        nxt = a[nxt].nxt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void remove(int x, int len) &#123;        //从x开始删掉长度为len的串
+    int now = pos(x);        //定位,然后在左端点进行分割
+    split(now, x);
+    int nxt = a[now].nxt;
+    while(nxt != -1 &amp;&amp; len &gt;= a[nxt].sz) &#123;        //能删整块就删
+        len -= a[nxt].sz;
+        nxt = a[nxt].nxt;
+    &#125;
+    if(nxt != -1) &#123;        //还是要特判节点为空
+        split(nxt, len);        //在右端点分割
+        nxt = a[nxt].nxt;        //定位到删除后的右边部分
+    &#125;
+    for(int i = a[now].nxt; i != nxt; i = a[now].nxt) &#123;        //维护左端点的nxt并且回收节点
+        a[now].nxt = a[i].nxt;
+        del(i);
+    &#125;
+    while(nxt != -1 &amp;&amp; a[now].sz+a[nxt].sz &lt; MAXB) &#123;    //暴力合并左右端点(能合并就合并)
+        merge(now, nxt);
+        nxt = a[nxt].nxt;
+    &#125;
+&#125;
+</code></pre>
 <h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><p>这个操作其实没什么技术含量，无非就是定位之后整块输出。不过要注意一些细节</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">get</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> now = <span class="built_in">pos</span>(x), tot = <span class="built_in">min</span>(a[now].sz-x, len);	<span class="comment">//先处理左边不完整的部分</span></span><br><span class="line">    <span class="built_in">memcpy</span>(ans, a[now].s+x, tot);</span><br><span class="line">    <span class="type">int</span> nxt = a[now].nxt;</span><br><span class="line">    <span class="keyword">while</span>(nxt != <span class="number">-1</span> &amp;&amp; len &gt;= a[nxt].sz+tot) &#123;	<span class="comment">//整块合并答案</span></span><br><span class="line">        <span class="built_in">memcpy</span>(ans+tot, a[nxt].s, a[nxt].sz);</span><br><span class="line">        tot += a[nxt].sz;</span><br><span class="line">        nxt = a[nxt].nxt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(nxt != <span class="number">-1</span> &amp;&amp; tot &lt; len) &#123;		<span class="comment">//处理右边不完整的部分</span></span><br><span class="line">        <span class="built_in">memcpy</span>(ans+tot, a[nxt].s, len-tot);</span><br><span class="line">    &#125;</span><br><span class="line">    ans[len] = <span class="string">&#x27;\0&#x27;</span>;		<span class="comment">//标记字符串结尾</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, ans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void get(int x, int len) &#123;
+    int now = pos(x), tot = min(a[now].sz-x, len);    //先处理左边不完整的部分
+    memcpy(ans, a[now].s+x, tot);
+    int nxt = a[now].nxt;
+    while(nxt != -1 &amp;&amp; len &gt;= a[nxt].sz+tot) &#123;    //整块合并答案
+        memcpy(ans+tot, a[nxt].s, a[nxt].sz);
+        tot += a[nxt].sz;
+        nxt = a[nxt].nxt;
+    &#125;
+    if(nxt != -1 &amp;&amp; tot &lt; len) &#123;        //处理右边不完整的部分
+        memcpy(ans+tot, a[nxt].s, len-tot);
+    &#125;
+    ans[len] = &#39;\0&#39;;        //标记字符串结尾
+    printf(&quot;%s\n&quot;, ans);
+&#125;
+</code></pre>
 <hr>
 <h2 id="小小的小结"><a href="#小小的小结" class="headerlink" title="小小的小结"></a>小小的小结</h2><p>块状链表虽然思想简单，但是码量较大，细节较多，感觉并不适合当做模板来背，同时复杂度也并不是特别优秀<del>（Splay NB！！！）</del>。就这道题调了四五个小时，<del>简直毒瘤</del>。但是作为对分块思想的练习还是不错的，同时代码也比较直观。</p>
 
@@ -500,6 +606,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -568,7 +675,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -595,39 +702,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -639,75 +730,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -719,39 +746,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -763,35 +802,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>

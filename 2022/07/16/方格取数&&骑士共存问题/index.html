@@ -21,10 +21,10 @@
 <meta property="article:modified_time" content="2022-07-16T11:45:33.154Z">
 <meta property="article:author" content="Fighter">
 <meta property="article:tag" content="题解">
+<meta property="article:tag" content="图论">
 <meta property="article:tag" content="网络流">
 <meta property="article:tag" content="最大流">
 <meta property="article:tag" content="二分图">
-<meta property="article:tag" content="图论">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Fighter&#39;s Blog" type="application/atom+xml">
@@ -54,6 +54,8 @@
     <script src="/lib/pace.min.js"></script>
     <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
   
+
+  <link rel="stylesheet" href="/prism.css">
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
@@ -91,7 +93,7 @@
 		<nav class="header-smart-menu">
 			
 				
-					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+					<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">搜索</a>
 				
 			
 				
@@ -263,14 +265,68 @@
 <li>跑最小割（最大流）模板，最后的答案为点权总和减去最小割。</li>
 </ol>
 <h3 id="代码-建图"><a href="#代码-建图" class="headerlink" title="代码(建图)"></a>代码(建图)</h3><p><i><font size=4>Show You the Code.</font></i></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i][j]);</span><br><span class="line">        sum += a[i][j];</span><br><span class="line">        <span class="keyword">if</span>((i+j)&amp;<span class="number">1</span>)&#123;		<span class="comment">//判断黑白点</span></span><br><span class="line">            <span class="built_in">add</span>(s, <span class="built_in">get</span>(i, j), a[i][j]);</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i, j), s, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i, j), t, a[i][j]);</span><br><span class="line">            <span class="built_in">add</span>(t, <span class="built_in">get</span>(i, j), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> k = <span class="number">0</span>; k &lt; <span class="number">4</span>; k++)&#123;		<span class="comment">//四个方向都会影响到</span></span><br><span class="line">            <span class="keyword">if</span>(!((i+j)&amp;<span class="number">1</span>)) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="type">int</span> u = i+mx[k], v = j+my[k];</span><br><span class="line">            <span class="keyword">if</span>(u&lt;=<span class="number">0</span> || u&gt;m || v&lt;=<span class="number">0</span> || v&gt;n) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i, j), <span class="built_in">get</span>(u, v), INF);	<span class="comment">//get(x,y)把二维坐标转化为一位编号. get(x,y)=(n-1)*x+y</span></span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(u, v), <span class="built_in">get</span>(i, j), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">dinic</span>();</span><br><span class="line">cout &lt;&lt; sum-ans &lt;&lt; endl;	<span class="comment">//ans是最大流</span></span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">for(int i = 1; i &lt;= m; i++)&#123;
+    for(int j = 1; j &lt;= n; j++)&#123;
+        scanf(&quot;%d&quot;, &amp;a[i][j]);
+        sum += a[i][j];
+        if((i+j)&amp;1)&#123;        //判断黑白点
+            add(s, get(i, j), a[i][j]);
+            add(get(i, j), s, 0);
+        &#125;
+        else&#123;
+            add(get(i, j), t, a[i][j]);
+            add(t, get(i, j), 0);
+        &#125;
+    &#125;
+&#125;
+for(int i = 1; i &lt;= m; i++)&#123;
+    for(int j = 1; j &lt;= n; j++)&#123;
+        for(int k = 0; k &lt; 4; k++)&#123;        //四个方向都会影响到
+            if(!((i+j)&amp;1)) continue;
+            int u = i+mx[k], v = j+my[k];
+            if(u&lt;=0 || u&gt;m || v&lt;=0 || v&gt;n) continue;
+            add(get(i, j), get(u, v), INF);    //get(x,y)把二维坐标转化为一位编号. get(x,y)=(n-1)*x+y
+            add(get(u, v), get(i, j), 0);
+        &#125;
+    &#125;
+&#125;
+dinic();
+cout &lt;&lt; sum-ans &lt;&lt; endl;    //ans是最大流
+</code></pre>
 <h3 id="小小的小结"><a href="#小小的小结" class="headerlink" title="小小的小结"></a>小小的小结</h3><p>回过头来看看我们在这道题中建图后的本质操作是什么。</p>
 <p>我们考虑最后被割成两半的图，图中互相影响的点一定不再同一个集合中，而我们建图的时候是有影响就建边，所以其实我们是从初始的二分图中找出了最大的独立集（也就是最大的点集，其中的点两两之间都没有连边）。</p>
 <hr>
 <h3 id="骑士共存"><a href="#骑士共存" class="headerlink" title="骑士共存"></a>骑士共存</h3><p><del>（讲完上一题应该都会骑士共存了）</del></p>
 <p>同样的，我们发现虽然影响的方式变了，但是假如我们依旧用同样的方式染色，黑白点仍旧只会互相影响，而不会直接影响同色的点（可以看题目中的图）。这说明我们其实完全可以按照一样的套路来乱搞。</p>
 <p>这道题多了障碍，实际上并没用，遇到障碍的时候直接跳过不连边就行了。</p>
-<h3 id="代码（还是建图）"><a href="#代码（还是建图）" class="headerlink" title="代码（还是建图）"></a>代码（还是建图）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">        <span class="keyword">if</span>(mp[i][j]) <span class="keyword">continue</span>;		<span class="comment">//mp[i][j]为1则表示有障碍</span></span><br><span class="line">        <span class="keyword">if</span>((i+j)&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="built_in">add</span>(s, <span class="built_in">get</span>(i,j), <span class="number">1</span>);		<span class="comment">//点权实际可以看做1</span></span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i,j), s, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i,j), t, <span class="number">1</span>);</span><br><span class="line">            <span class="built_in">add</span>(t, <span class="built_in">get</span>(i,j), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">        <span class="keyword">if</span>(mp[i][j] || !((i+j)&amp;<span class="number">1</span>)) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> u, v;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; <span class="number">8</span>; ++k) &#123;</span><br><span class="line">            u = i+mx[k], v = j+my[k];</span><br><span class="line">            <span class="keyword">if</span>(u&lt;=<span class="number">0</span> || u&gt;n || v&lt;=<span class="number">0</span> || v&gt;n || mp[u][v]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(i, j), <span class="built_in">get</span>(u, v), INF);</span><br><span class="line">            <span class="built_in">add</span>(<span class="built_in">get</span>(u, v), <span class="built_in">get</span>(i, j), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">dinic</span>();</span><br><span class="line">cout &lt;&lt; n*n-m-ans &lt;&lt; endl;		<span class="comment">//总共n*n个点,去掉m个障碍,再减去最大流</span></span><br></pre></td></tr></table></figure>
+<h3 id="代码（还是建图）"><a href="#代码（还是建图）" class="headerlink" title="代码（还是建图）"></a>代码（还是建图）</h3><pre><code class="lang-cpp">for (int i = 1; i &lt;= n; ++i) &#123;
+    for (int j = 1; j &lt;= n; ++j) &#123;
+        if(mp[i][j]) continue;        //mp[i][j]为1则表示有障碍
+        if((i+j)&amp;1)&#123;
+            add(s, get(i,j), 1);        //点权实际可以看做1
+            add(get(i,j), s, 0);
+        &#125;
+        else&#123;
+            add(get(i,j), t, 1);
+            add(t, get(i,j), 0);
+        &#125;
+    &#125;
+&#125;
+for (int i = 1; i &lt;= n; ++i) &#123;
+    for (int j = 1; j &lt;= n; ++j) &#123;
+        if(mp[i][j] || !((i+j)&amp;1)) continue;
+        int u, v;
+        for (int k = 0; k &lt; 8; ++k) &#123;
+            u = i+mx[k], v = j+my[k];
+            if(u&lt;=0 || u&gt;n || v&lt;=0 || v&gt;n || mp[u][v]) continue;
+            add(get(i, j), get(u, v), INF);
+            add(get(u, v), get(i, j), 0);
+        &#125;
+    &#125;
+&#125;
+dinic();
+cout &lt;&lt; n*n-m-ans &lt;&lt; endl;        //总共n*n个点,去掉m个障碍,再减去最大流
+</code></pre>
 <hr>
 <h2 id="真正的总结"><a href="#真正的总结" class="headerlink" title="真正的总结"></a>真正的总结</h2><p>我们可以发现在类似这样的网格模型下，只要按题意建图，然后求最大独立集即可。<del>（好像比小结还短）</del></p>
 
@@ -313,6 +369,10 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图论</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">网络流</a>
         		</li>
       		 
@@ -322,10 +382,6 @@
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">二分图</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图论</a>
         		</li>
       		
 		</ul>
@@ -487,6 +543,7 @@
   		本站访客数<span id="busuanzi_value_site_uv"></span>人
   	</span>
   
+  <script src="/prism.js" async></script>
 </footer>
 
     </div>
@@ -555,7 +612,7 @@
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">搜索</a></li>
       
         
       
@@ -582,39 +639,23 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">模板</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">题解</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+                <a href="javascript:void(0)" class="js-tag color3">数论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">模板</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,75 +667,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数论</a>
+                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">背包</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">概率</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -706,39 +683,51 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+                <a href="javascript:void(0)" class="js-tag color4">线段树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color4">KMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color5">树状数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color2">堆/优先队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">树形结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -750,35 +739,103 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">构造</a>
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贪心</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">概率</a>
+                <a href="javascript:void(0)" class="js-tag color4">GSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">哈希表</a>
+                <a href="javascript:void(0)" class="js-tag color5">树链剖分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串哈希</a>
+                <a href="javascript:void(0)" class="js-tag color4">最短路</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">杜教筛</a>
+                <a href="javascript:void(0)" class="js-tag color1">USACO</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数论卷积</a>
+                <a href="javascript:void(0)" class="js-tag color4">分层图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">长链剖分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">点分治</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">计算几何</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">概率/期望</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卡特兰数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">自适应辛普森积分</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">块状链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">背包</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">(扩展)卢卡斯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜索与剪枝</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">网络流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">最大流</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二分图</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">旋转卡壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">莫比乌斯反演</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">树套树</a>
               </li>
             
             <div class="clearfix"></div>
