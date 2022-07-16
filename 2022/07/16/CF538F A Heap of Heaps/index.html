@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://memset0x3f.github.io">
-  <title>Fighter&#39;s Blog</title>
+  <title>【算法】CF538F A Heap of Heaps | Fighter&#39;s Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-    
-    <!-- <meta name="keywords" content="">
-    <meta name="description" content=""> -->
-  
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Fighter&#39;s Blog">
-<meta property="og:url" content="https://memset0x3f.github.io/page/3/">
+  <meta name="description" content="题意简述​    给定一个序列，求按顺序将此序列构建成1~n-1叉小根堆时，不合法元素分别有多少。一个元素不合法，当且仅当它的值严格小于父亲节点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】CF538F A Heap of Heaps">
+<meta property="og:url" content="https://memset0x3f.github.io/2022/07/16/CF538F%20A%20Heap%20of%20Heaps/">
 <meta property="og:site_name" content="Fighter&#39;s Blog">
+<meta property="og:description" content="题意简述​    给定一个序列，求按顺序将此序列构建成1~n-1叉小根堆时，不合法元素分别有多少。一个元素不合法，当且仅当它的值严格小于父亲节点。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
+<meta property="article:modified_time" content="2022-07-16T10:11:49.245Z">
 <meta property="article:author" content="Fighter">
 <meta name="twitter:card" content="summary">
   
@@ -191,47 +191,93 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-
-  
-    <article id="post-P3565_[POI2014]Hotels长链剖分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-CF538F A Heap of Heaps" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
   
   
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/" target="_blank">【题解】P3565 [POI2014]Hotels(长链剖分)</a>
-  
+    <h1 class="article-title" itemprop="name">
+      【算法】CF538F A Heap of Heaps
     </h1>
   
 
 
   
   
-<a href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/" class="archive-article-date">
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2022/07/16/CF538F%20A%20Heap%20of%20Heaps/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
   
   
     
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">697字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
 
   
   </header>
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3565">传送门</a></p>
-<p>给定一棵树，求树上选三个点，且这三个点两两之间距离相等的方案数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/#more">more >></a>
-    
-    
+    <h2 id="题意简述"><a href="#题意简述" class="headerlink" title="题意简述"></a>题意简述</h2><p>​    给定一个序列，求按顺序将此序列构建成1~n-1叉小根堆时，不合法元素分别有多少。一个元素不合法，当且仅当它的值严格小于父亲节点。</p>
+<span id="more"></span>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>​    首先我们可以得知，对于一个父亲，不管几叉堆，它的儿子一定是一段连续的区间。并且对于$i$叉堆$fa$节点，这一段区间为$[fa<em>i-i+2,fa</em>i+1]$。</p>
+<p>​    那么我们自然想到用数据结构来维护这一段区间中小于某个值的元素个数。<del>于是我在考场上愚蠢地选择了分块</del>。</p>
+<p>​    实际上这可以用树状数组维护，原理和求逆序对类似。首先我们记录每一个数的初始编号，然后将元素从小到大排序，依次插入树状数组。插入时，将元素的初始位置在树状数组中加1；查询时只要统计树状数组中给定区间内的和即可。</p>
+<p>​    为什么这样插入就是正确的呢？<del>废话，不正确怎么能过呢</del>。感性理解一下，由于排序后保证了小的数字会被抢先插入，而当前节点要插入时，在树状数组中的元素一定比当前元素小，那么只要在当前元素的儿子区间中查询区间和就是比他小的儿子个数了。</p>
+<p>​    最后分析一下复杂度，由于我们对于$i$叉堆，肯定需要扫描$\frac{n}{i}$个区间，而每个区间都由树状数组在$logn$时间内给出答案。所以我们的复杂度应为$nlogn \cdot \sum \limits_{i=1}^{n} \frac{n}{i}$。由于$ \sum \limits_{i=1}^{n} \frac{n}{i}=logn$，所以最后的复杂度为$O(nlog^2 n)$。</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lowbit(x) (x&amp;-x)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 500005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span>&#123;</span><br><span class="line">    <span class="type">int</span> val, ord;</span><br><span class="line">    <span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt;(node n1, node n2)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n1.val == n2.val)</span><br><span class="line">            <span class="keyword">return</span> n1.ord &lt; n2.ord;</span><br><span class="line">        <span class="keyword">return</span> n1.val &lt; n2.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;a[MAX];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="type">int</span> s[MAX], ans[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(x &lt;= n)&#123;</span><br><span class="line">        s[x]++;</span><br><span class="line">        x += <span class="built_in">lowbit</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(x)&#123;</span><br><span class="line">        res += s[x];</span><br><span class="line">        x -= <span class="built_in">lowbit</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i].val);</span><br><span class="line">        a[i].ord = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(a+<span class="number">1</span>, a+n+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">add</span>(a[i].ord);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j&lt;n &amp;&amp; a[i].ord*j-j+<span class="number">2</span> &lt;= n; j++)&#123;</span><br><span class="line">            ans[j] += <span class="built_in">sum</span>(<span class="built_in">min</span>(a[i].ord*j+<span class="number">1</span>, n)) - <span class="built_in">sum</span>(a[i].ord*j-j+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, ans[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><p>其实这道题还有两三种$\sqrt{n}$的做法（如除法分块）<del>但我太弱了不会写</del>。值得思考思考。</p>
 
     
 
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          Fighter
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="https://memset0x3f.github.io/2022/07/16/CF538F A Heap of Heaps/" title="【算法】CF538F A Heap of Heaps" target="_blank">https://memset0x3f.github.io/2022/07/16/CF538F A Heap of Heaps/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
     
 
   </div>
@@ -241,16 +287,85 @@
     
 
     
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/">展开全文 >></a>
-    </p>
+
     
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://memset0x3f.github.io/2022/07/16/CF538F%20A%20Heap%20of%20Heaps/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
 
     
     <div class="clearfix"></div>
   </div>
   </div>
 </article>
+
+
+<nav id="article-nav">
+  
+    <a href="/2022/07/16/%E9%AD%94%E6%9C%AF%E7%90%83%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【题解】魔术球问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【算法】BSGS算法的推导与实现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -265,722 +380,33 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P3119_[USACO15JAN]Grass Cownoisseur" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/" target="_blank">【题解】P3119 [USACO15JAN] Grass Cownoisseur</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3119">传送门</a></p>
-<p>题意很简单，给定一张有向图，允许选择在一条边上反向行走一次，求从1出发，且最终回到1，最多能遍历到的点数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">题意简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Solution"><span class="toc-number">2.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-number">3.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%A9%E8%9B%8B"><span class="toc-number">4.</span> <span class="toc-text">彩蛋</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
 
-  
-    <article id="post-P3659_[USACO17FEB]Why Did the Cow Cross the Road" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/" target="_blank">【题解】P3659 [USACO17FEB]Why Did the Cow Cross the Road</a>
-  
-    </h1>
-  
 
 
-  
-  
-<a href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
 
-  
-  
-    
 
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>​    翻了翻题解，好像大部分都是用跨三步连边转移的方式来跑最短路。但我一看到这道题，就发现了一个特征：</p>
-<p>​    <strong>奶牛每走一步，并不影响整张地图的结构，只是改变了自身的状态</strong>，也就是改变了自身走几步之后需要休息。这是一个很明显的<strong>分层图</strong>模板。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/#more">more >></a>
-    
-    
 
-    
 
-    
 
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
 
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P4049_[JSOI2007]合金" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/" target="_blank">【题解】P4049 [JSOI2007]合金</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>模型转换+计算几何基础好题。</p>
-<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>直接上<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4049">传送门</a></p>
-    
-    <a class="article-more-a" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P5298 [PKUWC2018]Minimax" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" target="_blank">【题解】洛谷P5298 [PKUWC2018]Minimax</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5298">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现题目里的式子都是吓唬人的，由于所有概率都在$(0,1)$内，所以所有权值都有概率被选到，那么把权值排序一下就解决了$i$和$v[i]$。</p>
-<p>接着考虑怎么求概率。题目中保证这是一棵二叉树，所以设$f[x][j]$表示$x$这个节点，权值为$j$的概率。又因为题目保证权值互不相同，于是我们就可以通过一些讨论来转移。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P6006 [USACO20JAN]Farmer John Solves 3SUM G" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/" target="_blank">【题解】洛谷P6006 [USACO20JAN]Farmer John Solves 3SUM G</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6006">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现$n \leq 5000$，那么我们自然想到$O(n^2)$预处理之后$O(1)$回答询问。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P6007 [USACO20JAN]Springboards G" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/" target="_blank">【题解】洛谷P6007 [USACO20JAN]Springboards G</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6007">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>一开始想错了，还以为是什么神仙建图跑最短路……</p>
-<p>后来发现其实就是个非常套路的数据结构优化DP。</p>
-<p>朴素的DP应该不用多说，从左下方转移过来，跳板单独转移即可。这样是$O(P^2)$的，但是我们可以通过优化降低复杂度。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP19149 Virus Revisited" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP19149%20Virus%20Revisited/" target="_blank">【题解】SP19149 Virus Revisited</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP19149%20Virus%20Revisited/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP19149">原题传送门</a></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>由于最后求的是原点的细胞数，那么一定是先从原点向外扩展，再扩展回来到达原点。那么我们就可以把答案转化为从原点出发，经过$T$时间回到原点的方案数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP19149%20Virus%20Revisited/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP19149%20Virus%20Revisited/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP23881 God of Nim" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP23881%20God%20of%20Nim/" target="_blank">【题解】SP23881 God of Nim</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP23881%20God%20of%20Nim/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP23881">传送门</a></p>
-<p>有$n$堆石子，第$i$堆石子每次可以取的数量在$[1,k_i]$间，问先手是否必胜。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP23881%20God%20of%20Nim/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP23881%20God%20of%20Nim/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP5973 Selecting Teams" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP5973%20Selecting%20Teams/" target="_blank">【题解】SPOJ5973 Selecting Teams(3.30模拟赛T1)</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP5973%20Selecting%20Teams/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有$n$个不同的物品，在其中选出不多于$k$个，再从选出的$m$个中选择$l$个，并从$l$个中选出1个，给定$n$和$k$，求总情况数对$2^{25}$取模（具体模数不同，但都是2的整数次幂）。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP5973%20Selecting%20Teams/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP5973%20Selecting%20Teams/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
-    </nav>
-  
 
 
           </div>
@@ -1020,8 +446,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

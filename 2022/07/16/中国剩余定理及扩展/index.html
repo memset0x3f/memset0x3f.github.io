@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://memset0x3f.github.io">
-  <title>Fighter&#39;s Blog</title>
+  <title>【算法】中国剩余定理及扩展 | Fighter&#39;s Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-    
-    <!-- <meta name="keywords" content="">
-    <meta name="description" content=""> -->
-  
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Fighter&#39;s Blog">
-<meta property="og:url" content="https://memset0x3f.github.io/page/3/">
+  <meta name="description" content="用途​    中国剩余定理一般用于求解模数互质线性同余方程组。形式如下：  \begin{cases} x \equiv {a_1} \pmod {b_1} \\ x \equiv {a_2} \pmod {b_2} \\ \ldots \\ x \equiv {a_i} \pmod {b_i} \\ \ldots \\ x \equiv {a_n} \pmod {b_n} \end{cases}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】中国剩余定理及扩展">
+<meta property="og:url" content="https://memset0x3f.github.io/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/">
 <meta property="og:site_name" content="Fighter&#39;s Blog">
+<meta property="og:description" content="用途​    中国剩余定理一般用于求解模数互质线性同余方程组。形式如下：  \begin{cases} x \equiv {a_1} \pmod {b_1} \\ x \equiv {a_2} \pmod {b_2} \\ \ldots \\ x \equiv {a_i} \pmod {b_i} \\ \ldots \\ x \equiv {a_n} \pmod {b_n} \end{cases}">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
+<meta property="article:modified_time" content="2022-07-16T10:18:24.862Z">
 <meta property="article:author" content="Fighter">
 <meta name="twitter:card" content="summary">
   
@@ -191,47 +191,107 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-
-  
-    <article id="post-P3565_[POI2014]Hotels长链剖分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-中国剩余定理及扩展" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
   
   
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/" target="_blank">【题解】P3565 [POI2014]Hotels(长链剖分)</a>
-  
+    <h1 class="article-title" itemprop="name">
+      【算法】中国剩余定理及扩展
     </h1>
   
 
 
   
   
-<a href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/" class="archive-article-date">
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
   
   
     
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">1k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">4分</span>
+    </span>
+  </span>
+</div>
+
 
   
   </header>
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3565">传送门</a></p>
-<p>给定一棵树，求树上选三个点，且这三个点两两之间距离相等的方案数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/#more">more >></a>
-    
+    <h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>​    中国剩余定理一般用于求解模数互质线性同余方程组。形式如下：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+x \equiv {a_1} \pmod {b_1} \\
+x \equiv {a_2} \pmod {b_2} \\
+\ldots \\
+x \equiv {a_i} \pmod {b_i} \\
+\ldots \\
+x \equiv {a_n} \pmod {b_n}
+\end{cases}</script><span id="more"></span>
+<h2 id="求解方法"><a href="#求解方法" class="headerlink" title="求解方法"></a>求解方法</h2><p>​    首先设$M$为所有模数的乘积，即$\prod \limits_{i=1}^{n} b_i$。</p>
+<p>​    我们构造一个$x=\sum \limits_{i=1}^{n} {a_i} \cdot {t_i} \cdot {m_i}$，其中$m_i=\frac{M}{b_i}$，$t_i\cdot m_i \equiv 1 \pmod{ b_i} $，可以证明$x$为方程组的一个特解。证明如下：</p>
+<p>​    由于$m_i=\frac{M}{b_i}$，且<strong>模数均两两互质</strong>，那么其余模数必然是$b_i$的倍数。又因为$t_i\cdot m_i \equiv 1 \pmod{ b_i} $，所以$x \equiv a_i \pmod{b_i}$。得证。</p>
+<p>​    观察$x$的构造过程，发现只有$t_i$是未知量，于是我们可以单独对于每一个方程，利用扩展欧几里得算法，求出每一个$b_i$对应的$t_i$，同时$ans$累加上${a_i} \cdot {t_i} \cdot {m_i}$。</p>
+<h2 id="例题-amp-代码"><a href="#例题-amp-代码" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P1495-曹冲养猪"><a href="#洛谷P1495-曹冲养猪" class="headerlink" title="洛谷P1495 曹冲养猪"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P1495">洛谷P1495 曹冲养猪</a></h3><p>中国剩余定理板子题，不过代码中的数组名称与上文的描述有些区别。</p>
+<h3 id="洛谷P3868-TJOI2009-猜数字"><a href="#洛谷P3868-TJOI2009-猜数字" class="headerlink" title="洛谷P3868 [TJOI2009]猜数字"></a>洛谷P3868 [TJOI2009]猜数字</h3><p>还是模板题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//曹冲养猪</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXN 15</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">ll mod[MAXN], b[MAXN], ans;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">0</span>)&#123;</span><br><span class="line">        x = <span class="number">1</span>;</span><br><span class="line">        y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;		<span class="comment">//中国剩余定理 </span></span><br><span class="line">    ll m = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        m *= mod[i];</span><br><span class="line">    &#125;</span><br><span class="line">    ll x, y, mi;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        mi = m/mod[i];</span><br><span class="line">        <span class="built_in">exgcd</span>(mi, mod[i], x, y);</span><br><span class="line">        ans += (mi*x*b[i]);</span><br><span class="line">        ans %= m;</span><br><span class="line">    &#125;</span><br><span class="line">    ans = (ans+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;mod[i], &amp;b[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="扩展中国剩余定理"><a href="#扩展中国剩余定理" class="headerlink" title="扩展中国剩余定理"></a>扩展中国剩余定理</h1><h2 id="用途-1"><a href="#用途-1" class="headerlink" title="用途"></a>用途</h2><p>​    为什么需要这样一个扩展的定理呢？很明显，中国剩余定理的描述中有一个至关重要的限制条件：<strong>模数两两互质</strong>。    然而实际上，即使模数不互质，也能对方程组进行求解。这就是扩展中国剩余定理。但实际上，除了解决的问题基本相同，扩展中国剩余定理在证明和实现上都不仅仅是“扩展”，所以XX通索性称其为扩展欧几里得解线性同余方程。</p>
+<h2 id="求解方法-1"><a href="#求解方法-1" class="headerlink" title="求解方法"></a>求解方法</h2><p>​    首先，我们改变一些定义，设当前正在处理第$i$个方程，则令$M$表示前$i-1$个模数的最小公倍数。令$x$为前$i-1$个方程的特解，$x’$为所求的前$i$组方程的特解。于是对于第$i$个方程，问题转化为求一个$t$，使得${x+M<em>t} \equiv {a_i} \pmod {b_i}$，而$x’={x+M</em>t}$。</p>
+<p>​    该方程等价于$M*t \equiv {a_i-x} \pmod {b_i}$，显然只有$t$是未知量于是我们就可以利用扩欧求出$t$。一直重复$n$遍，最终就可以得到方程组的解。</p>
+<h2 id="例题-amp-代码-1"><a href="#例题-amp-代码-1" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P4777-【模板】扩展中国剩余定理（EXCRT）"><a href="#洛谷P4777-【模板】扩展中国剩余定理（EXCRT）" class="headerlink" title="洛谷P4777 【模板】扩展中国剩余定理（EXCRT）"></a>洛谷P4777 【模板】扩展中国剩余定理（EXCRT）</h3><p>真·模板题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ll n, m, ans;</span><br><span class="line">ll a[MAX], b[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!b)&#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y, y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">mul</span><span class="params">(ll a, ll b, ll mod)</span></span>&#123;</span><br><span class="line">    ll res = <span class="number">0</span>, base = a;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            res = (res+base)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">        base = (base+base)%mod;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">excrt</span><span class="params">()</span></span>&#123;</span><br><span class="line">    m = b[<span class="number">1</span>], ans = a[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        ll p = ((a[i]-ans)%b[i]+b[i])%b[i];</span><br><span class="line">        ll x, y;			<span class="comment">//mx=p (mod b[i])</span></span><br><span class="line">        ll gcd = <span class="built_in">exgcd</span>(m, b[i], x, y);</span><br><span class="line">        <span class="keyword">if</span>(p % gcd) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        x = <span class="built_in">mul</span>(x, p/gcd, b[i]/gcd);</span><br><span class="line">        ans += x*m;</span><br><span class="line">        m *= b[i]/gcd;</span><br><span class="line">        ans = (ans%m+m)%m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ans%m+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>, &amp;b[i], &amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, <span class="built_in">excrt</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="完结撒花"><a href="#完结撒花" class="headerlink" title="完结撒花"></a>完结撒花</h1><h2 id="GL-amp-amp-HF"><a href="#GL-amp-amp-HF" class="headerlink" title="GL &amp;&amp; HF!!!"></a>GL &amp;&amp; HF!!!</h2>
     
 
     
 
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          Fighter
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="https://memset0x3f.github.io/2022/07/16/中国剩余定理及扩展/" title="【算法】中国剩余定理及扩展" target="_blank">https://memset0x3f.github.io/2022/07/16/中国剩余定理及扩展/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
     
 
   </div>
@@ -241,16 +301,80 @@
     
 
     
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3565_%5BPOI2014%5DHotels%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/">展开全文 >></a>
-    </p>
+
     
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://memset0x3f.github.io/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
 
     
     <div class="clearfix"></div>
   </div>
   </div>
 </article>
+
+
+<nav id="article-nav">
+  
+    <a href="/2022/07/16/P4178_Tree/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【题解】P4178 Tree
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -265,722 +389,33 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P3119_[USACO15JAN]Grass Cownoisseur" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/" target="_blank">【题解】P3119 [USACO15JAN] Grass Cownoisseur</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3119">传送门</a></p>
-<p>题意很简单，给定一张有向图，允许选择在一条边上反向行走一次，求从1出发，且最终回到1，最多能遍历到的点数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3119_%5BUSACO15JAN%5DGrass%20Cownoisseur/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E9%80%94"><span class="toc-number">1.</span> <span class="toc-text">用途</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">求解方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98-amp-%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">例题&amp;代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%9B%E8%B0%B7P1495-%E6%9B%B9%E5%86%B2%E5%85%BB%E7%8C%AA"><span class="toc-number">3.1.</span> <span class="toc-text">洛谷P1495 曹冲养猪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%9B%E8%B0%B7P3868-TJOI2009-%E7%8C%9C%E6%95%B0%E5%AD%97"><span class="toc-number">3.2.</span> <span class="toc-text">洛谷P3868 [TJOI2009]猜数字</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86"><span class="toc-number"></span> <span class="toc-text">扩展中国剩余定理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E9%80%94-1"><span class="toc-number">1.</span> <span class="toc-text">用途</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.</span> <span class="toc-text">求解方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98-amp-%E4%BB%A3%E7%A0%81-1"><span class="toc-number">3.</span> <span class="toc-text">例题&amp;代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%9B%E8%B0%B7P4777-%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E6%89%A9%E5%B1%95%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%EF%BC%88EXCRT%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">洛谷P4777 【模板】扩展中国剩余定理（EXCRT）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8C%E7%BB%93%E6%92%92%E8%8A%B1"><span class="toc-number"></span> <span class="toc-text">完结撒花</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GL-amp-amp-HF"><span class="toc-number">1.</span> <span class="toc-text">GL &amp;&amp; HF!!!</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
 
-  
-    <article id="post-P3659_[USACO17FEB]Why Did the Cow Cross the Road" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/" target="_blank">【题解】P3659 [USACO17FEB]Why Did the Cow Cross the Road</a>
-  
-    </h1>
-  
 
 
-  
-  
-<a href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
 
-  
-  
-    
 
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>​    翻了翻题解，好像大部分都是用跨三步连边转移的方式来跑最短路。但我一看到这道题，就发现了一个特征：</p>
-<p>​    <strong>奶牛每走一步，并不影响整张地图的结构，只是改变了自身的状态</strong>，也就是改变了自身走几步之后需要休息。这是一个很明显的<strong>分层图</strong>模板。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/#more">more >></a>
-    
-    
 
-    
 
-    
 
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
 
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P3659_%5BUSACO17FEB%5DWhy%20Did%20the%20Cow%20Cross%20the%20Road/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P4049_[JSOI2007]合金" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/" target="_blank">【题解】P4049 [JSOI2007]合金</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>模型转换+计算几何基础好题。</p>
-<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>直接上<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4049">传送门</a></p>
-    
-    <a class="article-more-a" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P4049_%5BJSOI2007%5D%E5%90%88%E9%87%91/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P5298 [PKUWC2018]Minimax" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" target="_blank">【题解】洛谷P5298 [PKUWC2018]Minimax</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5298">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现题目里的式子都是吓唬人的，由于所有概率都在$(0,1)$内，所以所有权值都有概率被选到，那么把权值排序一下就解决了$i$和$v[i]$。</p>
-<p>接着考虑怎么求概率。题目中保证这是一棵二叉树，所以设$f[x][j]$表示$x$这个节点，权值为$j$的概率。又因为题目保证权值互不相同，于是我们就可以通过一些讨论来转移。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P6006 [USACO20JAN]Farmer John Solves 3SUM G" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/" target="_blank">【题解】洛谷P6006 [USACO20JAN]Farmer John Solves 3SUM G</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6006">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现$n \leq 5000$，那么我们自然想到$O(n^2)$预处理之后$O(1)$回答询问。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P6006%20%5BUSACO20JAN%5DFarmer%20John%20Solves%203SUM%20G/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-P6007 [USACO20JAN]Springboards G" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/" target="_blank">【题解】洛谷P6007 [USACO20JAN]Springboards G</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6007">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>一开始想错了，还以为是什么神仙建图跑最短路……</p>
-<p>后来发现其实就是个非常套路的数据结构优化DP。</p>
-<p>朴素的DP应该不用多说，从左下方转移过来，跳板单独转移即可。这样是$O(P^2)$的，但是我们可以通过优化降低复杂度。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/P6007%20%5BUSACO20JAN%5DSpringboards%20G/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP19149 Virus Revisited" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP19149%20Virus%20Revisited/" target="_blank">【题解】SP19149 Virus Revisited</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP19149%20Virus%20Revisited/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP19149">原题传送门</a></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>由于最后求的是原点的细胞数，那么一定是先从原点向外扩展，再扩展回来到达原点。那么我们就可以把答案转化为从原点出发，经过$T$时间回到原点的方案数。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP19149%20Virus%20Revisited/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP19149%20Virus%20Revisited/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP23881 God of Nim" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP23881%20God%20of%20Nim/" target="_blank">【题解】SP23881 God of Nim</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP23881%20God%20of%20Nim/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP23881">传送门</a></p>
-<p>有$n$堆石子，第$i$堆石子每次可以取的数量在$[1,k_i]$间，问先手是否必胜。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP23881%20God%20of%20Nim/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP23881%20God%20of%20Nim/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SP5973 Selecting Teams" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/SP5973%20Selecting%20Teams/" target="_blank">【题解】SPOJ5973 Selecting Teams(3.30模拟赛T1)</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/SP5973%20Selecting%20Teams/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有$n$个不同的物品，在其中选出不多于$k$个，再从选出的$m$个中选择$l$个，并从$l$个中选出1个，给定$n$和$k$，求总情况数对$2^{25}$取模（具体模数不同，但都是2的整数次幂）。</p>
-    
-    <a class="article-more-a" href="/2022/07/16/SP5973%20Selecting%20Teams/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/SP5973%20Selecting%20Teams/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
-    </nav>
-  
 
 
           </div>
@@ -1020,8 +455,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
