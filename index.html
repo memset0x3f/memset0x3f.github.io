@@ -271,7 +271,7 @@
 
 
   
-    <article id="post-P1979 华容道" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-51Nod1238 最小公倍数和V3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -279,7 +279,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/P1979%20%E5%8D%8E%E5%AE%B9%E9%81%93/" target="_blank">【题解】P1979 华容道</a>
+	  <a class="article-title" href="/project/2022/07/16/51Nod1238%20%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E5%92%8CV3/" target="_blank">【题解&amp;杜教筛总结】51Nod1238 最小公倍数和V3</a>
   
     </h1>
   
@@ -287,7 +287,7 @@
 
   
   
-<a href="/project/2022/07/16/P1979%20%E5%8D%8E%E5%AE%B9%E9%81%93/" class="archive-article-date">
+<a href="/project/2022/07/16/51Nod1238%20%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E5%92%8CV3/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -300,13 +300,11 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <p><font size=2 color="white">AK 提高试炼场祭</font></p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P1979">原题传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p><del>这是一道神仙题</del></p>
-<p>首先发现爆搜有70分！！！要是在考场上那肯定直接暴力啊！</p>
-<p>然而还是得写正解。</p>
+    <p>前置知识：杜教筛。（<a target="_blank" rel="noopener" href="https://gypsophila.blog.luogu.org/dls-tql">不会点这里</a>）。</p>
+<p>大片公式预警！！！</p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>求$\sum\limits_{i=1}^{n}\sum\limits_{j=1}^{n}\text{lcm}(i,j)$。（$1\leq n\leq 10^{10}$）</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/P1979%20%E5%8D%8E%E5%AE%B9%E9%81%93/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/51Nod1238%20%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E5%92%8CV3/#more">more >></a>
     
     
 
@@ -322,7 +320,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/P1979%20%E5%8D%8E%E5%AE%B9%E9%81%93/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/51Nod1238%20%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E5%92%8CV3/">展开全文 >></a>
     </p>
     
 
@@ -352,7 +350,7 @@
 
 
   
-    <article id="post-P5298 [PKUWC2018]Minimax" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF1029D Concatenated Multiples" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -360,7 +358,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" target="_blank">【题解】洛谷P5298 [PKUWC2018]Minimax</a>
+	  <a class="article-title" href="/project/2022/07/16/CF1029D%20Concatenated%20Multiples/" target="_blank">【题解】CF1029D Concatenated Multiples</a>
   
     </h1>
   
@@ -368,7 +366,7 @@
 
   
   
-<a href="/project/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" class="archive-article-date">
+<a href="/project/2022/07/16/CF1029D%20Concatenated%20Multiples/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -381,11 +379,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5298">传送门</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现题目里的式子都是吓唬人的，由于所有概率都在$(0,1)$内，所以所有权值都有概率被选到，那么把权值排序一下就解决了$i$和$v[i]$。</p>
-<p>接着考虑怎么求概率。题目中保证这是一棵二叉树，所以设$f[x][j]$表示$x$这个节点，权值为$j$的概率。又因为题目保证权值互不相同，于是我们就可以通过一些讨论来转移。</p>
+    <p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/CF1029D">原题传送门</a></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>我们发现，题目中要求的”把a接到b前面”实际上等于$a<em>10^{log_{10}b}+b$。于是我们自然想到预处理出$a_i</em>10^x \mod k$，显然$x$不会超过10。然后对于每个$a_i$，查询有多少数接到自己前面可以被$k$整除。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF1029D%20Concatenated%20Multiples/#more">more >></a>
     
     
 
@@ -401,7 +398,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF1029D%20Concatenated%20Multiples/">展开全文 >></a>
     </p>
     
 
@@ -431,7 +428,7 @@
 
 
   
-    <article id="post-长郡集训2019.8.9 T2 runfast " class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF109B Lucky Probability" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -439,7 +436,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/" target="_blank">【题解】runfast</a>
+	  <a class="article-title" href="/project/2022/07/16/CF109B%20Lucky%20Probability/" target="_blank">【题解】CF109B Lucky Probability</a>
   
     </h1>
   
@@ -447,7 +444,7 @@
 
   
   
-<a href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/" class="archive-article-date">
+<a href="/project/2022/07/16/CF109B%20Lucky%20Probability/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -460,10 +457,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有一个序列，你每次需要选择一个数字，并将序列中所有相同的数字删去，假设这是你进行的第$i$次操作，并且删去的数字为$a_i$，那么你可以获得$i\times a_i$的得分。设$F(A)$表示对序列$A$进行上述操作后可以得到的最大得分。</p>
-<p>现在给定一个序列$A$，需要计算$\sum\limits_{l&#x3D;1}^{n}\sum\limits_{r&#x3D;l}^nF(A[l..r])$，其中$A[l..r]$表示$A$序列中$l$到$r$这段区间。</p>
+    <p><del>写这篇题解纯粹是为了水水社区贡献</del></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>直接上<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/CF109B">传送门</a></p>
     
-    <a class="article-more-a" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF109B%20Lucky%20Probability/#more">more >></a>
     
     
 
@@ -479,7 +476,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF109B%20Lucky%20Probability/">展开全文 >></a>
     </p>
     
 
@@ -509,7 +506,7 @@
 
 
   
-    <article id="post-SP5973 Selecting Teams" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF1147C Thanos Nim" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -517,7 +514,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/SP5973%20Selecting%20Teams/" target="_blank">【题解】SPOJ5973 Selecting Teams(3.30模拟赛T1)</a>
+	  <a class="article-title" href="/project/2022/07/16/CF1147C%20Thanos%20Nim/" target="_blank">【题解】CF1147C Thanos Nim</a>
   
     </h1>
   
@@ -525,7 +522,7 @@
 
   
   
-<a href="/project/2022/07/16/SP5973%20Selecting%20Teams/" class="archive-article-date">
+<a href="/project/2022/07/16/CF1147C%20Thanos%20Nim/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -538,9 +535,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有$n$个不同的物品，在其中选出不多于$k$个，再从选出的$m$个中选择$l$个，并从$l$个中选出1个，给定$n$和$k$，求总情况数对$2^{25}$取模（具体模数不同，但都是2的整数次幂）。</p>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/CF1147C">传送门</a></p>
+<p>有$n$堆石子($n$为偶数)，每次玩家要选择恰好$\frac{n}{2}$堆石子，并从每一堆中任意拿走数量大于$0$的石子（每堆拿的数量可以不同）。问先手是否必胜。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/SP5973%20Selecting%20Teams/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF1147C%20Thanos%20Nim/#more">more >></a>
     
     
 
@@ -556,7 +554,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/SP5973%20Selecting%20Teams/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF1147C%20Thanos%20Nim/">展开全文 >></a>
     </p>
     
 
@@ -586,7 +584,7 @@
 
 
   
-    <article id="post-SP19149 Virus Revisited" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF1181D Irrigation" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -594,7 +592,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/SP19149%20Virus%20Revisited/" target="_blank">【题解】SP19149 Virus Revisited</a>
+	  <a class="article-title" href="/project/2022/07/16/CF1181D%20Irrigation/" target="_blank">【题解】CF1181D Irrigation</a>
   
     </h1>
   
@@ -602,7 +600,7 @@
 
   
   
-<a href="/project/2022/07/16/SP19149%20Virus%20Revisited/" class="archive-article-date">
+<a href="/project/2022/07/16/CF1181D%20Irrigation/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -615,10 +613,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP19149">原题传送门</a></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>由于最后求的是原点的细胞数，那么一定是先从原点向外扩展，再扩展回来到达原点。那么我们就可以把答案转化为从原点出发，经过$T$时间回到原点的方案数。</p>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/CF1181D">传送门</a></p>
+<p>给定$M$个城市，每年会选出一个城市举办比赛，现给出前$N$年城市举办比赛的情况。在接下来的年份中，每年的比赛会在举办比赛次数最小的城市举办，如果有很多城市举办次数均为最小值，则在编号最小的城市举办比赛。现给出 $Q$个询问，每次询问第 $K$ 年在哪个城市举办比赛。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/SP19149%20Virus%20Revisited/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF1181D%20Irrigation/#more">more >></a>
     
     
 
@@ -634,7 +632,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/SP19149%20Virus%20Revisited/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF1181D%20Irrigation/">展开全文 >></a>
     </p>
     
 
@@ -664,7 +662,7 @@
 
 
   
-    <article id="post-SP23881 God of Nim" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF391F Stock Trading" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -672,7 +670,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/SP23881%20God%20of%20Nim/" target="_blank">【题解】SP23881 God of Nim</a>
+	  <a class="article-title" href="/project/2022/07/16/CF391F%20Stock%20Trading/" target="_blank">【题解】CF391F Stock Trading</a>
   
     </h1>
   
@@ -680,7 +678,7 @@
 
   
   
-<a href="/project/2022/07/16/SP23881%20God%20of%20Nim/" class="archive-article-date">
+<a href="/project/2022/07/16/CF391F%20Stock%20Trading/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -693,10 +691,12 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP23881">传送门</a></p>
-<p>有$n$堆石子，第$i$堆石子每次可以取的数量在$[1,k_i]$间，问先手是否必胜。</p>
+    <p>明明是一道贪心好题，没想到这题这么冷门。</p>
+<p>思路和代码借鉴于<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012602144/article/details/40429909">这里</a></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出$n$天的股票价格，每天可买入或卖出一股也可以不进行操作，手上只能有一股。</p>
+<p>问最多$k$次买进和卖出的最大收益。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/SP23881%20God%20of%20Nim/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF391F%20Stock%20Trading/#more">more >></a>
     
     
 
@@ -712,7 +712,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/SP23881%20God%20of%20Nim/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF391F%20Stock%20Trading/">展开全文 >></a>
     </p>
     
 
@@ -742,7 +742,7 @@
 
 
   
-    <article id="post-圆的面积并" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF700B Connecting Universities" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -750,7 +750,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E5%9C%86%E7%9A%84%E9%9D%A2%E7%A7%AF%E5%B9%B6/" target="_blank">【算法】圆的面积并（自适应辛普森乱搞）</a>
+	  <a class="article-title" href="/project/2022/07/16/CF700B%20Connecting%20Universities/" target="_blank">【题解】CF700B Connecting Universities</a>
   
     </h1>
   
@@ -758,7 +758,7 @@
 
   
   
-<a href="/project/2022/07/16/%E5%9C%86%E7%9A%84%E9%9D%A2%E7%A7%AF%E5%B9%B6/" class="archive-article-date">
+<a href="/project/2022/07/16/CF700B%20Connecting%20Universities/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -771,10 +771,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>先上一道模板题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP8073"><strong>SP8073</strong> The area of the union of circles</a></p>
-<p>通过点和半径的方式给出平面上的一些圆，求这些圆覆盖的总面积。</p>
+    <p>​    <del>我最喜欢码量不大的思维题啦！！！</del></p>
+<p>​    首先，因为有$n$个点和$n-1$条边，那么这显然是一棵树，题目要求我们把树上的$2k$个点两两配对，使得每一对点的路径距离和最大。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/%E5%9C%86%E7%9A%84%E9%9D%A2%E7%A7%AF%E5%B9%B6/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF700B%20Connecting%20Universities/#more">more >></a>
     
     
 
@@ -790,7 +790,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E5%9C%86%E7%9A%84%E9%9D%A2%E7%A7%AF%E5%B9%B6/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF700B%20Connecting%20Universities/">展开全文 >></a>
     </p>
     
 
@@ -820,7 +820,7 @@
 
 
   
-    <article id="post-方格取数&amp;&amp;骑士共存问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF765E Tree Folding" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -828,7 +828,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E6%96%B9%E6%A0%BC%E5%8F%96%E6%95%B0&&%E9%AA%91%E5%A3%AB%E5%85%B1%E5%AD%98%E9%97%AE%E9%A2%98/" target="_blank">【题解】方格取数&amp;&amp;骑士共存问题（二分图最大独立集）</a>
+	  <a class="article-title" href="/project/2022/07/16/CF765E%20Tree%20Folding/" target="_blank">【题解】CF765E Tree Folding</a>
   
     </h1>
   
@@ -836,7 +836,7 @@
 
   
   
-<a href="/project/2022/07/16/%E6%96%B9%E6%A0%BC%E5%8F%96%E6%95%B0&&%E9%AA%91%E5%A3%AB%E5%85%B1%E5%AD%98%E9%97%AE%E9%A2%98/" class="archive-article-date">
+<a href="/project/2022/07/16/CF765E%20Tree%20Folding/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -849,12 +849,9 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2774">方格取数问题传送门</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3355">骑士共存问题传送门</a></p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>之所以把这两题放在一起，是因为它们有很多的共同点。</p>
-<p>单看题目背景就知道其实它们挺类似的：都是在棋盘（网格）中，且点与点之间有相互的排斥关系。实际上它们的解法思想也几乎一模一样。</p>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>​    给你一棵树，可以把树上父亲相同的两条长度相同的链合并。（如图）问你最后能不能变成一条链，能的话求链的最短长度。（n&lt;2e5）</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/%E6%96%B9%E6%A0%BC%E5%8F%96%E6%95%B0&&%E9%AA%91%E5%A3%AB%E5%85%B1%E5%AD%98%E9%97%AE%E9%A2%98/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF765E%20Tree%20Folding/#more">more >></a>
     
     
 
@@ -870,7 +867,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E6%96%B9%E6%A0%BC%E5%8F%96%E6%95%B0&&%E9%AA%91%E5%A3%AB%E5%85%B1%E5%AD%98%E9%97%AE%E9%A2%98/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF765E%20Tree%20Folding/">展开全文 >></a>
     </p>
     
 
@@ -900,7 +897,7 @@
 
 
   
-    <article id="post-试题库问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CF746G New Roads" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -908,7 +905,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/" target="_blank">【题解】试题库问题</a>
+	  <a class="article-title" href="/project/2022/07/16/CF746G%20New%20Roads/" target="_blank">【题解】CF746G New Roads</a>
   
     </h1>
   
@@ -916,7 +913,7 @@
 
   
   
-<a href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/" class="archive-article-date">
+<a href="/project/2022/07/16/CF746G%20New%20Roads/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -929,9 +926,9 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意："><a href="#题意：" class="headerlink" title="题意："></a>题意：</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2763">原题传送门</a></p>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>​    给你一棵$t$层的树，第$i$层有$a[i]$个节点，最后需要有$k$个叶子结点，让你构造出一棵符合条件的树。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/CF746G%20New%20Roads/#more">more >></a>
     
     
 
@@ -947,7 +944,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/CF746G%20New%20Roads/">展开全文 >></a>
     </p>
     
 
@@ -979,7 +976,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/project/page/2/">2</a><a class="page-number" href="/project/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/project/page/6/">6</a><a class="extend next" rel="next" href="/project/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/project/page/2/">2</a><a class="page-number" href="/project/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/project/page/5/">5</a><a class="extend next" rel="next" href="/project/page/2/">Next &amp;raquo;</a>
     </nav>
   
 

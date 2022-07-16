@@ -224,7 +224,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">745字</span>
+      <span class="post-count">722字</span>
     </span>
   </span>
 
@@ -233,7 +233,7 @@
     <span class="post-meta-item-icon">
       <i class="icon-book icon"></i>
       <span class="post-meta-item-text"> 阅读时长≈</span>
-      <span class="post-count">3分</span>
+      <span class="post-count">2分</span>
     </span>
   </span>
 </div>
@@ -245,24 +245,32 @@
   <div class="article-entry" itemprop="articleBody">
     
     <p><del>标题党又来了</del></p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定$n$，求$\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;i+1}^{n}gcd(i,j)$。</p>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定$n$，求$\sum\limits_{i=1}^{n} \sum\limits_{j=i+1}^{n}gcd(i,j)$。</p>
 <hr>
 <span id="more"></span>
-
 <h2 id="解法1：暴力"><a href="#解法1：暴力" class="headerlink" title="解法1：暴力"></a>解法1：暴力</h2><p>两个<code>for</code>搞定。每一次计算复杂度为$O(n^2)$。</p>
 <p>于是你可以水掉<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/UVA11417">UVA11417</a>。</p>
-<h2 id="解法2：化柿子"><a href="#解法2：化柿子" class="headerlink" title="解法2：化柿子"></a>解法2：化柿子</h2><p>既然直接枚举$i,j$不行，那么我们换成枚举$gcd$，假设我们已经确定了$i,j$的$gcd$为$k$，那么$gcd(i&#x2F;k,j&#x2F;k)&#x3D;1$，于是问题转化为，在$[1,\lfloor \frac{n}{k} \rfloor]$范围内，互质的无序数对个数。</p>
+<h2 id="解法2：化柿子"><a href="#解法2：化柿子" class="headerlink" title="解法2：化柿子"></a>解法2：化柿子</h2><p>既然直接枚举$i,j$不行，那么我们换成枚举$gcd$，假设我们已经确定了$i,j$的$gcd$为$k$，那么$gcd(i/k,j/k)=1$，于是问题转化为，在$[1,\lfloor \frac{n}{k} \rfloor]$范围内，互质的无序数对个数。</p>
 <p>我们接着转化，假设我们已经知道了互质的数中的较大的一个$a$，那么我们要做的就是求出小于这个数的与它互质的数。想到了什么？<strong>欧拉函数</strong>！！</p>
 <p>于是我们会发现，我们要求的就是在$[1,\lfloor \frac{n}{k} \rfloor]$范围内的所有数的欧拉函数值得和。</p>
-<p>那么最终的答案就是<br>$$<br>\sum_{k&#x3D;1}^{n} \sum_{d&#x3D;1}^{\lfloor\frac{n}{k}\rfloor}\phi(d)<br>$$<br>然后我们发现，后面一个和可以通过线性筛和前缀和预处理做到$O(1)$查询和。于是成功的把每次计算复杂度降到了$O(n)$。</p>
+<p>那么最终的答案就是</p>
+<script type="math/tex; mode=display">
+\sum_{k=1}^{n} \sum_{d=1}^{\lfloor\frac{n}{k}\rfloor}\phi(d)</script><p>然后我们发现，后面一个和可以通过线性筛和前缀和预处理做到$O(1)$查询和。于是成功的把每次计算复杂度降到了$O(n)$。</p>
 <p>于是你可以*掉<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P1390">洛谷1390</a>和<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2398">洛谷2398</a>，还有<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2568">洛谷2568</a>。</p>
 <p>不过要注意的是，这些题中的$\phi(1)$的初始值会有所不同，并且有些题求的是有序数对个数，需要对答案进行一些简单处理。</p>
 <h2 id="终极解法：统统预处理"><a href="#终极解法：统统预处理" class="headerlink" title="终极解法：统统预处理"></a>终极解法：统统预处理</h2><p>尽管解法2已经将时间复杂度压到了一次计算$O(n)$，几乎是最优了，但对于多组数据，尤其是几万甚至几十万的数据组数时，就显得太慢了<del>愚蠢，垃圾</del>。</p>
 <p>我们发现，$O(n)$复杂度的瓶颈在于每次都需要枚举计算。那么我们考虑用预处理把所有的答案都预处理出来，做到$O(1)$查询。</p>
-<p>继续化柿子：<br>$$<br>\begin{aligned}<br>&amp;设f(n)&#x3D;\sum_{i&#x3D;1}^{n-1}gcd(i,n)\<br>&amp;那么ans&#x3D;\sum_{i&#x3D;1}^{n}f(n)\<br>f(n)&amp;&#x3D;\sum_{d|n}d\times\sum_{i&#x3D;1}^{n-1}[gcd(i,n)&#x3D;d]\<br>&amp;&#x3D;\sum_{d|n}d\times\sum_{i&#x3D;1}^{\frac{n}{d}-1}[gcd(i,\frac{n}{d})&#x3D;1]\<br>&amp;&#x3D;\sum_{d|n}d\times \phi(\frac{n}{d})<br>\end{aligned}<br>$$<br>那么我们就可以在预处理欧拉函数后，用类似埃氏筛的方法，预处理出$f(n)$，最后对其做一遍前缀和，就得到了最终的答案。</p>
+<p>继续化柿子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&设f(n)=\sum_{i=1}^{n-1}gcd(i,n)\\
+&那么ans=\sum_{i=1}^{n}f(n)\\
+f(n)&=\sum_{d|n}d\times\sum_{i=1}^{n-1}[gcd(i,n)=d]\\
+&=\sum_{d|n}d\times\sum_{i=1}^{\frac{n}{d}-1}[gcd(i,\frac{n}{d})=1]\\
+&=\sum_{d|n}d\times \phi(\frac{n}{d})
+\end{aligned}</script><p>那么我们就可以在预处理欧拉函数后，用类似埃氏筛的方法，预处理出$f(n)$，最后对其做一遍前缀和，就得到了最终的答案。</p>
 <p>此处给出筛$f(n)$的代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i*i &lt; MAX; i++)&#123;</span><br><span class="line">	ans[i*i] += i*phi[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> j = i+<span class="number">1</span>; i*j &lt; MAX; j++)&#123;</span><br><span class="line">		ans[i*j] += phi[j]*i+phi[i]*j;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>由于$d$和$\frac{n}{d}$是对称的，我们直接一次累计即可，但对于平方数，只能累计一个答案。</p>
 <p>于是你又可以A掉<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/SP3871">SP3871</a>，<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/UVA11424">UVA11424</a>和<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/UVA11426">UVA11426</a>.</p>
 <hr>
@@ -363,11 +371,11 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/CF535D%20Tavas%20and%20Malekas/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/CF914F%20Substrings%20in%20a%20String/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          (no title)
+          【题解】CF914F Substrings in a String
         
       </div>
     </a>

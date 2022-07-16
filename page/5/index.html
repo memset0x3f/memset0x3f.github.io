@@ -194,7 +194,7 @@
             
 
   
-    <article id="post-P4178_Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-试题库问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -202,7 +202,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/P4178_Tree/" target="_blank">P4178_Tree</a>
+	  <a class="article-title" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/" target="_blank">【题解】试题库问题</a>
   
     </h1>
   
@@ -210,7 +210,7 @@
 
   
   
-<a href="/project/2022/07/16/P4178_Tree/" class="archive-article-date">
+<a href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -223,24 +223,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <hr>
-<p>title:<br>date: 2022-7-16 10:42:00<br>tags:</p>
-<hr>
-<h1 id="【题解】P4178-Tree"><a href="#【题解】P4178-Tree" class="headerlink" title="【题解】P4178 Tree"></a>【题解】P4178 Tree</h1><h2 id="前置芝士"><a href="#前置芝士" class="headerlink" title="前置芝士"></a>前置芝士</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3806"><strong>P3806</strong> 【模板】点分治1</a> 。不过数据真是水的可以，第一次我数组开小，过了；第二次我分治的时候没找中心，还是过了……所以也可以做<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4149"><strong>P4149</strong> Race</a> 。</p>
-<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>和点分治模板很像：求树上距离小于等于$k$的路径数量。（把模板的等于改成了小于等于，并且需要统计路径数量）</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>由于题目变成了小于等于，那么我们就不能再用原来那套开桶的办法了。于是我们考虑把当前根的所有子树中的节点拉出来统计方案。</p>
-<p>具体方法是把所有子树中的节点按照到根的距离排序，然后两端开始双指针$O(n)$扫描。（不会双指针的自行$Google$）</p>
-<hr>
-<p>于是你自信满满地打了一发，却发现爆$0$了！！！</p>
-<p>实际上是由于有一些情况没有考虑到。</p>
-<p>由于普通点分治的时候是对根的每一棵子树分别进行答案统计，也就意味着统计的路径都是不同子树间的，但我们这次把所有点都拉出来排序了，也就不能保证这条路径横跨两棵子树。于是就会产生下图的情况：</p>
-<p><img src="https://s2.ax1x.com/2019/06/12/V24JYV.png" alt="V24JYV.png"></p>
-<p>途中蓝色路径虽然经过科根节点，但显然是不合法的路径，需要减去。</p>
-<p>这里用到一点小小的容斥，由于这种不合法的路径一定在根节点的同一棵子树内，于是我们先计算出经过这个子树的根的路径数量（上图中子树的根是1），然后减去即可。而对于子树中出现的不合法情况，我们接着用同样的方法容斥即可。</p>
-<p>注意点：容斥的时候并不是真正统计子节点答案的时候，计算之前需要把儿子的$dis$值设为当前根节点到它的边权，因为这样的不合法路径一定会到达根节点，在统计的时候必须把经过两次的那条多余边减去。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, k, cnt, rt, sum, tot;</span><br><span class="line"><span class="type">int</span> head[MAX], vet[MAX], Next[MAX], cost[MAX];</span><br><span class="line"><span class="type">int</span> dis[MAX], d[MAX], mx[MAX], sz[MAX], vis[MAX];</span><br><span class="line">ll ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> w)</span></span>&#123;</span><br><span class="line">    cnt++;</span><br><span class="line">    Next[cnt] = head[x];</span><br><span class="line">    head[x] = cnt;</span><br><span class="line">    vet[cnt] = y;</span><br><span class="line">    cost[cnt] = w;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">getrt</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa)</span></span>&#123;		<span class="comment">//找重心（点分治模板）</span></span><br><span class="line">    sz[x] = <span class="number">1</span>, mx[x] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[x]; i; i = Next[i]) &#123;</span><br><span class="line">        <span class="type">int</span> v = vet[i];</span><br><span class="line">        <span class="keyword">if</span>(v == fa || vis[v]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="built_in">getrt</span>(v, x);</span><br><span class="line">        sz[x] += sz[v];</span><br><span class="line">        mx[x] = <span class="built_in">max</span>(mx[x], sz[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    mx[x] = <span class="built_in">max</span>(mx[x], sum-sz[x]);</span><br><span class="line">    <span class="keyword">if</span>(mx[x] &lt; mx[rt]) rt = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">getdis</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa)</span></span>&#123;		<span class="comment">//处理距离（模板）</span></span><br><span class="line">    d[++tot] = dis[x];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[x]; i; i = Next[i]) &#123;</span><br><span class="line">        <span class="type">int</span> v = vet[i];</span><br><span class="line">        <span class="keyword">if</span>(v == fa || vis[v]) <span class="keyword">continue</span>;</span><br><span class="line">        dis[v] = dis[x]+cost[i];</span><br><span class="line">        <span class="built_in">getdis</span>(v, x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">calc</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> w)</span></span>&#123;		<span class="comment">//计算贡献</span></span><br><span class="line">    tot = <span class="number">0</span>;</span><br><span class="line">    dis[x] = w;</span><br><span class="line">    <span class="built_in">getdis</span>(x, <span class="number">0</span>);		<span class="comment">//处理出距离并排序</span></span><br><span class="line">    <span class="built_in">sort</span>(d+<span class="number">1</span>, d+tot+<span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> l = <span class="number">1</span>, r = tot;</span><br><span class="line">    ll res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(l &lt; r)&#123;		<span class="comment">//双指针,从两头开始扫</span></span><br><span class="line">        <span class="keyword">if</span>(d[l]+d[r] &lt;= k)&#123;</span><br><span class="line">            res += r-l;</span><br><span class="line">            l++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> r--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    vis[x] = <span class="number">1</span>;</span><br><span class="line">    ans += <span class="built_in">calc</span>(x, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[x]; i; i = Next[i]) &#123;</span><br><span class="line">        <span class="type">int</span> v = vet[i];</span><br><span class="line">        <span class="keyword">if</span>(vis[v]) <span class="keyword">continue</span>;</span><br><span class="line">        ans -= <span class="built_in">calc</span>(v, cost[i]);		<span class="comment">//容斥，把儿子节点dis初值设为边权</span></span><br><span class="line">        sum = sz[v];</span><br><span class="line">        rt = <span class="number">0</span>, mx[rt] = INF;</span><br><span class="line">        <span class="built_in">getrt</span>(v, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">solve</span>(rt);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">int</span> x, y, w;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;x, &amp;y, &amp;w);</span><br><span class="line">        <span class="built_in">add</span>(x, y, w);</span><br><span class="line">        <span class="built_in">add</span>(y, x, w);</span><br><span class="line">    &#125;</span><br><span class="line">    cin &gt;&gt; k;</span><br><span class="line">    mx[rt] = sum = n;</span><br><span class="line">    <span class="built_in">getrt</span>(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">solve</span>(rt);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+    <h2 id="题意："><a href="#题意：" class="headerlink" title="题意："></a>题意：</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2763">原题传送门</a></p>
+    
+    <a class="article-more-a" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/#more">more >></a>
+    
     
 
     
@@ -255,7 +241,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/P4178_Tree/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/">展开全文 >></a>
     </p>
     
 
@@ -285,7 +271,7 @@
 
 
   
-    <article id="post-中国剩余定理及扩展" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-长郡集训2019.8.9 T2 runfast " class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -293,7 +279,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/" target="_blank">中国剩余定理及扩展</a>
+	  <a class="article-title" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/" target="_blank">【题解】runfast</a>
   
     </h1>
   
@@ -301,7 +287,7 @@
 
   
   
-<a href="/project/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/" class="archive-article-date">
+<a href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -314,29 +300,11 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <hr>
-<p>title: 中国剩余定理及扩展<br>date: 2022-7-16 10:42:00<br>tags:</p>
-<hr>
-<p>[TOC]</p>
-<h1 id="中国剩余定理"><a href="#中国剩余定理" class="headerlink" title="中国剩余定理"></a>中国剩余定理</h1><h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>​	中国剩余定理一般用于求解模数互质线性同余方程组。形式如下：<br>$$<br>\begin{cases}<br>x \equiv {a_1} \pmod {b_1} \<br>x \equiv {a_2} \pmod {b_2} \<br>\ldots \<br>x \equiv {a_i} \pmod {b_i} \<br>\ldots \<br>x \equiv {a_n} \pmod {b_n}<br>\end{cases}<br>$$</p>
-<h2 id="求解方法"><a href="#求解方法" class="headerlink" title="求解方法"></a>求解方法</h2><p>​	首先设$M$为所有模数的乘积，即$\prod \limits_{i&#x3D;1}^{n} b_i$。</p>
-<p>​	我们构造一个$x&#x3D;\sum \limits_{i&#x3D;1}^{n} {a_i} \cdot {t_i} \cdot {m_i}​$，其中$m_i&#x3D;\frac{M}{b_i}​$，$t_i\cdot m_i \equiv 1 \pmod{ b_i} ​$，可以证明$x​$为方程组的一个特解。证明如下：</p>
-<p>​	由于$m_i&#x3D;\frac{M}{b_i}$，且<strong>模数均两两互质</strong>，那么其余模数必然是$b_i$的倍数。又因为$t_i\cdot m_i \equiv 1 \pmod{ b_i} $，所以$x \equiv a_i \pmod{b_i}$。得证。</p>
-<p>​	观察$x$的构造过程，发现只有$t_i$是未知量，于是我们可以单独对于每一个方程，利用扩展欧几里得算法，求出每一个$b_i$对应的$t_i$，同时$ans$累加上${a_i} \cdot {t_i} \cdot {m_i}$。</p>
-<h2 id="例题-amp-代码"><a href="#例题-amp-代码" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P1495-曹冲养猪"><a href="#洛谷P1495-曹冲养猪" class="headerlink" title="洛谷P1495 曹冲养猪"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P1495">洛谷P1495 曹冲养猪</a></h3><p>中国剩余定理板子题，不过代码中的数组名称与上文的描述有些区别。</p>
-<h3 id="洛谷P3868-TJOI2009-猜数字"><a href="#洛谷P3868-TJOI2009-猜数字" class="headerlink" title="洛谷P3868 [TJOI2009]猜数字"></a>洛谷P3868 [TJOI2009]猜数字</h3><p>还是模板题。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//曹冲养猪</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXN 15</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">ll mod[MAXN], b[MAXN], ans;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">0</span>)&#123;</span><br><span class="line">        x = <span class="number">1</span>;</span><br><span class="line">        y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;		<span class="comment">//中国剩余定理 </span></span><br><span class="line">    ll m = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        m *= mod[i];</span><br><span class="line">    &#125;</span><br><span class="line">    ll x, y, mi;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        mi = m/mod[i];</span><br><span class="line">        <span class="built_in">exgcd</span>(mi, mod[i], x, y);</span><br><span class="line">        ans += (mi*x*b[i]);</span><br><span class="line">        ans %= m;</span><br><span class="line">    &#125;</span><br><span class="line">    ans = (ans+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;mod[i], &amp;b[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="扩展中国剩余定理"><a href="#扩展中国剩余定理" class="headerlink" title="扩展中国剩余定理"></a>扩展中国剩余定理</h1><h2 id="用途-1"><a href="#用途-1" class="headerlink" title="用途"></a>用途</h2><p>​	为什么需要这样一个扩展的定理呢？很明显，中国剩余定理的描述中有一个至关重要的限制条件：<strong>模数两两互质</strong>。	然而实际上，即使模数不互质，也能对方程组进行求解。这就是扩展中国剩余定理。但实际上，除了解决的问题基本相同，扩展中国剩余定理在证明和实现上都不仅仅是“扩展”，所以XX通索性称其为扩展欧几里得解线性同余方程。</p>
-<h2 id="求解方法-1"><a href="#求解方法-1" class="headerlink" title="求解方法"></a>求解方法</h2><p>​	首先，我们改变一些定义，设当前正在处理第$i$个方程，则令$M$表示前$i-1$个模数的最小公倍数。令$x$为前$i-1$个方程的特解，$x’$为所求的前$i$组方程的特解。于是对于第$i$个方程，问题转化为求一个$t$，使得${x+M<em>t} \equiv {a_i} \pmod {b_i}$，而$x’&#x3D;{x+M</em>t}$。</p>
-<p>​	该方程等价于$M*t \equiv {a_i-x} \pmod {b_i}​$，显然只有$t​$是未知量于是我们就可以利用扩欧求出$t​$。一直重复$n​$遍，最终就可以得到方程组的解。</p>
-<h2 id="例题-amp-代码-1"><a href="#例题-amp-代码-1" class="headerlink" title="例题&amp;代码"></a>例题&amp;代码</h2><h3 id="洛谷P4777-【模板】扩展中国剩余定理（EXCRT）"><a href="#洛谷P4777-【模板】扩展中国剩余定理（EXCRT）" class="headerlink" title="洛谷P4777 【模板】扩展中国剩余定理（EXCRT）"></a>洛谷P4777 【模板】扩展中国剩余定理（EXCRT）</h3><p>真·模板题。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ll n, m, ans;</span><br><span class="line">ll a[MAX], b[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">exgcd</span><span class="params">(ll a, ll b, ll &amp;x, ll &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!b)&#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res = <span class="built_in">exgcd</span>(b, a%b, x, y);</span><br><span class="line">    ll t = x;</span><br><span class="line">    x = y, y = t-a/b*y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">mul</span><span class="params">(ll a, ll b, ll mod)</span></span>&#123;</span><br><span class="line">    ll res = <span class="number">0</span>, base = a;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            res = (res+base)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">        base = (base+base)%mod;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">excrt</span><span class="params">()</span></span>&#123;</span><br><span class="line">    m = b[<span class="number">1</span>], ans = a[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        ll p = ((a[i]-ans)%b[i]+b[i])%b[i];</span><br><span class="line">        ll x, y;			<span class="comment">//mx=p (mod b[i])</span></span><br><span class="line">        ll gcd = <span class="built_in">exgcd</span>(m, b[i], x, y);</span><br><span class="line">        <span class="keyword">if</span>(p % gcd) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        x = <span class="built_in">mul</span>(x, p/gcd, b[i]/gcd);</span><br><span class="line">        ans += x*m;</span><br><span class="line">        m *= b[i]/gcd;</span><br><span class="line">        ans = (ans%m+m)%m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ans%m+m)%m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>, &amp;b[i], &amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, <span class="built_in">excrt</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="完结撒花"><a href="#完结撒花" class="headerlink" title="完结撒花"></a>完结撒花</h1><h2 id="GL-amp-amp-HF"><a href="#GL-amp-amp-HF" class="headerlink" title="GL &amp;&amp; HF!!!"></a>GL &amp;&amp; HF!!!</h2>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有一个序列，你每次需要选择一个数字，并将序列中所有相同的数字删去，假设这是你进行的第$i$次操作，并且删去的数字为$a_i$，那么你可以获得$i\times a_i$的得分。设$F(A)$表示对序列$A$进行上述操作后可以得到的最大得分。</p>
+<p>现在给定一个序列$A$，需要计算$\sum\limits_{l=1}^{n}\sum\limits_{r=l}^nF(A[l..r])$，其中$A[l..r]$表示$A$序列中$l$到$r$这段区间。</p>
+    
+    <a class="article-more-a" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/#more">more >></a>
+    
     
 
     
@@ -351,7 +319,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/">展开全文 >></a>
     </p>
     
 
@@ -381,7 +349,7 @@
 
 
   
-    <article id="post-卡特兰数详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-魔术球问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -389,7 +357,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/" target="_blank">【算法】震惊！！！史上最详细的卡特兰数浅谈！！！</a>
+	  <a class="article-title" href="/project/2022/07/16/%E9%AD%94%E6%9C%AF%E7%90%83%E9%97%AE%E9%A2%98/" target="_blank">【题解】魔术球问题</a>
   
     </h1>
   
@@ -397,7 +365,7 @@
 
   
   
-<a href="/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/" class="archive-article-date">
+<a href="/project/2022/07/16/%E9%AD%94%E6%9C%AF%E7%90%83%E9%97%AE%E9%A2%98/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -410,10 +378,9 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <p><del>我是标题党</del></p>
-<h2 id="卡特兰数简介"><a href="#卡特兰数简介" class="headerlink" title="卡特兰数简介"></a>卡特兰数简介</h2><p>卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：<br>$$<br>f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}<br>$$</p>
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2765">原题传送门</a>。</p>
     
-    <a class="article-more-a" href="/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/#more">more >></a>
+    <a class="article-more-a" href="/project/2022/07/16/%E9%AD%94%E6%9C%AF%E7%90%83%E9%97%AE%E9%A2%98/#more">more >></a>
     
     
 
@@ -429,588 +396,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-块状链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E5%9D%97%E7%8A%B6%E9%93%BE%E8%A1%A8/" target="_blank">【数据结构】块状链表(分块大法好)</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E5%9D%97%E7%8A%B6%E9%93%BE%E8%A1%A8/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h2><p>众所周知，数组索引方便，但插入和删除困难（复杂度极高）；而链表恰恰相反，索引困难，而插入和删除简单。</p>
-<p>那么当我们遇到既要动态插入删除，又要快速索引元素的问题时，有没有一种数据结构能够同时快速支持这两个操作呢？</p>
-<p>以我们老祖宗的强大的智慧，答案当然是有，它就是——</p>
-<div style="text-align:center"><font size=4><del>序列之王Splay！！！</del></font></div>
-
-<p>不好意思，走错片场了……重来一次。它就是——</p>
-<div style="text-align:center"><font size=5 color="red">块状链表！！！</font></div>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E5%9D%97%E7%8A%B6%E9%93%BE%E8%A1%A8/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E5%9D%97%E7%8A%B6%E9%93%BE%E8%A1%A8/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-多重背包优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/" target="_blank">多重背包优化</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>[TOC]</p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>​	有$n$个物品和一个容量为$m$的背包，其中每种物品的数量是有限的，第$i$种物品的体积，价值，数量分别记为$w[i]$，$v[i]$，$c[i]$。求能取到的最大或最小价值</p>
-<hr>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-暴力出奇迹"><a href="#1-暴力出奇迹" class="headerlink" title="1. 暴力出奇迹"></a>1. 暴力<del>出奇迹</del></h3><p>​	很显然，我们可以把多个同一种物品拆成不同的物品，相当于把多重背包强行转化为01背包，此时物品数量由$n$变为了$\sum\limits_{i&#x3D;1}^nc[i]$， 那么复杂度变为了$O(m*\sum\limits_{i&#x3D;1}^n c[i])$，显然这个算法十分愚蠢<del>傻逼</del>。</p>
-<p>​	虽然比较愚蠢，但实际上后面的优化都是在这个基本的思想上进行优化。</p>
-<h3 id="2-二进制拆分优化"><a href="#2-二进制拆分优化" class="headerlink" title="2.二进制拆分优化"></a>2.二进制拆分优化</h3><p>​	暴力的方法愚蠢在哪里呢？因为把一种物品全部拆开后数量太多了，而且可以发现要组成取一种物品的所有情况并不需要全部拆开，比如我想取两个同种物品，但我却会遍历每种取法，尽管这些取法是完全相同的。所以我们就想到，有没有一种方法可以用更少的物品数表示出所有情况呢？很显然，我们以二进制的形式拆分一个种类，比如说一种物品有11个，于是我们可以拆分为1,2,4，剩下5单独一组，这样就可以表示出所有情况。而这样就把每种物品拆分的数量优化到了$log_2c[i]$，于是整个算法的时间复杂度就优化到了$m*\sum\limits_{i&#x3D;1}^nlog_2c[i]$。</p>
-<h4 id="核心代码（拆分）"><a href="#核心代码（拆分）" class="headerlink" title="核心代码（拆分）"></a>核心代码（拆分）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= y[i]; j &lt;&lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        w[cnt] = j*x[i];</span><br><span class="line">        v[cnt] = j*z[i];</span><br><span class="line">        y[i] -= j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(y[i] &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        w[cnt] = y[i]*x[i];</span><br><span class="line">        v[cnt] = y[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其中$x$和$z$数组分别是读入的原始$w$和$v$数组，而$y$数组则是原始$c$数组。</p>
-<h3 id="3-单调队列优化"><a href="#3-单调队列优化" class="headerlink" title="3. 单调队列优化"></a>3. 单调队列优化</h3><p>​	<del>也不知道哪个神人想出来了这么一个神奇的算法。</del></p>
-<p>​	这里给出一个与暴力解法等价的转移方程，只不过我们用第$i$种物品来表示当前总体积$m$。于是：<br>$$<br>f[i][j<em>w[i]+mod]&#x3D;max(f[i-1][j</em>w[i]+mod],f[i-1][(j-k)<em>w[i]+mod]+k</em>v[i])<br>$$<br>​	其中$0 \leq mod &lt; w[i], j&#x3D;m&#x2F;w[i], 0\leq k \leq j$，而我们在枚举背包体积时，也不再使用m~0的枚举顺序，而是使用枚举$mod$和$j$组合起来表示体积。这会使后面的单调队列优化变得容易很多。 <strong>注意</strong>，这里的$j$不一定j要小于等于$c[i]$，因为这里的$j$并不是第$i$种物品的个数，而只是用$w[i]$作为基数表示出了体积，真正对$c[i]$的控制会在单调队列中体现。</p>
-<p>​	接下来就来考虑优化，从上面这个方程中可以发现，不管一种物品取几个，原式中的$mod$是不会改变的，于是我们可以把每种物品按余数分类，而状态之间的转移仍然只会在<strong>同一类</strong>中进行，而此时每一类中的状态满足单调性且均为<strong>连续</strong>的，每一个状态的转移相当于在它之前找一个连续区间中的最值，于是可以用单调队列进行优化。</p>
-<p>​	设单调队列为$q$，头指针为$l$，尾指针为$r$，那么队首出队的条件为$j-q[l]&gt;c[i]$，即控制每种物品最多选$c[i]$个，在插入队列时判断$f[i-1][q[l]*w[i]+mod]+(j-q[l])<em>v[i]$和$f[i-1][j</em>w[i]+mod]$的关系，维护单调递增或递减即可。</p>
-<p>Tip:在实际运行过程中，由于常数过大，单调队列优化的效果很可能不如二进制优化</p>
-<h4 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> mod = <span class="number">0</span>; mod &lt; w[i]; mod++)&#123;</span><br><span class="line">		l = <span class="number">1</span>, r = <span class="number">0</span>;</span><br><span class="line">		q[l] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j*w[i]+mod &lt;= m; j++)&#123;</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;</span><br><span class="line">				l++;</span><br><span class="line">			&#125;</span><br><span class="line">			f[i][j*w[i]+mod] = <span class="built_in">min</span>(f[i<span class="number">-1</span>][q[l]*w[i]+mod]+(j-q[l])*v[i], f[i<span class="number">-1</span>][j*w[i]+mod]);</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r &amp;&amp; f[i<span class="number">-1</span>][q[l]*w[i]+mod]+(j-q[l])*v[i] &gt;= f[i<span class="number">-1</span>][j*w[i]+mod])&#123;</span><br><span class="line">				r--;</span><br><span class="line">			&#125;</span><br><span class="line">			q[++r] = j;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同时，还可以使用滚动数组，用i&amp;1和i&amp;1^1代替i和i-1，达到空间上的优化。</p>
-<p>当然，如果觉得二维的$f$数组看着不顺眼，可以强行转化为一维，但好像要另开空间存储上一次状态的数据（我并不确定是否有更优的方案），对空间几乎没有优化。</p>
-<hr>
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="洛谷P3423-Banknotes"><a href="#洛谷P3423-Banknotes" class="headerlink" title="洛谷P3423 Banknotes"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3423">洛谷P3423 Banknotes</a></h3><p>物品价值恒为1，且要求价值最小值的多重背包，还要输出方案。</p>
-<p>这道题loj上还有一个<a target="_blank" rel="noopener" href="https://loj.ac/problem/10179">弱化版</a>，不需要输出方案。</p>
-<p>对于输出方案，我们可以用单调队列优化，并记录$last[i][j]$表示状态$f[i][j]$是由$f[i-1][last[i][j]]$转移而来，然后递归输出方案。当然二进制优化也可以，只是方案更难得到。</p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, m;</span><br><span class="line"><span class="type">int</span> w[<span class="number">205</span>], c[<span class="number">205</span>], f[<span class="number">2</span>][<span class="number">20005</span>];</span><br><span class="line"><span class="type">int</span> q[<span class="number">20005</span>], l, r;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;w[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	cin &gt;&gt; m;</span><br><span class="line">	<span class="built_in">memset</span>(f, <span class="number">0x3f</span>, <span class="built_in">sizeof</span>(f));</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> mod = <span class="number">0</span>; mod &lt; w[i]; mod++)&#123;</span><br><span class="line">			l = <span class="number">1</span>, r = <span class="number">0</span>;</span><br><span class="line">			q[l] = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j*w[i]+mod &lt;= m; j++)&#123;</span><br><span class="line">				<span class="keyword">while</span>(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;</span><br><span class="line">					l++;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="type">int</span> now = i&amp;<span class="number">1</span>, last = now^<span class="number">1</span>;</span><br><span class="line">				f[now][j*w[i]+mod] = <span class="built_in">min</span>(f[last][q[l]*w[i]+mod]+j-q[l], f[last][j*w[i]+mod]);</span><br><span class="line">				<span class="keyword">while</span>(l &lt;= r &amp;&amp; f[last][q[l]*w[i]+mod]+j-q[l] &gt;= f[last][j*w[i]+mod])&#123;</span><br><span class="line">					r--;</span><br><span class="line">				&#125;</span><br><span class="line">				q[++r] = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; f[n&amp;<span class="number">1</span>][m] &lt;&lt; endl;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-扩展卢卡斯详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E6%89%A9%E5%B1%95%E5%8D%A2%E5%8D%A1%E6%96%AF%E8%AF%A6%E8%A7%A3/" target="_blank">【算法】扩展卢卡斯详解</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E6%89%A9%E5%B1%95%E5%8D%A2%E5%8D%A1%E6%96%AF%E8%AF%A6%E8%A7%A3/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="前置芝士"><a href="#前置芝士" class="headerlink" title="前置芝士"></a>前置芝士</h2><p>扩展卢卡斯相对较为复杂，需要较多的前置芝士。</p>
-<ol>
-<li>快速幂</li>
-<li>质因数分解</li>
-<li>组合数公式</li>
-<li>扩展欧几里得(exgcd)求逆元</li>
-<li>中国剩余定理（或excrt）</li>
-<li><del>熟练阅读Latex</del></li>
-</ol>
-<p>至于卢卡斯定理，那真的不重要。</p>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E6%89%A9%E5%B1%95%E5%8D%A2%E5%8D%A1%E6%96%AF%E8%AF%A6%E8%A7%A3/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E6%89%A9%E5%B1%95%E5%8D%A2%E5%8D%A1%E6%96%AF%E8%AF%A6%E8%A7%A3/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-搜索进阶" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E6%90%9C%E7%B4%A2%E8%BF%9B%E9%98%B6/" target="_blank">【算法】搜索进阶</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E6%90%9C%E7%B4%A2%E8%BF%9B%E9%98%B6/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <blockquote>
-<p> 搜索是考场骗分利器，只要你能写出一手复杂度优秀的搜索，那至少应该不会爆0。</p>
-<p>​															——某位巨佬</p>
-</blockquote>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E6%90%9C%E7%B4%A2%E8%BF%9B%E9%98%B6/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E6%90%9C%E7%B4%A2%E8%BF%9B%E9%98%B6/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-最小矩形覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/" target="_blank">【算法】最小矩形覆盖</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <div align="center"><font size=4 color="red">前置芝士：凸包，旋转卡壳，向量的基本运算</font></div>
-
-<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出平面上的一堆点，找出一个能够覆盖所有点的面积最小的矩形，输出面积及四个顶点的坐标。</p>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-最小路径覆盖方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/" target="_blank">【题解】最小路径覆盖方案（最大流求二分图最大匹配）</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/recordnew/show/17467025">原题传送门</a></p>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-莫比乌斯及一些套路" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/project/2022/07/16/%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%A5%97%E8%B7%AF/" target="_blank">【算法&amp;题解】莫比乌斯反演及一些经典套路</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/project/2022/07/16/%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%A5%97%E8%B7%AF/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p><strong>首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去<a target="_blank" rel="noopener" href="https://blog.sengxian.com/algorithms/mobius-inversion-formula">这里</a>，本文主要讲解一些套路。</strong></p>
-<h2 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h2><p>我们定义莫比乌斯函数如下：<br>$$<br>设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \<br>\mu(n)&#x3D;<br>\begin{cases}<br>1 &amp; (n&#x3D;1) \<br>(-1)^{m} &amp; (k&#x3D;1) \<br>0 &amp; (k&gt;1)<br>\end{cases}<br>$$</p>
-    
-    <a class="article-more-a" href="/project/2022/07/16/%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%A5%97%E8%B7%AF/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/project/2022/07/16/%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%A5%97%E8%B7%AF/">展开全文 >></a>
+      <a class="article-more-a" href="/project/2022/07/16/%E9%AD%94%E6%9C%AF%E7%90%83%E9%97%AE%E9%A2%98/">展开全文 >></a>
     </p>
     
 
@@ -1042,7 +428,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/project/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/project/">1</a><span class="space">&hellip;</span><a class="page-number" href="/project/page/3/">3</a><a class="page-number" href="/project/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/project/page/6/">6</a><a class="extend next" rel="next" href="/project/page/6/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/project/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/project/">1</a><span class="space">&hellip;</span><a class="page-number" href="/project/page/3/">3</a><a class="page-number" href="/project/page/4/">4</a><span class="page-number current">5</span>
     </nav>
   
 

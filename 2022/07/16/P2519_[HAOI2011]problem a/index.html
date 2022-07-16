@@ -224,7 +224,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">678字</span>
+      <span class="post-count">677字</span>
     </span>
   </span>
 
@@ -247,18 +247,18 @@
     <p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2519">原题传送门</a></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>这题难在题意的转化。<del>（同时说一句：STL大法好啊！！）</del></p>
 <span id="more"></span>
-
 <p>题目里给定了对于第$i$个人，有$a_i$个人分数比他高，$b_i$个人分数比他低，那么我们可以知道他的排名为$a_i+1$，并且有$n-a_i-b_i$个人（包括自己）与他分数相等。那么我们就可以知道这段分数相等的区间为$[a_i+1, n-b_i]$。</p>
 <p>显然如果$n-b_i &gt; a_i+1$，那么这个人说的一定是假话。同时如果有多个人分数相同，即在同一区间中，那么这些人的数量显然不能超过区间长度，如果超过，那么多余的这些人一定在说假话。</p>
 <p>接着考虑怎么实现。首先肯定要记录同在一个区间内的人的数量，于是我们搬出STL——map。我们把区间插入到map中，并且记录当前区间的人数，对其进行累加操作。</p>
 <p>接着把题目中“最小说假话人数”转换为“最大说真话人数”。我们定义$v_{x,y}$表示区间$[x,y]$中的人数，那么我们要求的就是从总区间$[1,n]$中选取几段不重叠的区间，使得区间的$v$之和最大。于是考虑$dp$。</p>
 <p>设$f_i$表示从$[1,i]$中选取不重叠的区间的$v$之和的最大值，那么首先显然要继承$f_{i-1}$的值。</p>
-<p>接着考虑选取以$i$为右端点的区间，设此区间左端点为$x$，那么显然：<br>$$<br>f_i &#x3D; f_{x-1}+min(v_{x,i}, i-x+1)<br>$$<br>后面取$min$正是为了保证区间内人数不超过区间长度。</p>
+<p>接着考虑选取以$i$为右端点的区间，设此区间左端点为$x$，那么显然：</p>
+<script type="math/tex; mode=display">
+f_i = f_{x-1}+min(v_{x,i}, i-x+1)</script><p>后面取$min$正是为了保证区间内人数不超过区间长度。</p>
 <p>然后为了方便的找到以$i$为右端点的区间，我们在读入的时候进行预处理，开一个vector数组$l$<del>（STL nb!!）</del>，$l[i]$存放所有以$i$为右端点的区间的左端点，这样在$dp$的时候就可以快速计算。</p>
 <p>复杂度：由于$map$，所以有一只$log$，总复杂度$O(n·logn)$。</p>
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>别忘了最后答案是$n-f_n$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100005</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; l[MAX];</span><br><span class="line">map&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;, <span class="type">int</span>&gt; mp;</span><br><span class="line"><span class="type">int</span> n, f[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">int</span> x, y;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        x++, y = n-y;</span><br><span class="line">        <span class="keyword">if</span>(x &gt; y) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> t = ++mp[<span class="built_in">make_pair</span>(x, y)];</span><br><span class="line">        <span class="keyword">if</span>(t == <span class="number">1</span>)&#123;</span><br><span class="line">            l[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        f[i] = f[i<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; l[i].<span class="built_in">size</span>(); j++)&#123;</span><br><span class="line">            x = l[i][j];</span><br><span class="line">            f[i] = <span class="built_in">max</span>(f[i], f[x<span class="number">-1</span>]+<span class="built_in">min</span>(i-x+<span class="number">1</span>, mp[<span class="built_in">make_pair</span>(x, i)]));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; n-f[n] &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     
 
@@ -355,11 +355,11 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/GSS4%EF%BC%9A%E5%8C%BA%E9%97%B4%E5%BC%80%E5%B9%B3%E6%96%B9/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/P1979%20%E5%8D%8E%E5%AE%B9%E9%81%93/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          【挖坑】【GSS系列】GSS4：区间开平方
+          【题解】P1979 华容道
         
       </div>
     </a>

@@ -224,7 +224,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">753字</span>
+      <span class="post-count">718字</span>
     </span>
   </span>
 
@@ -246,20 +246,41 @@
     
     <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有$n$个不同的物品，在其中选出不多于$k$个，再从选出的$m$个中选择$l$个，并从$l$个中选出1个，给定$n$和$k$，求总情况数对$2^{25}$取模（具体模数不同，但都是2的整数次幂）。</p>
 <span id="more"></span>
-
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>各位巨佬一上来就是一串简洁易懂的理解，像我这种蒟蒻只能老老实实手推式子。</p>
-<p>首先按照题意写出式子：<br>$$<br>ans&#x3D;\sum_{m&#x3D;1}^{k}(C_{n}^{m}\times (\sum_{i&#x3D;1}^{m}C_{m}^{i}\times i))<br>$$<br>我们从内向外化简，先考虑化简$\sum\limits_{i&#x3D;1}^{m}C_m^i*i$。</p>
-<p>考场上手推结果如下：<br>$$<br>\begin{align}<br>\sum_{i&#x3D;1}^{m}C_m^i*i &amp;&#x3D; C_m^1+2C_m^2+ \cdots +(m-1)C_m^{m-1}+mC_m^m \<br>&amp;&#x3D; C_m^1+2C_m^2+ \cdots +(\frac{m}{2}C_m^{\frac{m}{2}}) +\cdots +(m-1)C_m^{1}+m \</p>
-<p>\end{align}<br>$$<br>此处运用了$C_n^m&#x3D;C_n^{n-m}$这一公式。</p>
+<p>首先按照题意写出式子：</p>
+<script type="math/tex; mode=display">
+ans=\sum_{m=1}^{k}(C_{n}^{m}\times (\sum_{i=1}^{m}C_{m}^{i}\times i))</script><p>我们从内向外化简，先考虑化简$\sum\limits_{i=1}^{m}C_m^i*i$。</p>
+<p>考场上手推结果如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\sum_{i=1}^{m}C_m^i*i &= C_m^1+2C_m^2+ \cdots +(m-1)C_m^{m-1}+mC_m^m \\
+&= C_m^1+2C_m^2+ \cdots +(\frac{m}{2}C_m^{\frac{m}{2}}) +\cdots +(m-1)C_m^{1}+m \\
+
+\end{align}</script><p>此处运用了$C_n^m=C_n^{n-m}$这一公式。</p>
 <p>接着我们按$m$的奇偶性进行分析。</p>
-<p>若$m$为奇数：<br>$$<br>\begin{align}<br>原式 &amp;&#x3D;m\times(C_m^0+C_m^1+\cdots+C_m^{\frac{m}{2}}) \<br>&amp;\because \sum_{i&#x3D;0}^{m}C_m^i&#x3D;2^m(二项式定理) \<br>&amp;\therefore \sum_{i&#x3D;0}^{\frac{m}{2}}C_m^i&#x3D;2^{m-1}(m为奇数) \<br>&amp;\therefore 原式&#x3D;\sum_{i&#x3D;1}^{m}C_m^i\times i&#x3D;m\times 2^{m-1}<br>\end{align}<br>$$<br>若$m$为偶数<br>$$<br>\begin{align}<br>原式 &amp;&#x3D;m\times(C_m^0+C_m^1+\cdots+C_m^{\frac{m}{2}})-\frac{m}{2}C_m^{\frac{m}{2}} \<br>&amp;\because \sum_{i&#x3D;0}^{m}C_m^i&#x3D;2^m(二项式定理) \<br>&amp;\therefore \sum_{i&#x3D;0}^{\frac{m}{2}}C_m^i&#x3D;2^{m-1}+\frac{m}{2}C_m^{\frac{m}{2}}(m为偶数) \<br>&amp;\therefore 原式&#x3D;\sum_{i&#x3D;1}^{m}C_m^i\times i&#x3D;m\times 2^{m-1}<br>\end{align}yi<br>$$<br>结果神奇的事情发生了：$m$不论奇偶，最后的式子是一样的！！！</p>
-<p>于是最终的答案就变为了：<br>$$<br>\sum_{m&#x3D;1}^{k}(C_{n}^{m}\times m\times 2^{m-1})<br>$$<br>然后我们发现：时间复杂度变成了$O(kT)$，还是爆炸了！！！</p>
+<p>若$m$为奇数：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+原式 &=m\times(C_m^0+C_m^1+\cdots+C_m^{\frac{m}{2}}) \\
+&\because \sum_{i=0}^{m}C_m^i=2^m(二项式定理) \\
+&\therefore \sum_{i=0}^{\frac{m}{2}}C_m^i=2^{m-1}(m为奇数) \\
+&\therefore 原式=\sum_{i=1}^{m}C_m^i\times i=m\times 2^{m-1}
+\end{align}</script><p>若$m$为偶数</p>
+<script type="math/tex; mode=display">
+\begin{align}
+原式 &=m\times(C_m^0+C_m^1+\cdots+C_m^{\frac{m}{2}})-\frac{m}{2}C_m^{\frac{m}{2}} \\
+&\because \sum_{i=0}^{m}C_m^i=2^m(二项式定理) \\
+&\therefore \sum_{i=0}^{\frac{m}{2}}C_m^i=2^{m-1}+\frac{m}{2}C_m^{\frac{m}{2}}(m为偶数) \\
+&\therefore 原式=\sum_{i=1}^{m}C_m^i\times i=m\times 2^{m-1}
+\end{align}yi</script><p>结果神奇的事情发生了：$m$不论奇偶，最后的式子是一样的！！！</p>
+<p>于是最终的答案就变为了：</p>
+<script type="math/tex; mode=display">
+\sum_{m=1}^{k}(C_{n}^{m}\times m\times 2^{m-1})</script><p>然后我们发现：时间复杂度变成了$O(kT)$，还是爆炸了！！！</p>
 <p>然后我们发现题目的模数有点奇怪：为啥是2的整数次幂？</p>
 <p>结合推出的式子，我们发现当$m$大于给定的次幂时，由于$2^{m-1}$这一项的存在，原式对模数取模后一定为0！</p>
 <p>于是我们可以仅仅枚举到$min(k,25)$即可（以模拟赛给定的模数为例）。</p>
 <p>于是可以把总复杂度限制在$O(30T)$之内。</p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> P 33554432</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ll C[<span class="number">100005</span>][<span class="number">27</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	C[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100000</span>; i++)&#123;</span><br><span class="line">		C[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">25</span>; j++)&#123;</span><br><span class="line">			C[i][j] = (C[i<span class="number">-1</span>][j<span class="number">-1</span>]+C[i<span class="number">-1</span>][j])%P;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">freopen</span>(<span class="string">&quot;love.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">	<span class="built_in">freopen</span>(<span class="string">&quot;love.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> t;</span><br><span class="line">	cin &gt;&gt; t;</span><br><span class="line">	<span class="type">int</span> n, k;</span><br><span class="line">	ll ans;</span><br><span class="line">	<span class="keyword">while</span>(t--)&#123;</span><br><span class="line">		ans = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;k);</span><br><span class="line">		k = <span class="built_in">min</span>(k, <span class="number">25</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">			ans = (ans + C[n][i]*(ll)i%P*(<span class="number">1ll</span>&lt;&lt;(i<span class="number">-1</span>))%P) % P;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     
 
@@ -356,18 +377,18 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/%E9%95%BF%E9%83%A1%E9%9B%86%E8%AE%AD2019.8.9%20T2%20runfast%20/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/SP23881%20God%20of%20Nim/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          【题解】runfast
+          【题解】SP23881 God of Nim
         
       </div>
     </a>
   
   
-    <a href="/project/2022/07/16/SP19149%20Virus%20Revisited/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【题解】SP19149 Virus Revisited</div>
+    <a href="/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【算法】震惊！！！史上最详细的卡特兰数浅谈！！！</div>
       <i class="icon-circle-right"></i>
     </a>
   

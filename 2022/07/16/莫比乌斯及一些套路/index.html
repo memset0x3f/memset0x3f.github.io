@@ -10,15 +10,15 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去这里，本文主要讲解一些套路。 莫比乌斯函数我们定义莫比乌斯函数如下：$$设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \\mu(n)&#x3D;\begin{cases}1 &amp; (n&#x3D;1">
+  <meta name="description" content="首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去这里，本文主要讲解一些套路。 莫比乌斯函数我们定义莫比乌斯函数如下：  设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \\ \mu(n)&#x3D; \begin{cases} 1 &amp; (n&#x3D;1) \\ (-1)^{m} &amp; (k&#x3D;1) \\ 0 &amp; (">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【算法&amp;题解】莫比乌斯反演及一些经典套路">
 <meta property="og:url" content="https://memset0x3f.github.io/project/2022/07/16/%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%A5%97%E8%B7%AF/">
 <meta property="og:site_name" content="Fighter&#39;s Blog">
-<meta property="og:description" content="首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去这里，本文主要讲解一些套路。 莫比乌斯函数我们定义莫比乌斯函数如下：$$设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \\mu(n)&#x3D;\begin{cases}1 &amp; (n&#x3D;1">
+<meta property="og:description" content="首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去这里，本文主要讲解一些套路。 莫比乌斯函数我们定义莫比乌斯函数如下：  设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \\ \mu(n)&#x3D; \begin{cases} 1 &amp; (n&#x3D;1) \\ (-1)^{m} &amp; (k&#x3D;1) \\ 0 &amp; (">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-16T02:42:00.000Z">
-<meta property="article:modified_time" content="2022-07-16T02:57:55.891Z">
+<meta property="article:modified_time" content="2022-07-16T05:34:50.001Z">
 <meta property="article:author" content="Fighter">
 <meta name="twitter:card" content="summary">
   
@@ -224,7 +224,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">2.2k字</span>
+      <span class="post-count">2.1k字</span>
     </span>
   </span>
 
@@ -245,61 +245,102 @@
   <div class="article-entry" itemprop="articleBody">
     
     <p><strong>首先声明，由于我太菜了，本文很多式子可能并不会有详细的证明。若要了解莫比乌斯反演最基本的证明，可以去<a target="_blank" rel="noopener" href="https://blog.sengxian.com/algorithms/mobius-inversion-formula">这里</a>，本文主要讲解一些套路。</strong></p>
-<h2 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h2><p>我们定义莫比乌斯函数如下：<br>$$<br>设n&#x3D;\prod_{i&#x3D;1}^{m} p_i^{a_i},k&#x3D;\prod_{i&#x3D;1}^{m} a_i \<br>\mu(n)&#x3D;<br>\begin{cases}<br>1 &amp; (n&#x3D;1) \<br>(-1)^{m} &amp; (k&#x3D;1) \<br>0 &amp; (k&gt;1)<br>\end{cases}<br>$$</p>
-<span id="more"></span>
-
+<h2 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h2><p>我们定义莫比乌斯函数如下：</p>
+<script type="math/tex; mode=display">
+设n=\prod_{i=1}^{m} p_i^{a_i},k=\prod_{i=1}^{m} a_i \\
+\mu(n)=
+\begin{cases}
+1 & (n=1) \\
+(-1)^{m} & (k=1) \\
+0 & (k>1)
+\end{cases}</script><span id="more"></span>
 <p>然后我们会发现它是一个积性函数，可以用线性筛$O(n)$求出$1-n$的莫比乌斯函数。代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(!mark[i])&#123;</span><br><span class="line">        p[++cnt] = i;</span><br><span class="line">        mu[i] = <span class="number">-1</span>;		<span class="comment">//质数显然k=1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;</span><br><span class="line">        mark[p[j]*i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i%p[j] == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        mu[i*p[j]] = -mu[i];	<span class="comment">//由于欧拉筛中，每个数只会被最小的质因子筛到一次，相当于这个数多了一个因子p[j]，就相当于-mu[i](可以通过分类讨论理解)。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同时，莫比乌斯函数还满足：<br>$$<br>\sum_{i&#x3D;1}^{n}\mu(i)&#x3D;[n&#x3D;1]<br>$$<br>这也是一个美妙的性质（可惜我不会证）。</p>
+<p>同时，莫比乌斯函数还满足：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{n}\mu(i)=[n=1]</script><p>这也是一个美妙的性质（可惜我不会证）。</p>
 <hr>
 <h2 id="莫比乌斯反演"><a href="#莫比乌斯反演" class="headerlink" title="莫比乌斯反演"></a>莫比乌斯反演</h2><p>依然直接扔公式（是的，我也不会证）：</p>
-<p>若函数$f(n)$和$g(n)$是数论函数，且满足：<br>$$<br>g(n)&#x3D;\sum_{d|n}f(d)<br>$$<br>那么有如下结论：<br>$$<br>f(n)&#x3D;\sum_{d|n}g(d)\times \mu(\frac{n}{d})<br>$$<br>实际上，在做题过程中也会遇到上述式子中的$d|n$变为$n|d$，式子依然成立，但此时$d$往往有明确的上限。</p>
+<p>若函数$f(n)$和$g(n)$是数论函数，且满足：</p>
+<script type="math/tex; mode=display">
+g(n)=\sum_{d|n}f(d)</script><p>那么有如下结论：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{d|n}g(d)\times \mu(\frac{n}{d})</script><p>实际上，在做题过程中也会遇到上述式子中的$d|n$变为$n|d$，式子依然成立，但此时$d$往往有明确的上限。</p>
 <hr>
-<h2 id="经典套路"><a href="#经典套路" class="headerlink" title="经典套路"></a>经典套路</h2><p>**以下默认$n\leq m$**。</p>
-<h3 id="1-求-i-j-x3D-x的个数"><a href="#1-求-i-j-x3D-x的个数" class="headerlink" title="1.求(i,j)&#x3D;x的个数"></a>1.求(i,j)&#x3D;x的个数</h3><p>这是莫比乌斯反演最经典的应用。</p>
-<p>给定$n,m$，求$f(x)&#x3D;\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;1}^{m}[(i,j)&#x3D;x]$。</p>
-<p>我们设$g(x)&#x3D;\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;1}^{m}[x|(i,j)]$。那么我们发现显然$g(x)&#x3D;\sum\limits_{x|d}f(d)$。此处$d$的上限为$n$。</p>
-<p>于是我们套公式，直接反演一波：<br>$$<br>f(x) &#x3D; \sum_{x|d}g(d)\times \mu(\frac{d}{x})。<br>$$<br>我们为啥这么麻烦的反演呢？当然是因为$g(x)$比较好求。我们观察$x|(i,j)$这个条件，发现$i,j$均可以表示成$x\times k$，于是在$n$和$m$的范围内，$g(x)&#x3D;\lfloor \frac{n}{x} \rfloor \times \lfloor \frac{m}{x} \rfloor$。</p>
-<p>于是$f(x)&#x3D;\sum\limits_{x|d}\lfloor \frac{n}{d} \rfloor \times \lfloor \frac{m}{d} \rfloor \times \mu(\frac{d}{x})$。</p>
-<p>接下来由于$x|d$不方便枚举，所以我们设$d&#x3D;t \times x$，则$f(x)&#x3D;\sum\limits_{t&#x3D;1}^{\lfloor \frac{n}{x}\rfloor} \lfloor \frac{n}{tx} \rfloor \times \lfloor \frac{m}{tx} \rfloor \times \mu(t)$。</p>
-<p>提前处理使$n&#x3D;\lfloor \frac{n}{x} \rfloor$，$m&#x3D;\lfloor \frac{m}{x} \rfloor$，$f(x)&#x3D;\sum\limits_{t&#x3D;1}^{n}\lfloor \frac{n}{t} \rfloor \times \lfloor \frac{m}{t} \rfloor \times \mu(t)$。</p>
+<h2 id="经典套路"><a href="#经典套路" class="headerlink" title="经典套路"></a>经典套路</h2><p><strong>以下默认$n\leq m$</strong>。</p>
+<h3 id="1-求-i-j-x的个数"><a href="#1-求-i-j-x的个数" class="headerlink" title="1.求(i,j)=x的个数"></a>1.求(i,j)=x的个数</h3><p>这是莫比乌斯反演最经典的应用。</p>
+<p>给定$n,m$，求$f(x)=\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}[(i,j)=x]$。</p>
+<p>我们设$g(x)=\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}[x|(i,j)]$。那么我们发现显然$g(x)=\sum\limits_{x|d}f(d)$。此处$d$的上限为$n$。</p>
+<p>于是我们套公式，直接反演一波：</p>
+<script type="math/tex; mode=display">
+f(x) = \sum_{x|d}g(d)\times \mu(\frac{d}{x})。</script><p>我们为啥这么麻烦的反演呢？当然是因为$g(x)$比较好求。我们观察$x|(i,j)$这个条件，发现$i,j$均可以表示成$x\times k$，于是在$n$和$m$的范围内，$g(x)=\lfloor \frac{n}{x} \rfloor \times \lfloor \frac{m}{x} \rfloor$。</p>
+<p>于是$f(x)=\sum\limits_{x|d}\lfloor \frac{n}{d} \rfloor \times \lfloor \frac{m}{d} \rfloor \times \mu(\frac{d}{x})$。</p>
+<p>接下来由于$x|d$不方便枚举，所以我们设$d=t \times x$，则$f(x)=\sum\limits_{t=1}^{\lfloor \frac{n}{x}\rfloor} \lfloor \frac{n}{tx} \rfloor \times \lfloor \frac{m}{tx} \rfloor \times \mu(t)$。</p>
+<p>提前处理使$n=\lfloor \frac{n}{x} \rfloor$，$m=\lfloor \frac{m}{x} \rfloor$，$f(x)=\sum\limits_{t=1}^{n}\lfloor \frac{n}{t} \rfloor \times \lfloor \frac{m}{t} \rfloor \times \mu(t)$。</p>
 <p>那么我们就可以愉快地$O(n)$求出所有的$f$函数值了。</p>
 <p>但对于多组数据，$O(n)$复杂度显然是不够的，于是我们再用除法分块进行优化。由于此处有$n$和$m$两个除法，所以在求除法分块的右边界时需要取最小值，保证两个除法结果均为连续相同的。同时我们对莫比乌斯函数做前缀和，一次分块的答案就是$(sum[r]-sum[l-1])\times \lfloor\frac{n}{l}\rfloor \times \lfloor\frac{n}{l}\rfloor$，这样可以做到$O(\sqrt n)$回答。</p>
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P4450">P4450 双亲数</a> ，<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3455">P3455 ZAP-Queries</a> （都是板子题）。</p>
 <p>小小的拓展（加个简单容斥）：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2522">P2522 Problem b</a> 。</p>
 <p>代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!mark[i])&#123;</span><br><span class="line">            p[++cnt] = i;</span><br><span class="line">            mu[i] = <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; p[j]*i &lt;= n; j++)&#123;</span><br><span class="line">            mark[i*p[j]] = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(i%p[j] == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">            mu[i*p[j]] = -mu[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        mu[i] += mu[i<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">solve</span><span class="params">(ll n, ll m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; m) <span class="built_in">swap</span>(n, m);</span><br><span class="line">    ll ans = <span class="number">0</span>;</span><br><span class="line">    n /= k, m /= k;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = <span class="built_in">min</span>(n/(n/l), m/(m/l));</span><br><span class="line">        ans += (mu[r]-mu[l<span class="number">-1</span>])*(n/l)*(m/l);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="2-求-i-j-为质数的个数"><a href="#2-求-i-j-为质数的个数" class="headerlink" title="2.求(i,j)为质数的个数"></a>2.求(i,j)为质数的个数</h3><p>给定$n,m$，求$f(x)&#x3D;\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;1}^{m}[(i,j) \in prime]$。</p>
+<h3 id="2-求-i-j-为质数的个数"><a href="#2-求-i-j-为质数的个数" class="headerlink" title="2.求(i,j)为质数的个数"></a>2.求(i,j)为质数的个数</h3><p>给定$n,m$，求$f(x)=\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}[(i,j) \in prime]$。</p>
 <p>题面与上面几乎一致，但是推式子难度更大，且需要结合上面的结论。</p>
-<p>以下默认$p \in prime$<br>$$<br>\begin {aligned}<br>f(x) &amp;&#x3D; \sum_{p}\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;1}^{m}[(i,j)&#x3D;p]\<br>&amp;&#x3D; \sum_{p}\sum\limits_{t&#x3D;1}^{\lfloor \frac{n}{p}\rfloor} \lfloor \frac{n}{tp} \rfloor \times \lfloor \frac{m}{tp} \rfloor \times \mu(t) \<br>\end{aligned}<br>$$<br>看起来好像和上面一样化简完了，但时间复杂度却是$O(cnt \sqrt n)$，其中$cnt$为$n$以内的质数数量。</p>
+<p>以下默认$p \in prime$</p>
+<script type="math/tex; mode=display">
+\begin {aligned}
+f(x) &= \sum_{p}\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}[(i,j)=p]\\
+&= \sum_{p}\sum\limits_{t=1}^{\lfloor \frac{n}{p}\rfloor} \lfloor \frac{n}{tp} \rfloor \times \lfloor \frac{m}{tp} \rfloor \times \mu(t) \\
+\end{aligned}</script><p>看起来好像和上面一样化简完了，但时间复杂度却是$O(cnt \sqrt n)$，其中$cnt$为$n$以内的质数数量。</p>
 <p>在这种情况下，就又出现了一种常见的优化套路。</p>
-<p>我们设$T &#x3D; tp$，结合$t$和$p$的范围，显然$T\in[2,n]$。</p>
-<p>于是我们不再枚举$t,p$，而是直接枚举$T$：<br>$$<br>\begin{aligned}<br>f(x)&amp;&#x3D;\sum_{T&#x3D;2}^{n}\sum_{p|T}\lfloor \frac{n}{T} \rfloor \times \lfloor \frac{m}{T} \rfloor \times \mu(\frac{T}{p})\<br>&amp;&#x3D;\sum_{T&#x3D;2}^{n}\lfloor \frac{n}{T} \rfloor \times \lfloor \frac{m}{T} \rfloor \times \sum_{p|T}\mu(\frac{T}{p})<br>\end{aligned}<br>$$<br>然后我们发现，前半部分就是我们熟悉的除法分块，而上一个式子复杂度高的原因正在后半部分需要枚举$p$。考虑到这是多组询问，那么我们能不能把后半部分预处理出来呢？</p>
+<p>我们设$T = tp$，结合$t$和$p$的范围，显然$T\in[2,n]$。</p>
+<p>于是我们不再枚举$t,p$，而是直接枚举$T$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(x)&=\sum_{T=2}^{n}\sum_{p|T}\lfloor \frac{n}{T} \rfloor \times \lfloor \frac{m}{T} \rfloor \times \mu(\frac{T}{p})\\
+&=\sum_{T=2}^{n}\lfloor \frac{n}{T} \rfloor \times \lfloor \frac{m}{T} \rfloor \times \sum_{p|T}\mu(\frac{T}{p})
+\end{aligned}</script><p>然后我们发现，前半部分就是我们熟悉的除法分块，而上一个式子复杂度高的原因正在后半部分需要枚举$p$。考虑到这是多组询问，那么我们能不能把后半部分预处理出来呢？</p>
 <p>很显然是可以的。</p>
 <p>我们预处理时枚举$p$，对于$p$的倍数$T$，都加上$\mu(\frac{T}{p})$。复杂度是枚举质数再套枚举倍数，反正比原来小就对了。</p>
 <p>然后对处理出来的答案做前缀和，再套除法分块即可。</p>
 <p>预处理代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= cnt; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j*p[i] &lt;= n; j++)&#123;</span><br><span class="line">        s[j*p[i]] += mu[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    s[i] += s[i<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2257">P2257 YY的GCD</a> </p>
 <hr>
-<h3 id="3-求约数个数和"><a href="#3-求约数个数和" class="headerlink" title="3.求约数个数和"></a>3.求约数个数和</h3><p>设$d(x)$表示$x$的约数和。给定$n,m$，求$\sum\limits_{i&#x3D;1}^{n} \sum\limits_{j&#x3D;1}^{m}d(ij)$。</p>
-<p>首先，有一个不知名的但是很NB的公式（没错，我又不会证，想证明可以看下面例题的题解）：<br>$$<br>d(ij)&#x3D;\sum_{x|i}\sum_{y|i}[gcd(x,y)&#x3D;1]<br>$$<br>所以可以把原式进行一些转换：<br>$$<br>\begin{aligned}<br>ans &amp;&#x3D; \sum_{i&#x3D;1}^{n}\sum_{j&#x3D;1}^{m}\sum_{x|i}\sum_{y|i}[gcd(x,y)&#x3D;1] \<br>\end{aligned}<br>$$<br>先枚举因数$x,y$：<br>$$<br>\begin{aligned}<br>ans &amp;&#x3D; \sum_{x&#x3D;1}^{n}\sum_{y&#x3D;1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [gcd(x,y)&#x3D;1]<br>\end{aligned}<br>$$</p>
-<p>$$<br>\begin{aligned}<br>设f(k) &amp;&#x3D; \sum_{x&#x3D;1}^{n}\sum_{y&#x3D;1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [gcd(x,y)&#x3D;k]\<br>g(k)&amp;&#x3D; \sum_{k|d}f(d) \<br>&amp;&#x3D; \sum_{x&#x3D;1}^{n}\sum_{y&#x3D;1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [k|gcd(x,y)] \<br>&amp;&#x3D; \sum_{x&#x3D;1}^{\lfloor \frac{n}{k} \rfloor}\sum_{y&#x3D;1}^{\lfloor \frac{m}{k} \rfloor}\lfloor \frac{n}{xk} \rfloor \lfloor \frac{m}{yk} \rfloor<br>\end{aligned}<br>$$</p>
-<p>接下来套公式反演一波：<br>$$<br>\begin{aligned}<br>f(k)&amp;&#x3D;\sum_{k|d}g(d)\times \mu(\frac{d}{k})\<br>&amp;&#x3D; \sum_{k|d}\mu(\frac{d}{k})\times \sum_{x&#x3D;1}^{\lfloor \frac{n}{d} \rfloor}\sum_{y&#x3D;1}^{\lfloor \frac{m}{d} \rfloor}\lfloor \frac{n}{xd} \rfloor \lfloor \frac{m}{yd} \rfloor<br>\end{aligned}<br>$$<br>那么我们发现我们的答案是$f(1)$，于是化简一下（顺便把原式中的$x,y$换成$i,j$）：<br>$$<br>ans &#x3D; f(1)&#x3D;\sum_{d&#x3D;1}^{n}\mu(d)\times \sum_{i&#x3D;1}^{\lfloor \frac{n}{d} \rfloor}\sum_{j&#x3D;1}^{\lfloor \frac{m}{d} \rfloor}\lfloor \frac{n}{id} \rfloor \lfloor \frac{m}{jd} \rfloor<br>$$<br>然后发现后面两项之间没有关系:<br>$$<br>ans &#x3D;\sum_{d&#x3D;1}^{n}\mu(d)\times (\sum_{i&#x3D;1}^{\lfloor \frac{n}{d} \rfloor}\lfloor \frac{n}{id} \rfloor)\times (\sum_{j&#x3D;1}^{\lfloor \frac{m}{d} \rfloor} \lfloor \frac{m}{jd} \rfloor)<br>$$<br>我们可以先用一次除法分块预处理$s(x)&#x3D;\sum\limits_{i&#x3D;1}^{x} \lfloor\frac{x}{i} \rfloor$，然后对$\frac{n}{d}$再进行除法分块，同时对$\mu$求前缀和就可以$O(\sqrt n)$求出答案。</p>
+<h3 id="3-求约数个数和"><a href="#3-求约数个数和" class="headerlink" title="3.求约数个数和"></a>3.求约数个数和</h3><p>设$d(x)$表示$x$的约数和。给定$n,m$，求$\sum\limits_{i=1}^{n} \sum\limits_{j=1}^{m}d(ij)$。</p>
+<p>首先，有一个不知名的但是很NB的公式（没错，我又不会证，想证明可以看下面例题的题解）：</p>
+<script type="math/tex; mode=display">
+d(ij)=\sum_{x|i}\sum_{y|i}[gcd(x,y)=1]</script><p>所以可以把原式进行一些转换：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans &= \sum_{i=1}^{n}\sum_{j=1}^{m}\sum_{x|i}\sum_{y|i}[gcd(x,y)=1] \\
+\end{aligned}</script><p>先枚举因数$x,y$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans &= \sum_{x=1}^{n}\sum_{y=1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [gcd(x,y)=1]
+\end{aligned}</script><script type="math/tex; mode=display">
+\begin{aligned}
+设f(k) &= \sum_{x=1}^{n}\sum_{y=1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [gcd(x,y)=k]\\
+g(k)&= \sum_{k|d}f(d) \\
+&= \sum_{x=1}^{n}\sum_{y=1}^{m}\lfloor \frac{n}{x} \rfloor \lfloor \frac{m}{y} \rfloor [k|gcd(x,y)] \\
+&= \sum_{x=1}^{\lfloor \frac{n}{k} \rfloor}\sum_{y=1}^{\lfloor \frac{m}{k} \rfloor}\lfloor \frac{n}{xk} \rfloor \lfloor \frac{m}{yk} \rfloor
+\end{aligned}</script><p>接下来套公式反演一波：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(k)&=\sum_{k|d}g(d)\times \mu(\frac{d}{k})\\
+&= \sum_{k|d}\mu(\frac{d}{k})\times \sum_{x=1}^{\lfloor \frac{n}{d} \rfloor}\sum_{y=1}^{\lfloor \frac{m}{d} \rfloor}\lfloor \frac{n}{xd} \rfloor \lfloor \frac{m}{yd} \rfloor
+\end{aligned}</script><p>那么我们发现我们的答案是$f(1)$，于是化简一下（顺便把原式中的$x,y$换成$i,j$）：</p>
+<script type="math/tex; mode=display">
+ans = f(1)=\sum_{d=1}^{n}\mu(d)\times \sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\sum_{j=1}^{\lfloor \frac{m}{d} \rfloor}\lfloor \frac{n}{id} \rfloor \lfloor \frac{m}{jd} \rfloor</script><p>然后发现后面两项之间没有关系:</p>
+<script type="math/tex; mode=display">
+ans =\sum_{d=1}^{n}\mu(d)\times (\sum_{i=1}^{\lfloor \frac{n}{d} \rfloor}\lfloor \frac{n}{id} \rfloor)\times (\sum_{j=1}^{\lfloor \frac{m}{d} \rfloor} \lfloor \frac{m}{jd} \rfloor)</script><p>我们可以先用一次除法分块预处理$s(x)=\sum\limits_{i=1}^{x} \lfloor\frac{x}{i} \rfloor$，然后对$\frac{n}{d}$再进行除法分块，同时对$\mu$求前缀和就可以$O(\sqrt n)$求出答案。</p>
 <p>预处理$s$，前缀和：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) mu[i] += mu[i<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= i; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">        r = i/(i/l);</span><br><span class="line">        s[i] += (ll)(r-l+<span class="number">1</span>)*(i/l);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>除法分块回答询问：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r; l &lt;= n; l = r+<span class="number">1</span>)&#123;</span><br><span class="line">    r = <span class="built_in">min</span>(n/(n/l), m/(m/l));</span><br><span class="line">    ans += (mu[r]-mu[l<span class="number">-1</span>])*s[n/l]*s[m/l];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3327">P3327 约数个数和</a> </p>
 <hr>
-<p><font size=5>到这里，我遇到过的一些套路就已经讲完了，本文也暂时完结。但以后可能会有更多的套路，有可能再更新。</font><font size=2><del>(先挖坑再说，填不填全看心情)</del> </font></p>
-
+<font size=5>到这里，我遇到过的一些套路就已经讲完了，本文也暂时完结。但以后可能会有更多的套路，有可能再更新。</font><font size=2>~~(先挖坑再说，填不填全看心情)~~ </font>
     
 
     
@@ -405,8 +446,8 @@
     </a>
   
   
-    <a href="/project/2022/07/16/51Nod1238%20%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E5%92%8CV3/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【题解&amp;杜教筛总结】51Nod1238 最小公倍数和V3</div>
+    <a href="/project/2022/07/16/%E8%AF%95%E9%A2%98%E5%BA%93%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【题解】试题库问题</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -433,7 +474,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">莫比乌斯函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8D%E6%BC%94"><span class="toc-number">2.</span> <span class="toc-text">莫比乌斯反演</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E5%A5%97%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">经典套路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%B1%82-i-j-x3D-x%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">1.求(i,j)&#x3D;x的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B1%82-i-j-%E4%B8%BA%E8%B4%A8%E6%95%B0%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">2.求(i,j)为质数的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B1%82%E7%BA%A6%E6%95%B0%E4%B8%AA%E6%95%B0%E5%92%8C"><span class="toc-number">3.3.</span> <span class="toc-text">3.求约数个数和</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">莫比乌斯函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8D%E6%BC%94"><span class="toc-number">2.</span> <span class="toc-text">莫比乌斯反演</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E5%A5%97%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">经典套路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%B1%82-i-j-x%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">1.求(i,j)&#x3D;x的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B1%82-i-j-%E4%B8%BA%E8%B4%A8%E6%95%B0%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">2.求(i,j)为质数的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B1%82%E7%BA%A6%E6%95%B0%E4%B8%AA%E6%95%B0%E5%92%8C"><span class="toc-number">3.3.</span> <span class="toc-text">3.求约数个数和</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>

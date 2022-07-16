@@ -10,12 +10,12 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="我是标题党 卡特兰数简介卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：$$f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}$$">
+  <meta name="description" content="我是标题党 卡特兰数简介卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：  f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【算法】震惊！！！史上最详细的卡特兰数浅谈！！！">
 <meta property="og:url" content="https://memset0x3f.github.io/project/2022/07/16/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E8%AF%A6%E8%A7%A3/">
 <meta property="og:site_name" content="Fighter&#39;s Blog">
-<meta property="og:description" content="我是标题党 卡特兰数简介卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：$$f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}$$">
+<meta property="og:description" content="我是标题党 卡特兰数简介卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：  f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2019/03/29/5c9e16e8108e5.png">
 <meta property="og:image" content="https://i.loli.net/2019/03/29/5c9e156838251.png">
@@ -248,11 +248,14 @@
   <div class="article-entry" itemprop="articleBody">
     
     <p><del>我是标题党</del></p>
-<h2 id="卡特兰数简介"><a href="#卡特兰数简介" class="headerlink" title="卡特兰数简介"></a>卡特兰数简介</h2><p>卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：<br>$$<br>f(n)&#x3D;\frac{C_{2n}^{n}}{n+1}<br>$$</p>
-<span id="more"></span>
-
-<p>当然，卡特兰数也是有递推式的：<br>$$<br>f(n)&#x3D;\sum_{i&#x3D;0}^{n-1}f(i)\times f(n-i-1)<br>$$<br>但在实际应用中，最常用的却是第一个通项式的变形：<br>$$<br>f(n)&#x3D;C_{2n}^{n}-C_{2n}^{n-1}<br>$$</p>
-<h2 id="卡特兰数的应用"><a href="#卡特兰数的应用" class="headerlink" title="卡特兰数的应用"></a>卡特兰数的应用</h2><h3 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h3><p>有一个长度为$2n$的01序列，其中1,0各$n$个，要求对于任意的整数$k \in [1,n]$，数列的前$k$个数中，1的个数不少于0。</p>
+<h2 id="卡特兰数简介"><a href="#卡特兰数简介" class="headerlink" title="卡特兰数简介"></a>卡特兰数简介</h2><p>卡特兰数是组合数学中的一种著名数列，通常用如下通项式表示(为了不与组合数$C$冲突，本文用$f$表示卡特兰数)：</p>
+<script type="math/tex; mode=display">
+f(n)=\frac{C_{2n}^{n}}{n+1}</script><span id="more"></span>
+<p>当然，卡特兰数也是有递推式的：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{i=0}^{n-1}f(i)\times f(n-i-1)</script><p>但在实际应用中，最常用的却是第一个通项式的变形：</p>
+<script type="math/tex; mode=display">
+f(n)=C_{2n}^{n}-C_{2n}^{n-1}</script><h2 id="卡特兰数的应用"><a href="#卡特兰数的应用" class="headerlink" title="卡特兰数的应用"></a>卡特兰数的应用</h2><h3 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h3><p>有一个长度为$2n$的01序列，其中1,0各$n$个，要求对于任意的整数$k \in [1,n]$，数列的前$k$个数中，1的个数不少于0。</p>
 <h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><del>当然你可以选择用DP​秒切。</del></p>
 <p>不知当初哪位神仙想出了这种神奇的构造方法。</p>
 <p>我们把0,1操作扔到一个坐标系中。1看成向右上方走一步，0看成向右下角走一步，那么最后构造完后一定走到了$(2n,0)$</p>
@@ -260,10 +263,10 @@
 <p><img src="https://i.loli.net/2019/03/29/5c9e16e8108e5.png" alt="Catalan.PNG"></p>
 <p>那么总的路径数量就是在$2n$步中选择$n$步为1，方案数为$C_{2n}^{n}$。</p>
 <p>接着来考虑题目中的限制条件：对于任意前缀，1的个数不少于0。</p>
-<p>那么转化到坐标系中，也就是说走的路径不应该穿过$x$轴，即直线$y&#x3D;0$，也就是不接触$y&#x3D;-1$。</p>
-<p>于是我们把与$y&#x3D;-1$的接触点的右边整条路径以$y&#x3D;-1$为对称轴翻折，于是终点变为了$(2n,-2)$。如下图：</p>
+<p>那么转化到坐标系中，也就是说走的路径不应该穿过$x$轴，即直线$y=0$，也就是不接触$y=-1$。</p>
+<p>于是我们把与$y=-1$的接触点的右边整条路径以$y=-1$为对称轴翻折，于是终点变为了$(2n,-2)$。如下图：</p>
 <p><img src="https://i.loli.net/2019/03/29/5c9e156838251.png" alt="catalan2.PNG"></p>
-<p>那么此时，从$(0,0)$到$(2n,-2)$的路径必定至少穿过一次$y&#x3D;-1$，不满足条件，那么此时的路径数量即为总路径数中不符合题意的路径数，那么我们用总路径数减去不符合的路径数，就是最终的答案。</p>
+<p>那么此时，从$(0,0)$到$(2n,-2)$的路径必定至少穿过一次$y=-1$，不满足条件，那么此时的路径数量即为总路径数中不符合题意的路径数，那么我们用总路径数减去不符合的路径数，就是最终的答案。</p>
 <p>而此时的路径数量也很简单，由于反转后终点向下移了两位，也就意味着$n-1$步是1，$n+1$步是0，总方案为$C_{2n}^{n-1}$，那么最终的答案就是$C_{2n}^{n}-C_{2n}^{n-1}$。</p>
 <p>诶，这不就是卡特兰数吗。</p>
 <hr>
@@ -273,12 +276,14 @@
 </ol>
 <p>这两道题需要在深刻理解了上述卡特兰数的推导后进行一些变形得出最终的答案。</p>
 <p>具体的变动在于，转换成基本模型后，1和0的个数不一样，分别为$n$和$m$，最后可以得出答案为$C_{n+m}^{n}-C_{n+m}^{m-1}$。<del>白水一道紫题</del>。</p>
-<ol start="3">
+<ol>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P2532">洛谷P2532 树屋阶梯</a></li>
 </ol>
 <p>这道题我一看<del>两军阵前……</del>，跟卡特兰数好像没有直接关系，但是手画几个样例后，发现答案都是卡特兰数，那么基本上就可以大胆猜想了。</p>
-<p>但实际上，我们可以从$dp$的角度考虑这道题。对于任意大小为$n$的阶梯，我们都可以现在左下角放一个大块，然后在上方构造一个大小为$i$的阶梯，右下方构造大小为$n-i-1$的阶梯，那么转移方程就十分显然：<br>$$<br>f(n)&#x3D;\sum_{i&#x3D;0}^{n-1}f(i)*f(n-i-1)<br>$$<br>显然就是卡特兰数，直接一波通项式+高精度搞定。</p>
-<ol start="4">
+<p>但实际上，我们可以从$dp$的角度考虑这道题。对于任意大小为$n$的阶梯，我们都可以现在左下角放一个大块，然后在上方构造一个大小为$i$的阶梯，右下方构造大小为$n-i-1$的阶梯，那么转移方程就十分显然：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{i=0}^{n-1}f(i)*f(n-i-1)</script><p>显然就是卡特兰数，直接一波通项式+高精度搞定。</p>
+<ol>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3200">洛谷P3200 有趣的数列</a></li>
 </ol>
 <p>首先有一个结论，对于每个偶数位，上面放的数必须不小于当前位的下标。<del>（意会一下）</del></p>
@@ -381,18 +386,18 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86%E5%8F%8A%E6%89%A9%E5%B1%95/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/SP5973%20Selecting%20Teams/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          中国剩余定理及扩展
+          【题解】SPOJ5973 Selecting Teams(3.30模拟赛T1)
         
       </div>
     </a>
   
   
-    <a href="/project/2022/07/16/%E5%9D%97%E7%8A%B6%E9%93%BE%E8%A1%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【数据结构】块状链表(分块大法好)</div>
+    <a href="/project/2022/07/16/%E5%9C%86%E7%9A%84%E9%9D%A2%E7%A7%AF%E5%B9%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【算法】圆的面积并（自适应辛普森乱搞）</div>
       <i class="icon-circle-right"></i>
     </a>
   

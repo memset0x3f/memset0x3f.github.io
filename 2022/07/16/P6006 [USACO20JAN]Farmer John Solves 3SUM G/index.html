@@ -224,7 +224,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">565字</span>
+      <span class="post-count">564字</span>
     </span>
   </span>
 
@@ -247,15 +247,13 @@
     <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6006">传送门</a></p>
 <h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现$n \leq 5000$，那么我们自然想到$O(n^2)$预处理之后$O(1)$回答询问。</p>
 <span id="more"></span>
-
-<p>先考虑一个更简单的问题，如果$f[i][j]$表示在区间$[l,r]$中，满足$k \in (l,r)，a[k]+a[l]+a[r]&#x3D;0$的$k$的数量，那么我们是可以枚举左右端点，用一个桶做到$O(n^2)$预处理$f$的。</p>
+<p>先考虑一个更简单的问题，如果$f[i][j]$表示在区间$[l,r]$中，满足$k \in (l,r)，a[k]+a[l]+a[r]=0$的$k$的数量，那么我们是可以枚举左右端点，用一个桶做到$O(n^2)$预处理$f$的。</p>
 <p>那么$f$与最后的答案是什么关系呢？最后要求的是：在一段区间内，左右端点<strong>不强制</strong>选的方案数。这隐隐约约的有点像是$f$数组的一个前缀和。</p>
 <p>我们可以考虑先求出$s[l][r]$表示左端点在$[1,l]$内，右端点在$[1,r]$内的总方案数。这就真的是$f$的二位前缀和了。</p>
 <p>可以这么理解，把$f[l][r]$对应到平面上的一个点，那么$s[l][r]$就是从$(1,1)$到$(l,r)$的这个矩形中所有点的和。这样我们也就可以在$O(n^2)$的时间内求出$s$。</p>
 <p>同样的，最后的答案实际上是区间左右端点都在$[l,r]$内总答案。对应到平面上也就是左上角为$(l,l)$，右下角为$(r,r)$的矩形中所有点的和。这样就可以通过$s$来$O(1)$求答案了。</p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>注意开桶的时候需要平移值域</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 5005</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> K 1000000</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, Q;</span><br><span class="line"><span class="type">int</span> a[MAX], cnt[<span class="number">2000005</span>];</span><br><span class="line">ll s[MAX][MAX];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; Q;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]), a[i] += K;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = i+<span class="number">1</span>; j &lt;= n; ++j)&#123;</span><br><span class="line">            <span class="keyword">if</span>(j &gt; i+<span class="number">1</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(a[i]+a[j] &lt;= K*<span class="number">3</span> &amp;&amp; a[i]+a[j] &gt;= K) s[i][j] = cnt[K*<span class="number">3</span>-a[i]-a[j]];</span><br><span class="line">            &#125;</span><br><span class="line">            cnt[a[j]]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = i+<span class="number">1</span>; j &lt;= n; ++j)&#123;</span><br><span class="line">            cnt[a[j]]--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++j)&#123;</span><br><span class="line">            s[i][j] += s[i<span class="number">-1</span>][j]+s[i][j<span class="number">-1</span>]-s[i<span class="number">-1</span>][j<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> l, r;</span><br><span class="line">    <span class="keyword">while</span>(Q--)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;l, &amp;r);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, s[r][r]-s[l<span class="number">-1</span>][r]-s[r][l<span class="number">-1</span>]+s[l<span class="number">-1</span>][l<span class="number">-1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     
 
@@ -352,11 +350,11 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/GSS7%EF%BC%9A%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          【挖坑】【GSS系列】GSS7：树链剖分中的最大子段和
+          【题解】洛谷P5298 [PKUWC2018]Minimax
         
       </div>
     </a>

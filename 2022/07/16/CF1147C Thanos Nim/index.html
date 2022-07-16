@@ -247,7 +247,6 @@
     <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/CF1147C">传送门</a></p>
 <p>有$n$堆石子($n$为偶数)，每次玩家要选择恰好$\frac{n}{2}$堆石子，并从每一堆中任意拿走数量大于$0$的石子（每堆拿的数量可以不同）。问先手是否必胜。</p>
 <span id="more"></span>
-
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>先上结论：当石子数最小的堆数量不超过$\frac{n}{2}$时，先手必胜，否则先手必败。</p>
 <p>接下来是<strong>感性理解</strong>时间。</p>
 <p>我们考虑最小堆数量超过$\frac{n}{2}$的情况。那么此时先手不管如何选取，都会选到一个最小堆，由于要求每轮取得石子数量大于$0$，那么最小堆的石子数必然会减少，而且此时取完后最小堆的数量就不会超过$\frac{n}{2}$。</p>
@@ -255,7 +254,6 @@
 <p>但是这个循环总会有终止的时刻，也就是当最小堆石子数量为$0$且堆数超过$\frac{n}{2}$时，游戏结束，最后操作的人获胜。观察上面的过程，我们发现只有后手才能把最小堆的数量变为超过$\frac{n}{2}$，而先手只能被动地将最小值变小，所以最后胜利者一定是后手。</p>
 <p>所以得出结论：当石子数最小的堆数量不超过$\frac{n}{2}$时，先手必胜，否则先手必败。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 105</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="type">int</span> a[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> mn = <span class="number">0x3f3f3f3f</span>, cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        <span class="keyword">if</span>(a[i] &lt; mn) mn = a[i], cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a[i] == mn) cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(cnt &lt;= n/<span class="number">2</span>) <span class="built_in">puts</span>(<span class="string">&quot;Alice&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">puts</span>(<span class="string">&quot;Bob&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     
 
@@ -352,18 +350,18 @@
 
 <nav id="article-nav">
   
-    <a href="/project/2022/07/16/CF1025F%20Disjoint%20Triangles/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/project/2022/07/16/CF109B%20Lucky%20Probability/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          (no title)
+          【题解】CF109B Lucky Probability
         
       </div>
     </a>
   
   
-    <a href="/project/2022/07/16/CF1029D%20Concatenated%20Multiples/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【题解】CF1029D Concatenated Multiples</div>
+    <a href="/project/2022/07/16/CF1181D%20Irrigation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【题解】CF1181D Irrigation</div>
       <i class="icon-circle-right"></i>
     </a>
   
