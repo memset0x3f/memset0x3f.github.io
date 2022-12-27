@@ -1304,7 +1304,7 @@ int main()
 
 
   
-    <article id="post-最小路径覆盖方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-最小矩形覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -1312,7 +1312,7 @@ int main()
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/" target="_blank">【题解】最小路径覆盖方案（最大流求二分图最大匹配）</a>
+	  <a class="article-title" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/" target="_blank">【算法】最小矩形覆盖</a>
   
     </h1>
   
@@ -1320,7 +1320,7 @@ int main()
 
   
   
-<a href="/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/" class="archive-article-date">
+<a href="/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/" class="archive-article-date">
         <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
 </a>
 
@@ -1333,9 +1333,11 @@ int main()
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.org/recordnew/show/17467025">原题传送门</a></p>
+    <div align="center"><font size=4 color="red">前置芝士：凸包，旋转卡壳，向量的基本运算</font></div>
+
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出平面上的一堆点，找出一个能够覆盖所有点的面积最小的矩形，输出面积及四个顶点的坐标。</p>
     
-    <a class="article-more-a" style="display: none;" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/#more">more >></a>
+    <a class="article-more-a" style="display: none;" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/#more">more >></a>
     
     
 
@@ -1352,40 +1354,25 @@ int main()
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">网络流</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">计算几何</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">最大流</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">二分图</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">旋转卡壳</a>
         		</li>
       		
 		</ul>
 	</div>
 
     
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E6%96%B9%E6%A1%88/">展开全文 >></a>
+      <a class="article-more-a" href="/2022/07/16/%E6%9C%80%E5%B0%8F%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96/">展开全文 >></a>
     </p>
     
 
@@ -1585,14 +1572,6 @@ int main()
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">博弈论</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Nim游戏</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
@@ -1602,6 +1581,14 @@ int main()
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">离线处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">博弈论</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nim游戏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1653,11 +1640,11 @@ int main()
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
+                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">bitset</a>
+                <a href="javascript:void(0)" class="js-tag color5">欧拉函数</a>
               </li>
              
               <li class="article-tag-list-item">
