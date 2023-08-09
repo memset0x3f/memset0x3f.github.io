@@ -218,7 +218,7 @@
             
 
   
-    <article id="post-Untitled" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-AT-T汇编基础与Bomblab" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -226,7 +226,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2023/06/05/Untitled/" target="_blank">[技术文档] 使用onnxruntime + CUDA / TensorRT 实现yolov8n-pose gpu推理加速</a>
+	  <a class="article-title" href="/2023/08/09/AT-T%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80%E4%B8%8EBomblab/" target="_blank">[CSAPP] AT&amp;T汇编基础与Bomblab</a>
   
     </h1>
   
@@ -234,7 +234,114 @@
 
   
   
-<a href="/2023/06/05/Untitled/" class="archive-article-date">
+<a href="/2023/08/09/AT-T%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80%E4%B8%8EBomblab/" class="archive-article-date">
+        <time datetime="2023-08-09T12:46:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-09</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>我的汇编并不是跟着csapp学的，而是在HKU的COMP2120课上粗浅地学了一下。但是由于这个课所用汇编指令集是prof为了简单而自己创造出来的，与实际使用的指令集(不管是AT&amp;T还是Intel)差距很远，所以我还是得一边做Bomblab，一边查查资料再学一学。</p>
+    
+    <a class="article-more-a" style="display: none;" href="/2023/08/09/AT-T%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80%E4%B8%8EBomblab/#more">more >></a>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CSAPP</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">汇编</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">逆向工程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/08/09/AT-T%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80%E4%B8%8EBomblab/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-yolo-onnx-tensorrt" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/06/05/yolo-onnx-tensorrt/" target="_blank">[技术文档] 使用onnxruntime + CUDA / TensorRT 实现yolov8n-pose gpu推理加速</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/06/05/yolo-onnx-tensorrt/" class="archive-article-date">
         <time datetime="2023-06-05T07:11:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-06-05</time>
 </a>
 
@@ -249,7 +356,7 @@
     
     <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>海康威视的工业相机提供了一套C++ SDK，并且已经有队友帮我封装好了一套能直接调用读图的接口。但是yolo最常见的推理方式当然是使用python的<code>ultralytics</code> (yolo官方包)， 但是这种方式就使得C++写的相机读图模块和推理模块的通讯很困难， 只能借助ROS的topic机制通讯。然而通过ROS传送图片数据非常的慢，传输1440*1080原图的时间甚至会成为整个推理模块的瓶颈。虽然发送前就resize成640*640（yolo的输入tensor大小）可以降低传输时间，但是仍然不那么让人满意。于是我就打算抛弃python，完全使用C++来部署推理模块，把读图和推理合并到一个节点中，这样就可以省去节点间通讯的时间。</p>
     
-    <a class="article-more-a" style="display: none;" href="/2023/06/05/Untitled/#more">more >></a>
+    <a class="article-more-a" style="display: none;" href="/2023/06/05/yolo-onnx-tensorrt/#more">more >></a>
     
     
 
@@ -303,7 +410,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/2023/06/05/Untitled/">展开全文 >></a>
+      <a class="article-more-a" href="/2023/06/05/yolo-onnx-tensorrt/">展开全文 >></a>
     </p>
     
 
@@ -1148,109 +1255,6 @@
 
 
   
-    <article id="post-BSGS算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/" target="_blank">【算法】BSGS算法的推导与实现</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h2 id="BSGS简介"><a href="#BSGS简介" class="headerlink" title="BSGS简介"></a>BSGS简介</h2><p>BSGS算法，全称Baby Step Giant Step算法，用于求解关于$x$的形如$a^{x} \equiv b \pmod p$ ，$p$为质数的方程。</p>
-    
-    <a class="article-more-a" style="display: none;" href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数论</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/BSGS%E7%AE%97%E6%B3%95/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1610,6 +1614,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">TensorRT</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">CSAPP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">逆向工程</a>
               </li>
             
             <div class="clearfix"></div>
