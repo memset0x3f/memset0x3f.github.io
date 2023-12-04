@@ -218,6 +218,112 @@
             
 
   
+    <article id="post-P5298 [PKUWC2018]Minimax" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" target="_blank">【题解】洛谷P5298 [PKUWC2018]Minimax</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/" class="archive-article-date">
+        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5298">传送门</a></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>发现题目里的式子都是吓唬人的，由于所有概率都在$(0,1)$内，所以所有权值都有概率被选到，那么把权值排序一下就解决了$i$和$v[i]$。</p>
+<p>接着考虑怎么求概率。题目中保证这是一棵二叉树，所以设$f[x][j]$表示$x$这个节点，权值为$j$的概率。又因为题目保证权值互不相同，于是我们就可以通过一些讨论来转移。</p>
+    
+    <a class="article-more-a" style="display: none;" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/#more">more >></a>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">题解</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">线段树</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DP</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">概率/期望</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2022/07/16/P5298%20%5BPKUWC2018%5DMinimax/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-P6006 [USACO20JAN]Farmer John Solves 3SUM G" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1199,202 +1305,6 @@ f(n)=\frac{C_{2n}^{n}}{n+1}</script>
 
 
   
-    <article id="post-多重背包优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/" target="_blank">多重背包优化</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/" class="archive-article-date">
-        <time datetime="2022-07-16T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>[TOC]</p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>​    有$n$个物品和一个容量为$m$的背包，其中每种物品的数量是有限的，第$i$种物品的体积，价值，数量分别记为$w[i]$，$v[i]$，$c[i]$。求能取到的最大或最小价值</p>
-<hr>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-暴力出奇迹"><a href="#1-暴力出奇迹" class="headerlink" title="1. 暴力出奇迹"></a>1. 暴力<del>出奇迹</del></h3><p>​    很显然，我们可以把多个同一种物品拆成不同的物品，相当于把多重背包强行转化为01背包，此时物品数量由$n$变为了$\sum\limits_{i=1}^nc[i]$， 那么复杂度变为了$O(m*\sum\limits_{i=1}^n c[i])$，显然这个算法十分愚蠢<del>傻逼</del>。</p>
-<p>​    虽然比较愚蠢，但实际上后面的优化都是在这个基本的思想上进行优化。</p>
-<h3 id="2-二进制拆分优化"><a href="#2-二进制拆分优化" class="headerlink" title="2.二进制拆分优化"></a>2.二进制拆分优化</h3><p>​    暴力的方法愚蠢在哪里呢？因为把一种物品全部拆开后数量太多了，而且可以发现要组成取一种物品的所有情况并不需要全部拆开，比如我想取两个同种物品，但我却会遍历每种取法，尽管这些取法是完全相同的。所以我们就想到，有没有一种方法可以用更少的物品数表示出所有情况呢？很显然，我们以二进制的形式拆分一个种类，比如说一种物品有11个，于是我们可以拆分为1,2,4，剩下5单独一组，这样就可以表示出所有情况。而这样就把每种物品拆分的数量优化到了$log_2c[i]$，于是整个算法的时间复杂度就优化到了$m*\sum\limits_{i=1}^nlog_2c[i]$。</p>
-<h4 id="核心代码（拆分）"><a href="#核心代码（拆分）" class="headerlink" title="核心代码（拆分）"></a>核心代码（拆分）</h4><pre><code class="lang-cpp">for(int i = 1; i &lt;= n; i++)&#123;
-    for(int j = 1; j &lt;= y[i]; j &lt;&lt;= 1)&#123;
-        cnt++;
-        w[cnt] = j*x[i];
-        v[cnt] = j*z[i];
-        y[i] -= j;
-    &#125;
-    if(y[i] &gt; 0)&#123;
-        cnt++;
-        w[cnt] = y[i]*x[i];
-        v[cnt] = y[i];
-    &#125;
-&#125;
-</code></pre>
-<p>其中$x$和$z$数组分别是读入的原始$w$和$v$数组，而$y$数组则是原始$c$数组。</p>
-<h3 id="3-单调队列优化"><a href="#3-单调队列优化" class="headerlink" title="3. 单调队列优化"></a>3. 单调队列优化</h3><p>​    <del>也不知道哪个神人想出来了这么一个神奇的算法。</del></p>
-<p>​    这里给出一个与暴力解法等价的转移方程，只不过我们用第$i$种物品来表示当前总体积$m$。于是：</p>
-<script type="math/tex; mode=display">
-f[i][j*w[i]+mod]=max(f[i-1][j*w[i]+mod],f[i-1][(j-k)*w[i]+mod]+k*v[i])</script><p>​    其中$0 \leq mod &lt; w[i], j=m/w[i], 0\leq k \leq j$，而我们在枚举背包体积时，也不再使用m~0的枚举顺序，而是使用枚举$mod$和$j$组合起来表示体积。这会使后面的单调队列优化变得容易很多。 <strong>注意</strong>，这里的$j$不一定j要小于等于$c[i]$，因为这里的$j$并不是第$i$种物品的个数，而只是用$w[i]$作为基数表示出了体积，真正对$c[i]$的控制会在单调队列中体现。</p>
-<p>​    接下来就来考虑优化，从上面这个方程中可以发现，不管一种物品取几个，原式中的$mod$是不会改变的，于是我们可以把每种物品按余数分类，而状态之间的转移仍然只会在<strong>同一类</strong>中进行，而此时每一类中的状态满足单调性且均为<strong>连续</strong>的，每一个状态的转移相当于在它之前找一个连续区间中的最值，于是可以用单调队列进行优化。</p>
-<p>​    设单调队列为$q$，头指针为$l$，尾指针为$r$，那么队首出队的条件为$j-q[l]&gt;c[i]$，即控制每种物品最多选$c[i]$个，在插入队列时判断$f[i-1][q[l]<em>w[i]+mod]+(j-q[l])</em>v[i]$和$f[i-1][j*w[i]+mod]$的关系，维护单调递增或递减即可。</p>
-<p>Tip:在实际运行过程中，由于常数过大，单调队列优化的效果很可能不如二进制优化</p>
-<h4 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h4><pre><code class="lang-cpp">    for(int i = 1; i &lt;= n; i++)&#123;
-        for(int mod = 0; mod &lt; w[i]; mod++)&#123;
-            l = 1, r = 0;
-            q[l] = 0;
-            for(int j = 0; j*w[i]+mod &lt;= m; j++)&#123;
-                while(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;
-                    l++;
-                &#125;
-                f[i][j*w[i]+mod] = min(f[i-1][q[l]*w[i]+mod]+(j-q[l])*v[i], f[i-1][j*w[i]+mod]);
-                while(l &lt;= r &amp;&amp; f[i-1][q[l]*w[i]+mod]+(j-q[l])*v[i] &gt;= f[i-1][j*w[i]+mod])&#123;
-                    r--;
-                &#125;
-                q[++r] = j;
-            &#125;
-        &#125;
-    &#125;
-</code></pre>
-<p>同时，还可以使用滚动数组，用i&amp;1和i&amp;1^1代替i和i-1，达到空间上的优化。</p>
-<p>当然，如果觉得二维的$f$数组看着不顺眼，可以强行转化为一维，但好像要另开空间存储上一次状态的数据（我并不确定是否有更优的方案），对空间几乎没有优化。</p>
-<hr>
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="洛谷P3423-Banknotes"><a href="#洛谷P3423-Banknotes" class="headerlink" title="洛谷P3423 Banknotes"></a><a target="_blank" rel="noopener" href="https://www.luogu.org/problemnew/show/P3423">洛谷P3423 Banknotes</a></h3><p>物品价值恒为1，且要求价值最小值的多重背包，还要输出方案。</p>
-<p>这道题loj上还有一个<a target="_blank" rel="noopener" href="https://loj.ac/problem/10179">弱化版</a>，不需要输出方案。</p>
-<p>对于输出方案，我们可以用单调队列优化，并记录$last[i][j]$表示状态$f[i][j]$是由$f[i-1][last[i][j]]$转移而来，然后递归输出方案。当然二进制优化也可以，只是方案更难得到。</p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><pre><code class="lang-cpp">#include &lt;bits/stdc++.h&gt;
-using namespace std;
-
-int n, m;
-int w[205], c[205], f[2][20005];
-int q[20005], l, r;
-
-int main()
-&#123;
-    cin &gt;&gt; n;
-    for(int i = 1; i &lt;= n; i++)&#123;
-        scanf(&quot;%d&quot;, &amp;w[i]);
-    &#125;
-    for(int i = 1; i &lt;= n; i++)&#123;
-        scanf(&quot;%d&quot;, &amp;c[i]);
-    &#125;
-    cin &gt;&gt; m;
-    memset(f, 0x3f, sizeof(f));
-    f[0][0] = 0;
-    for(int i = 1; i &lt;= n; i++)&#123;
-        for(int mod = 0; mod &lt; w[i]; mod++)&#123;
-            l = 1, r = 0;
-            q[l] = 0;
-            for(int j = 0; j*w[i]+mod &lt;= m; j++)&#123;
-                while(l &lt;= r &amp;&amp; j-q[l] &gt; c[i])&#123;
-                    l++;
-                &#125;
-                int now = i&amp;1, last = now^1;
-                f[now][j*w[i]+mod] = min(f[last][q[l]*w[i]+mod]+j-q[l], f[last][j*w[i]+mod]);
-                while(l &lt;= r &amp;&amp; f[last][q[l]*w[i]+mod]+j-q[l] &gt;= f[last][j*w[i]+mod])&#123;
-                    r--;
-                &#125;
-                q[++r] = j;
-            &#125;
-        &#125;
-    &#125;
-    cout &lt;&lt; f[n&amp;1][m] &lt;&lt; endl;
-
-    return 0;
-&#125;
-</code></pre>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">模板</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DP</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">背包</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2022/07/16/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85%E4%BC%98%E5%8C%96/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
@@ -1766,6 +1676,14 @@ int main()
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">逆向工程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">多线程</a>
               </li>
             
             <div class="clearfix"></div>
